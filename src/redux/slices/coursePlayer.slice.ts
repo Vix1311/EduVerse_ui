@@ -66,8 +66,9 @@ export const fetchCourseDetail = createAsyncThunk(
       let rawModules: any[] =
         modulesRes.data?.items ?? modulesRes.data?.data?.items ?? modulesRes.data?.data ?? [];
 
-      if (!Array.isArray(rawModules)) rawModules = rawModules.items ?? [];
-
+      let rm: any = rawModules as any;
+      if (!Array.isArray(rm)) rm = rm?.items ?? rm?.results ?? [];
+      rawModules = rm;
       // 3) For each module -> get lessons list, then each lesson detail
       const topics: Topic[] = [];
 
@@ -87,8 +88,9 @@ export const fetchCourseDetail = createAsyncThunk(
         let rawLessons: any[] =
           lessonsRes.data?.items ?? lessonsRes.data?.data?.items ?? lessonsRes.data?.data ?? [];
 
-        if (!Array.isArray(rawLessons)) rawLessons = rawLessons.items ?? [];
-
+        let rl: any = rawLessons as any;
+        if (!Array.isArray(rl)) rl = rl?.items ?? rl?.results ?? [];
+        rawLessons = rl;
         // 3.2: get detail (videoUrl, documentUrl) for each lesson
         const lessons: any[] = [];
 
@@ -119,7 +121,7 @@ export const fetchCourseDetail = createAsyncThunk(
               ? [
                   {
                     url: documentUrl,
-                    original_name:  d.title+'.doc',
+                    original_name: d.title + '.doc',
                   },
                 ]
               : [],

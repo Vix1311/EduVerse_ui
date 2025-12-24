@@ -14,6 +14,7 @@ interface CourseDetailData {
   instructor?: { id: number; full_name?: string; fullname?: string; avatar?: string; bio?: string };
   course?: { title?: string; description?: string };
   topics?: any[];
+  teacher?: { id?: string | number };
 }
 
 type Status = 'idle' | 'loading' | 'succeeded' | 'failed';
@@ -35,6 +36,7 @@ interface CourseDetailState {
   map: Record<string, { lesson: any; comments: any[] }>;
   status: Status;
   error: string | null;
+  loading: boolean;
 }
 
 // Fetch course detail from BE
@@ -130,6 +132,7 @@ const initialState: CourseDetailState = {
   map: {},
   status: 'idle',
   error: null,
+  loading: false,
 };
 
 const courseDetailSlice = createSlice({
@@ -166,7 +169,7 @@ const courseDetailSlice = createSlice({
       })
       .addCase(fetchCourseComments.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = (action.payload as string) ?? null;
       });
   },
 });

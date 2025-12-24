@@ -1,6 +1,6 @@
 export interface Lesson {
   id: number;
-  chapterId: number;
+  moduleId: number;
   videoUrl?: string;
   documentUrl?: string;
   isPreviewable: boolean;

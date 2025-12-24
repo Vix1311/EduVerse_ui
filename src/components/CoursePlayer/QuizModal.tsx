@@ -5,14 +5,23 @@ import { fetchModuleQuizAttempt, submitModuleQuizAttempt } from '@/redux/slices/
 import { toast } from 'react-toastify';
 import confetti from 'canvas-confetti';
 
-interface QuizModalProps {
+export type QuizModalProps = {
   quizId: string;
   courseId: string;
   moduleId: string;
   mode: 'take' | 'review';
-  onOpen?: () => void;
+
+  reviewData?: {
+    questions: any[];
+    userAnswers: Record<string, string | string[]>;
+    correctAnswers: Record<string, string | string[]>;
+    score?: number;
+  } | null;
+
+  onComplete: (payload: any) => void;
   onClose: () => void;
-}
+  onOpen: () => void;
+};
 
 const QuizModal = ({
   quizId,

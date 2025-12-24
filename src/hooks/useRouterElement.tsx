@@ -31,9 +31,9 @@ import AuthPage from '@/pages/Auth/Auth';
 import InstructorDashboard from '@/pages/instructor/instructorDashboard';
 import InstructorCommentsDashboard from '@/components/instructorDashboard/Q&A/q&a';
 import InstructorQuizsDashboard from '@/components/instructorDashboard/Quiz/quiz';
-import ChatPage from '@/pages/chat/chat';
 import CouponPage from '@/pages/Admin/CouponPage';
 import HashtagPage from '@/pages/Admin/HashtagPage';
+import Chat from '@/pages/chat/Chat';
 
 interface RouteConfig {
   path: string;
@@ -71,7 +71,7 @@ export default function useRoutesElements() {
     { path: path.userEdit, element: <UserEdit /> },
     { path: path.userProfile, element: <UserProfile /> },
     { path: path.purchaseHistory, element: <PurchaseHistory /> },
-    { path: path.chat, element: <ChatPage /> },
+    { path: path.chat, element: <Chat /> },
     {
       path: path.instructor.instructorDashboard,
       element: (

@@ -57,7 +57,9 @@ export const fetchStudyModuleLessons = createAsyncThunk(
 
       const raw = res.data?.data ?? res.data ?? {};
       let items: any[] = raw.items ?? raw.results ?? raw ?? [];
-      if (!Array.isArray(items)) items = items.items ?? items.results ?? [];
+      let it: any = items as any;
+      if (!Array.isArray(it)) it = it?.items ?? it?.results ?? [];
+      items = it;
 
       const lessons: StudyLessonItem[] = items.map((l: any) => ({
         id: l.id,
@@ -97,7 +99,9 @@ export const fetchLessonQuizzes = createAsyncThunk(
 
       const raw = res.data?.data ?? res.data ?? {};
       let items: any[] = raw.items ?? raw.results ?? raw ?? [];
-      if (!Array.isArray(items)) items = items.items ?? items.results ?? [];
+      let it: any = items as any;
+      if (!Array.isArray(it)) it = it?.items ?? it?.results ?? [];
+      items = it;
 
       return { lessonId: String(lessonId), quizzes: items };
     } catch (error: any) {

@@ -17,11 +17,12 @@ type Props = {
   open: boolean;
   onClose: () => void;
   editingCategory?: Category | null;
-  page: number;
-  limit: number;
-  sort_by: string | null;
-  sort_order: 'asc' | 'desc';
+  page?: number;
+  limit?: number;
+  sort_by?: string;
+  sort_order?: 'asc' | 'desc' | string;
   keyword?: string | null;
+  onCreated?: () => void;
 };
 
 const Schema = z.object({
@@ -101,7 +102,7 @@ export default function CategoryFormModal({
       fetchCategories({
         page,
         limit,
-        sort_order,
+        sort_order: 'desc',
         keyword: keyword || undefined,
       }),
     );

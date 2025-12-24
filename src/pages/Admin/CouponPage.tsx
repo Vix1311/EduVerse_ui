@@ -25,7 +25,7 @@ type Row = {
   perUserLimit: number;
   expirationDate: string;
   createdAt: string;
-  courseId: number | null; 
+  courseId: number | null;
   deletedAt: string | null;
   status: 'active' | 'expired' | 'deleted';
 };
@@ -44,6 +44,16 @@ type FormState = {
   perUserLimit: number;
   expirationDate: string;
   courseId: number | null;
+};
+
+type CreateCouponPayload = {
+  code?: string;
+  discountType: string;
+  discountAmount: number;
+  maxUses: number;
+  perUserLimit: number;
+  expirationDate: string;
+  courseId: number;
 };
 
 const CouponPage = () => {
@@ -95,7 +105,7 @@ const CouponPage = () => {
           perUserLimit: d.perUserLimit,
           expirationDate: d.expirationDate,
           createdAt: d.createdAt,
-          courseId: d.courseId ?? null, 
+          courseId: d.courseId ?? null,
           deletedAt: d.deletedAt,
           status,
         };
@@ -111,7 +121,7 @@ const CouponPage = () => {
       maxUses: 0,
       perUserLimit: 1,
       expirationDate: '',
-      courseId: null, 
+      courseId: null,
     });
     setSelectedCourse(null);
   };
@@ -137,7 +147,7 @@ const CouponPage = () => {
       maxUses: row.maxUses,
       perUserLimit: row.perUserLimit,
       expirationDate: dateStr,
-      courseId: row.courseId, 
+      courseId: row.courseId,
     });
     setSelectedCourse(null);
     setOpenModal(true);
@@ -259,7 +269,7 @@ const CouponPage = () => {
     setSelectedCourse(c);
     setForm(prev => ({
       ...prev,
-      courseId: c.id, 
+      courseId: c.id,
     }));
     setOpenCourseModal(false);
   };
@@ -275,26 +285,26 @@ const CouponPage = () => {
     try {
       const isoExpiration = new Date(form.expirationDate).toISOString();
 
-      const payload = {
-        code: form.code || undefined,
+      const payloadFixed: CreateCouponPayload = {
+        code: form.code?.trim() || undefined,
         discountType: form.discountType,
         discountAmount: Number(form.discountAmount),
         maxUses: Number(form.maxUses),
         perUserLimit: Number(form.perUserLimit),
         expirationDate: isoExpiration,
-        courseId: form.courseId === null ? null : Number(form.courseId),
+        courseId: form.courseId ?? 0, // ✅ không còn null
       };
 
       if (editingRow) {
         await dispatch(
           updateCoupon({
             id: editingRow.id,
-            data: payload,
+            data: payloadFixed,
           }),
         ).unwrap();
         toast.success('Coupon updated successfully');
       } else {
-        await dispatch(createCoupon(payload)).unwrap();
+        await dispatch(createCoupon(payloadFixed)).unwrap();
         toast.success('Coupon created successfully');
       }
 

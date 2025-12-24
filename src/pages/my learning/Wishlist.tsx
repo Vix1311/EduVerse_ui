@@ -102,7 +102,7 @@ const Wishlist = () => {
                   <div className="p-4">
                     <h3 className="text-lg font-semibold text-gray-800">{course.title}</h3>
                     <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                      {course.description || 'No description available.'}
+                      {(course as any).description || 'No description available.'}
                     </p>
                     <div className="flex justify-between items-center">
                       {course.isFree ? (

@@ -198,8 +198,7 @@ export const CourseItem = ({
 
   // Lookup for wishlist membership
   const wishlistIdSet = useMemo(() => new Set(wishlistCourseIds.map(String)), [wishlistCourseIds]);
-  const isWishlisted = useMemo(() => wishlistIdSet.has(norm.id), [wishlistIdSet, norm.id]);
-
+  const isWishlisted = useMemo(() => wishlistIdSet.has(String(norm.id)), [wishlistIdSet, norm.id]);
   const handleCardClick = () => navigate(`/course/${norm.id}`);
 
   // Toggle wishlist and reconcile with server if states are out of sync

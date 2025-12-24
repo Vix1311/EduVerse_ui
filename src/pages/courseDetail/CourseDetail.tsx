@@ -239,11 +239,12 @@ const CoursePreview: React.FC = () => {
       return;
     }
 
-    if (data?.id && myLearningIds.includes(data.id)) {
+    if (data?.id && myLearningIds.includes(String(data.id))) {
       toast.warning('You already enrolled in this course!');
       return;
     }
 
+    if (!data?.id) return;
     dispatch(addCourseToCart({ courseId: data.id, coupon: appliedCoupon || undefined }))
       .unwrap?.()
       .then?.(() => {
@@ -265,7 +266,7 @@ const CoursePreview: React.FC = () => {
       setTimeout(() => navigate('/auth'), 800);
       return;
     }
-
+    if (!data?.id) return;
     // cart.slice.ts: buyNowCourse({ courseId, couponCode })
     dispatch(
       buyNowCourse({
@@ -284,7 +285,7 @@ const CoursePreview: React.FC = () => {
 
   const handleToggleWishlist = () => {
     if (!courseNorm.id) return;
-    dispatch(toggleWishlist({ courseId: courseNorm.id, isWishlisted }))
+    dispatch(toggleWishlist({ courseId: Number(courseNorm.id), isWishlisted }))
       .unwrap()
       .then(() => {
         dispatch(toggleWishlistCourseId(courseNorm.id));
@@ -720,7 +721,7 @@ const CoursePreview: React.FC = () => {
                         {courseNorm.description
                           ?.replace(/\n/g, '\n')
                           .split('\n')
-                          .map((line, i) => <p key={i}>{line}</p>)}
+                          .map((line: string, i: number) => <p key={i}>{line}</p>)}
                       </div>
                       <h2 className="text-2xl font-bold">🎬 Course Preview</h2>
                       <p>{courseNorm.description}</p>

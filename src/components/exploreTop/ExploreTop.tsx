@@ -28,7 +28,7 @@ const ExploreTop = () => {
         const mergedSubjects = fileSubjects.map((subject: any, index: any) => ({
           ...subject,
           title: categories[index]?.name || subject.title,
-          categoryId: categories[index]?._id || '',
+          categoryId: categories[index]?.id || '',
         }));
 
         setSubjects(mergedSubjects);

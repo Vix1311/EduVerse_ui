@@ -1,5 +1,3 @@
-import SocialAuthCallback from "@/components/socialAuthCallback/SocialAuthCallback";
-
 export const path = {
   home: '/',
   auth: '/auth',
@@ -25,7 +23,6 @@ export const path = {
   purchaseHistory: '/purchase-history',
   chat: '/messages',
   qnaClient: '/qna/:courseId/:lessonId',
-  SocialAuthCallback: '/auth/social-callback',
 
   instructor: {
     instructorDashboard: '/instructor-dashboard',

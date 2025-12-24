@@ -89,7 +89,9 @@ export const fetchCoursesAndWishlist = createAsyncThunk(
         courseRes?.data?.data ??
         courseRes?.data?.results ??
         [];
-      if (!Array.isArray(rawCourses)) rawCourses = rawCourses?.items ?? [];
+      let rawAny = rawCourses as any;
+      if (!Array.isArray(rawAny)) rawAny = rawAny?.items ?? rawAny?.results ?? [];
+      rawCourses = rawAny;
 
       const pick10 = () =>
         [...rawCourses]

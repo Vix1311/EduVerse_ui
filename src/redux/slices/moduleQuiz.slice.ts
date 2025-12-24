@@ -53,7 +53,8 @@ export const fetchModuleQuizzesForStudy = createAsyncThunk(
       let items: any[] = raw.items ?? raw.results ?? raw ?? [];
 
       if (!Array.isArray(items)) {
-        items = items.items ?? items.results ?? [];
+        const it: any = items as any;
+        items = it?.items ?? it?.results ?? [];
       }
 
       const quizzes: Quiz[] = items;

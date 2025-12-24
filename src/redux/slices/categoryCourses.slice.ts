@@ -64,7 +64,9 @@ export const fetchCoursesByCategory = createAsyncThunk(
 
       let raw: any[] =
         res.data?.items ?? res.data?.data?.items ?? res.data?.data ?? res.data?.results ?? [];
-      if (!Array.isArray(raw)) raw = raw?.items ?? [];
+      let rawAny = raw as any;
+      if (!Array.isArray(rawAny)) rawAny = rawAny?.items ?? rawAny?.results ?? [];
+      raw = rawAny;
 
       const mapped: Course[] = raw.map(mapToCourse);
       return mapped;

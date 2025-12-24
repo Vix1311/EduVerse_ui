@@ -174,8 +174,9 @@ const CategoriesPage = () => {
     })
     .sort((a, b) => {
       if (!sortField) return 0;
-      const aVal = a[sortField];
-      const bVal = b[sortField];
+      const aVal = (a as Record<string, any>)[sortField as string];
+      const bVal = (b as Record<string, any>)[sortField as string];
+
       if (typeof aVal === 'string' && typeof bVal === 'string') {
         return sortOrder === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
       }
