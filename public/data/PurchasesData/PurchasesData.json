@@ -1,0 +1,58 @@
+{
+  "purchases": [
+    {
+      "id":" 1",
+      "title": "Fundamental of UX for Application Design",
+      "author": "Monamedia",
+      "authorImage": "images/team1.png",
+      "purchaseDate": "2024-03-15",
+      "price": 499000,
+      "status": "Paid"
+    },
+    {
+      "id": "2",
+      "title": "Basic TypeScript Programming",
+      "author": "Nguyen Van A",
+      "authorImage": "images/team2.png",
+      "purchaseDate": "2024-02-28",
+      "price": 299000,
+      "status": "Paid"
+    },
+    {
+      "id": "3",
+      "title": "Advanced Next.js Course",
+      "author": "Le Minh B",
+      "authorImage": "images/team3.png",
+      "purchaseDate": "2024-01-10",
+      "price": 599000,
+      "status": "Cancelled"
+    },
+    {
+      "id": "4",
+      "title": "React Pro Course",
+      "author": "Pham Van C",
+      "authorImage": "images/team4.png",
+      "purchaseDate": "2024-03-05",
+      "price": 399000,
+      "status": "Paid"
+    },
+    {
+      "id": "5",
+      "title": "NodeJS Mastery Course",
+      "author": "Tran Thi D",
+      "authorImage": "images/team2.png",
+      "purchaseDate": "2024-02-20",
+      "price": 450000,
+      "status": "Processing"
+    },
+    {
+      "id": "6",
+      "title": "Python A to Z Course",
+      "author": "Nguyen Hoang",
+      "authorImage": "/images/team3.png",
+      "purchaseDate": "2024-01-30",
+      "price": 350000,
+      "status": "Paid"
+    }
+  ]
+}

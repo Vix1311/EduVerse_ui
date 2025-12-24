@@ -1,0 +1,8 @@
+{
+  "DISCOUNT100K": { "type": "fixed", "value": 100000 },
+  "DISCOUNT300K": { "type": "fixed", "value": 300000 },
+  "DISCOUNT600K": { "type": "fixed", "value": 600000 },
+  "SALE20": { "type": "percent", "value": 20 },
+  "SALE60": { "type": "percent", "value": 60 },
+  "SALE80": { "type": "percent", "value": 80 }
+}

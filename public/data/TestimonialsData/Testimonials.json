@@ -1,0 +1,28 @@
+{
+  "testimonials": [
+    {
+      "id": 1,
+      "name": "Gloria Rose",
+      "review": "Thank you so much for your help. It's exactly what I've been looking for. You won't regret it. It really saves me time and effort. VQH is exactly what our business has been lacking.",
+      "rating": 5,
+      "reviewCount": "12 reviews at Yelp",
+      "image": "src/assets/images/testimonial.png"
+    },
+    {
+      "id": 2,
+      "name": "David Chen",
+      "review": "VQH transformed our learning experience completely. The platform is intuitive and the results speak for themselves. Our team's productivity has increased by 200%!",
+      "rating": 5,
+      "reviewCount": "8 reviews at Google",
+      "image": "https://thumbs.dreamstime.com/b/young-student-girl-holding-books-high-school-college-graduand-pastel-background-back-to-school-young-student-girl-books-122824868.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Sarah Johnson",
+      "review": "I've tried many learning platforms, but VQH stands out. The personalized approach and excellent support make all the difference. Highly recommended!",
+      "rating": 5,
+      "reviewCount": "15 reviews at Trustpilot",
+      "image": "https://img.freepik.com/premium-photo/cheerful-beautiful-teen-student-girl-hold-books-isolated-pastel-blue-wall-studio-portrait_183219-6742.jpg"
+    }
+  ]
+}

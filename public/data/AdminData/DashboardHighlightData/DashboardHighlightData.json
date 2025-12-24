@@ -1,0 +1,29 @@
+{
+  "hotCourses": [
+    { "name": "NodeJS Cơ Bản", "trend": "up", "image": "https://img-c.udemycdn.com/course/240x135/1879018_95b6_2.jpg" },
+    { "name": "ReactJS Nâng Cao", "trend": "down", "image": "https://img-c.udemycdn.com/course/240x135/1565838_e54e_16.jpg" },
+    { "name": "Thiết kế UI/UX", "trend": "up", "image": "https://img-c.udemycdn.com/course/240x135/1026604_790b_2.jpg" },
+    { "name": "Machine Learning", "trend": "flat", "image": "https://cdn2.fptshop.com.vn/unsafe/2023_11_25_638365259637395311_machine-learning-bia.jpg" },
+    { "name": "Marketing Online", "trend": "flat", "image": "https://vinuni.edu.vn/wp-content/uploads/2024/05/marketing-online-la-gi-2.jpg" }
+  ],
+  "favoriteCourses": [
+    { "name": "NodeJS Cơ Bản", "trend": "up", "image": "https://img-c.udemycdn.com/course/240x135/1879018_95b6_2.jpg" },
+    { "name": "Python Cho Người Mới", "trend": "up", "image": "https://s3-sgn09.fptcloud.com/codelearnstorage/files/thumbnails/python-cho-nguoi-moi-bat-dau_f1a0ae13118c411ab7068e248f9f0206.png" },
+    { "name": "Thiết Kế UX", "trend": "flat", "image": "https://img-c.udemycdn.com/course/240x135/1026604_790b_2.jpg" },
+    { "name": "AWS Cloud", "trend": "up", "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0chhXOIHX6peyxvYEdlViwc2iR50ZODzTEA&s" },
+    { "name": "Java OOP", "trend": "down", "image": "https://paulvanderlaken.com/wp-content/uploads/2019/10/oop-1.png?w=1108&h=737&crop=1" }
+  ],
+  "hotCategories": [
+    { "name": "Lập trình", "color": "bg-red-400" },
+    { "name": "Thiết kế", "color": "bg-blue-400" },
+    { "name": "Marketing", "color": "bg-purple-400" },
+    { "name": "Phân tích dữ liệu", "color": "bg-yellow-400" },
+    { "name": "Kinh doanh", "color": "bg-green-400" }
+  ],
+  "newComments": [
+    { "user": "Nguyễn Văn A", "comment": "Khóa học siêu hay!", "course": "NodeJS cơ bản", "avatar": "https://studiovietnam.com/wp-content/uploads/2021/07/chup-anh-chan-dung-troi-nang-6.jpg" },
+    { "user": "Trần Thị B", "comment": "Cực kỳ dễ hiểu", "course": "ReactJS Nâng Cao", "avatar": "https://upload.wikimedia.org/wikipedia/commons/b/b3/%E1%BA%A2nh_ch%C3%A2n_dung_Nguy%E1%BB%85n_V%C4%83n_Minh_Tr%C3%AD.jpg" },
+    { "user": "Lê Văn C", "comment": "Bài giảng chất lượng", "course": "Python Data Science", "avatar": "https://www.paratime.vn/wp-content/uploads/2019/09/timestudio.vn-corporate-headshot-pricing-01.jpg" },
+    { "user": "Phạm Minh D", "comment": "Nên học sớm", "course": "UX cho WebApp", "avatar": "https://bizweb.dktcdn.net/100/175/849/files/chup-anh-doanh-nhan-o-ha-noi-studio-nao-phu-hop-cho-start-up-01.jpg?v=1573814731373" }
+  ]
+}

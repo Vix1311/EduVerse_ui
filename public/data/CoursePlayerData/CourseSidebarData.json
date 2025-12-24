@@ -1,0 +1,16 @@
+{
+  "sections": [
+    {
+      "title": "Section 1: Introduction",
+      "lectures": ["Welcome", "Course Orientation"]
+    },
+    {
+      "title": "Section 2: Budgeting",
+      "lectures": ["Wants vs. Needs", "Budgeting Basics", "Quiz Time"]
+    },
+    {
+      "title": "Section 3: Saving Strategies",
+      "lectures": ["Emergency Funds", "Long-Term Goals"]
+    }
+  ]
+}

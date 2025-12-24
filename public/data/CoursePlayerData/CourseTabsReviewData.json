@@ -1,0 +1,16 @@
+{
+  "reviews": [
+    {
+      "name": "Alice",
+      "timeAgo": "2 days ago",
+      "rating": 5,
+      "comment": "Great course!"
+    },
+    {
+      "name": "Bob",
+      "timeAgo": "1 week ago",
+      "rating": 4,
+      "comment": "Very informative."
+    }
+  ]
+}

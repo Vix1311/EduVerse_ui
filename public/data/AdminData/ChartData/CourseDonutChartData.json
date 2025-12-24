@@ -1,0 +1,10 @@
+[
+{ "name": "Programming", "value": 35 },
+{ "name": "Design", "value": 20 },
+{ "name": "Marketing", "value": 18 },
+{ "name": "Business", "value": 15 },
+{ "name": "AI", "value": 12 },
+{ "name": "Music", "value": 10 },
+{ "name": "Health", "value": 8 },
+{ "name": "Photography", "value": 6 }
+]

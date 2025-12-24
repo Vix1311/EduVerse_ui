@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "title": "Javascript cho người mới bắt đầu",
+    "instructor": "Hau Nguyen",
+    "thumbnail": "src/assets/images/featured2.png",
+    "progress": 42,
+    "rating": 5,
+    "isStarted": true,
+    "category": "Development",
+    "lastAccessed": "2024-05-01"
+  },
+  {
+    "id": 2,
+    "title": "Python nâng cao",
+    "instructor": "Lan Pham",
+    "thumbnail": "src/assets/images/featured2.png",
+    "progress": 80,
+    "rating": 4.5,
+    "isStarted": true,
+    "category": "Development",
+    "lastAccessed": "2024-04-15"
+  },
+  {
+    "id": 3,
+    "title": "Thiết kế UI cơ bản",
+    "instructor": "Minh Tran",
+    "thumbnail": "src/assets/images/featured2.png",
+    "progress": 0,
+    "rating": 4,
+    "isStarted": false,
+    "category": "Design",
+    "lastAccessed": "2024-04-20"
+  }
+]

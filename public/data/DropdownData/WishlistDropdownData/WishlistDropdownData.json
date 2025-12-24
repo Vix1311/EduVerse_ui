@@ -1,0 +1,20 @@
+{
+  "wishlistItems": [
+    {
+      "id": 1,
+      "title": "The Complete Full-Stack Web Development...",
+      "author": "Dr. Angela Yu",
+      "thumbnail": "/images/featured1.png",
+      "price": 309000,
+      "originalPrice": 1749000
+    },
+    {
+      "id": 2,
+      "title": "React Mastery: Build Modern Web Apps",
+      "author": "Monamedia",
+      "thumbnail": "/images/featured2.png",
+      "price": 199000,
+      "originalPrice": 899000
+    }
+  ]
+}

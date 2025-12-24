@@ -1,0 +1,30 @@
+{
+  "week": [
+    { "day": "Sun", "sales": 60 },
+    { "day": "Mon", "sales": 65 },
+    { "day": "Tue", "sales": 70 },
+    { "day": "Wed", "sales": 80 },
+    { "day": "Thu", "sales": 90 },
+    { "day": "Fri", "sales": 100 },
+    { "day": "Sat", "sales": 95 }
+  ],
+  "month": [
+    { "month": "Jan", "sales": 60 },
+    { "month": "Feb", "sales": 65 },
+    { "month": "Mar", "sales": 70 },
+    { "month": "Apr", "sales": 80 },
+    { "month": "May", "sales": 90 },
+    { "month": "Jun", "sales": 100 },
+    { "month": "Jul", "sales": 95 },
+    { "month": "Aug", "sales": 85 },
+    { "month": "Sep", "sales": 75 },
+    { "month": "Oct", "sales": 80 },
+    { "month": "Nov", "sales": 90 },
+    { "month": "Dec", "sales": 100 }
+  ],
+  "year": [
+    { "year": "2021", "sales": 700 },
+    { "year": "2022", "sales": 800 },
+    { "year": "2023", "sales": 850 }
+  ]
+}

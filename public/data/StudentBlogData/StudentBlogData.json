@@ -1,0 +1,34 @@
+{
+  "blogs": [
+    {
+      "id": 1,
+      "title": "How to learn React",
+      "image": "/images/post_1.png",
+      "description": "Learn the basics of React, a popular JavaScript library for building user interfaces.",
+      "comments": 5,
+      "button": "Design",
+      "like": "2k",
+      "link": "/blog-1"
+    },
+    {
+      "id": 2,
+      "title": "How to learn JavaScript",
+      "image": "/images/post_2.png", 
+      "description": "Master the fundamentals of JavaScript, the programming language of the web.",
+      "comments": 10,
+      "button": "Development",
+      "like": "1.5k",
+      "link": "/blog-2"
+    },
+    {
+      "id": 3,
+      "title": "How to learn Python",
+      "image": "/images/post_3.png",
+      "description": "Discover the power of Python for data analysis and machine learning.",
+      "comments": 8,
+      "button": "Data Science",
+      "like": "3k",
+      "link": "/blog-3"
+    }
+  ]
+}

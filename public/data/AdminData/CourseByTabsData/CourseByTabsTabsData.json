@@ -1,0 +1,26 @@
+[
+  {
+    "key": "most-popular-paid",
+    "type": "Most Popular",
+    "label": "Paid",
+    "icon": "flame"
+  },
+  {
+    "key": "most-popular-free",
+    "type": "Most Popular",
+    "label": "Free",
+    "icon": "flame"
+  },
+  {
+    "key": "top-rated-paid",
+    "type": "Top Rated",
+    "label": "Paid",
+    "icon": "star"
+  },
+  {
+    "key": "top-rated-free",
+    "type": "Top Rated",
+    "label": "Free",
+    "icon": "star"
+  }
+]

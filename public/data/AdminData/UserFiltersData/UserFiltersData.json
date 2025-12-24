@@ -1,0 +1,6 @@
+[
+  { "label": "All", "value": "" },
+  { "label": "Student", "value": "Student" },
+  { "label": "Instructor", "value": "Instructor" },
+  { "label": "Admin", "value": "Admin" }
+]

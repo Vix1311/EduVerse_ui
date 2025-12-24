@@ -1,0 +1,31 @@
+ {
+  "7d": [
+    { "day": "Sun", "free": 7000, "paid": 8500, "sale": 5000 },
+    { "day": "Mon", "free": 8300, "paid": 7200, "sale": 4500 },
+    { "day": "Tue", "free": 8600, "paid": 6100, "sale": 3200 },
+    { "day": "Wed", "free": 7200, "paid": 5000, "sale": 4300 },
+    { "day": "Thu", "free": 7900, "paid": 4800, "sale": 2500 },
+    { "day": "Fri", "free": 5300, "paid": 6900, "sale": 8800 },
+    { "day": "Sat", "free": 8000, "paid": 9100, "sale": 6300 }
+  ],
+  "30d": [
+    { "day": "Week 1", "free": 24000, "paid": 21500, "sale": 15000 },
+    { "day": "Week 2", "free": 20000, "paid": 23500, "sale": 17500 },
+    { "day": "Week 3", "free": 25500, "paid": 22100, "sale": 16200 },
+    { "day": "Week 4", "free": 29000, "paid": 24100, "sale": 17000 }
+  ],
+  "12m": [
+    { "day": "Jan", "free": 100000, "paid": 85000, "sale": 50000 },
+    { "day": "Feb", "free": 95000, "paid": 90000, "sale": 45000 },
+    { "day": "Mar", "free": 105000, "paid": 88000, "sale": 47000 },
+    { "day": "Apr", "free": 97000, "paid": 91000, "sale": 48000 },
+    { "day": "May", "free": 102000, "paid": 89000, "sale": 50000 },
+    { "day": "Jun", "free": 110000, "paid": 95000, "sale": 52000 },
+    { "day": "Jul", "free": 107000, "paid": 97000, "sale": 53000 },
+    { "day": "Aug", "free": 99000, "paid": 88000, "sale": 49000 },
+    { "day": "Sep", "free": 104000, "paid": 92000, "sale": 51000 },
+    { "day": "Oct", "free": 108000, "paid": 94000, "sale": 52000 },
+    { "day": "Nov", "free": 112000, "paid": 97000, "sale": 54000 },
+    { "day": "Dec", "free": 115000, "paid": 99000, "sale": 55000 }
+  ]
+}

@@ -1,0 +1,21 @@
+{"year": [
+    { "name": "2021", "positive": 1200, "negative": 800 },
+    { "name": "2022", "positive": 1500, "negative": 900 },
+    { "name": "2023", "positive": 1800, "negative": 1000 }
+  ],
+  "month": [
+    { "name": "Jan", "positive": 100, "negative": 60 },
+    { "name": "Feb", "positive": 120, "negative": 80 },
+    { "name": "Mar", "positive": 150, "negative": 70 },
+    { "name": "Apr", "positive": 180, "negative": 90 }
+  ],
+  "week": [
+    { "name": "Mon", "positive": 30, "negative": 20 },
+    { "name": "Tue", "positive": 40, "negative": 25 },
+    { "name": "Wed", "positive": 35, "negative": 15 },
+    { "name": "Thu", "positive": 50, "negative": 30 },
+    { "name": "Fri", "positive": 60, "negative": 40 },
+    { "name": "Sat", "positive": 55, "negative": 35 },
+    { "name": "Sun", "positive": 45, "negative": 25 }
+  ]
+}

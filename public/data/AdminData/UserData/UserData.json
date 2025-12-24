@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1",
+    "fullName": "Huy Đẹp Trai",
+    "email": "datleclient2004@gmail.com",
+    "phone": "0987654321",
+    "role": "student",
+    "facebookUrl": "https://www.facebook.com/huy.gia.262555",
+    "createdAt": "27-07-2024",
+    "isActive": true
+  },
+  {
+    "id": "2",
+    "fullName": "Quốc Đẹp Gái",
+    "email": "datprotn981@gmail.com",
+    "phone": "0773241039",
+    "role": "teacher",
+    "facebookUrl": "https://www.facebook.com/TQuangQuoc.Info",
+    "createdAt": "24-07-2024",
+    "isActive": false
+  },
+  {
+    "id": "3",
+    "fullName": "Vĩ Lét Biên",
+    "email": "a@gmail.com",
+    "phone": "0123456789",
+    "role": "admin",
+    "facebookUrl": "https://www.facebook.com/endy.oyster",
+    "createdAt": "20-07-2024",
+    "isActive": true
+  }
+]

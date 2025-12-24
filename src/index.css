@@ -1,0 +1,183 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
+* {
+  font-family:
+    'Udemy Sans',
+    'SF Pro Text',
+    -apple-system,
+    BlinkMacSystemFont,
+    Roboto,
+    'Segoe UI',
+    Helvetica,
+    Arial,
+    sans-serif,
+    'Apple Color Emoji',
+    'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,
+body {
+  overflow-x: hidden;
+}
+
+@layer utilities {
+  @keyframes slideFromLeft {
+    0% {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideFromRight {
+    0% {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-slide-left {
+    animation: slideFromLeft 0.25s ease-out forwards;
+  }
+
+  .animate-slide-right {
+    animation: slideFromRight 0.25s ease-out forwards;
+  }
+}
+@keyframes expand {
+  from {
+    transform: scaleX(0);
+    transform-origin: center;
+  }
+  to {
+    transform: scaleX(1);
+    transform-origin: center;
+  }
+}
+
+@keyframes collapse {
+  from {
+    transform: scaleX(1);
+    transform-origin: center;
+  }
+  to {
+    transform: scaleX(0);
+    transform-origin: center;
+  }
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(400%);
+  }
+}
+
+.animate-slide {
+  animation: slide 4s infinite alternate ease-in-out;
+}
+
+.coursedetail .group .absolute {
+  transform: scaleX(0);
+  transform-origin: center;
+  background-color: #f97316;
+  transition:
+    transform 0.5s ease-in-out,
+    background-color 0.5s ease-in-out;
+}
+
+.coursedetail .group:hover .absolute {
+  transform: scaleX(1);
+  background-color: #f97316;
+  color: white;
+}
+.simple-cloud span {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  border-radius: 50%;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s;
+}
+
+.simple-cloud span:hover {
+  transform: scale(1.2);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.simple-cloud span[data-size='small'] {
+  width: 60px;
+  height: 60px;
+  background-color: #85d7ff;
+}
+
+.simple-cloud span[data-size='medium'] {
+  width: 90px;
+  height: 90px;
+  background-color: #339af0;
+}
+
+.simple-cloud span[data-size='large'] {
+  width: 120px;
+  height: 120px;
+  background-color: #007bff;
+}
+
+.custom-scrollbar {
+  scrollbar-width: none;
+}
+
+.datepicker-popup {
+  font-size: 14px;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .datepicker-popup {
+    width: 95vw !important;
+    left: 0 !important;
+    right: 0 !important;
+    padding: 0 10px;
+  }
+}
+
+/* Tablet */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .datepicker-popup {
+    width: 400px !important;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1025px) {
+  .datepicker-popup {
+    width: 500px !important;
+  }
+}

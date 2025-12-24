@@ -1,0 +1,52 @@
+{
+  "subjects": [
+    {
+      "id": 1,
+      "title": "PROGRAMING",
+      "image": "/images/topic1.png",
+      "link": "/programming-1"
+    },
+    {
+      "id": 2,
+      "title": "PROGRAMING",
+      "image": "/images/topic2.png",
+      "link": "/programming-2"
+    },
+    {
+      "id": 3,
+      "title": "PROGRAMING",
+      "image": "/images/topic3.png",
+      "link": "/programming-3"
+    },
+    {
+      "id": 4,
+      "title": "PROGRAMING",
+      "image": "/images/topic4.png",
+      "link": "/programming-4"
+    },
+    {
+      "id": 5,
+      "title": "PROGRAMING",
+      "image": "/images/topic5.png",
+      "link": "/programming-5"
+    },
+    {
+      "id": 6,
+      "title": "PROGRAMING",
+      "image": "/images/topic6.png",
+      "link": "/programming-6"
+    },
+    {
+      "id": 7,
+      "title": "PROGRAMING",
+      "image": "/images/topic7.png",
+      "link": "/programming-7"
+    },
+    {
+      "id": 8,
+      "title": "PROGRAMING",
+      "image": "/images/topic8.png",
+      "link": "/programming-8"
+    }
+  ]
+}

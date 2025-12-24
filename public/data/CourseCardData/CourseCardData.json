@@ -1,0 +1,221 @@
+{
+  "courses": [
+    {
+      "id": "682f4c7afcbbd9cb55ec71b1",
+      "author": "Monamedia",
+      "authorImage": "/images/team1.png",
+      "title": "Fundamental of UX for Application Design",
+      "rating": 4.5,
+      "reviews": 120,
+      "originalPrice": 150000,
+      "discountPrice": 135000,
+      "date": "2023-10-01",
+      "images": [
+        "/images/featured1.png",
+        "/images/featured2.png",
+        "/images/featured3.png"
+      ],
+      "video": "/images/youtube.mp4",
+      "lessons": 10,
+      "hour": 200,
+      "views": 830,
+      "isBesteller": true,
+      "description": "Master Python programming by building 100 unique projects over 100 days. Learn automation, game, web development, data science and machine learning!",
+      "features": [
+        "56.5 total hours • All Levels • Subtitles",
+        "Master the Python programming language by building 100 unique projects",
+        "Learn automation, game, app and web development, data science",
+        "Be able to program in Python professionally"
+      ]
+    },
+    {
+      "id": "682caf876fa6068402c640a1",
+      "author": "Monamedia",
+      "authorImage": "/images/team2.png",
+      "title": "Fundamental of UX for Application Design",
+      "rating": 4.5,
+      "reviews": 120,
+      "originalPrice": 150000,
+      "date": "2023-12-01",
+      "images": [
+        "/images/featured1.png",
+        "/images/featured2.png",
+        "/images/featured3.png"
+      ],
+      "video": "/images/youtube.mp4",
+      "lessons": 10,
+      "hour": 200,
+      "views": 830,
+      "isBesteller": true,
+      "description": "Master Python programming by building 100 unique projects over 100 days. Learn automation, game, web development, data science and machine learning!",
+      "features": [
+        "56.5 total hours • All Levels • Subtitles",
+        "Master the Python programming language by building 100 unique projects",
+        "Learn automation, game, app and web development, data science",
+        "Be able to program in Python professionally"
+      ]
+    },
+    {
+      "id": 3,
+      "author": "Monamedia",
+      "authorImage": "/images/team2.png",
+      "title": "Fundamental of UX for Application Design",
+      "rating": 4.5,
+      "reviews": 120,
+      "originalPrice": 150000,
+      "date": "2023-12-01",
+      "images": [
+        "/images/featured1.png",
+        "/images/featured2.png",
+        "/images/featured3.png"
+      ],
+      "video": "/images/youtube.mp4",
+      "lessons": 10,
+      "hour": 200,
+      "views": 830,
+      "isBesteller": true,
+      "description": "Master Python programming by building 100 unique projects over 100 days. Learn automation, game, web development, data science and machine learning!",
+      "features": [
+        "56.5 total hours • All Levels • Subtitles",
+        "Master the Python programming language by building 100 unique projects",
+        "Learn automation, game, app and web development, data science",
+        "Be able to program in Python professionally"
+      ]
+    },
+    {
+      "id": 4,
+      "author": "Monamedia",
+      "authorImage": "/images/team2.png",
+      "title": "Fundamental of UX for Application Design",
+      "rating": 4.5,
+      "reviews": 120,
+      "originalPrice": 150000,
+      "date": "2023-12-01",
+      "images": [
+        "/images/featured1.png",
+        "/images/featured2.png",
+        "/images/featured3.png"
+      ],
+      "video": "/images/youtube.mp4",
+      "lessons": 10,
+      "hour": 200,
+      "views": 830,
+      "isBesteller": true,
+      "description": "Master Python programming by building 100 unique projects over 100 days. Learn automation, game, web development, data science and machine learning!",
+      "features": [
+        "56.5 total hours • All Levels • Subtitles",
+        "Master the Python programming language by building 100 unique projects",
+        "Learn automation, game, app and web development, data science",
+        "Be able to program in Python professionally"
+      ]
+    },
+    {
+      "id": 5,
+      "author": "Monamedia",
+      "authorImage": "/images/team2.png",
+      "title": "Fundamental of UX for Application Design",
+      "rating": 4.5,
+      "reviews": 120,
+      "originalPrice": 150000,
+      "date": "2023-12-01",
+      "images": [
+        "/images/featured1.png",
+        "/images/featured2.png",
+        "/images/featured3.png"
+      ],
+      "video": "/images/youtube.mp4",
+      "lessons": 10,
+      "hour": 200,
+      "views": 830,
+      "isBesteller": true,
+      "description": "Master Python programming by building 100 unique projects over 100 days. Learn automation, game, web development, data science and machine learning!",
+      "features": [
+        "56.5 total hours • All Levels • Subtitles",
+        "Master the Python programming language by building 100 unique projects",
+        "Learn automation, game, app and web development, data science",
+        "Be able to program in Python professionally"
+      ]
+    },
+    {
+      "id": 6,
+      "author": "Monamedia",
+      "authorImage": "/images/team2.png",
+      "title": "Fundamental of UX for Application Design",
+      "rating": 4.5,
+      "reviews": 120,
+      "originalPrice": 150000,
+      "date": "2023-12-01",
+      "images": [
+        "/images/featured1.png",
+        "/images/featured2.png",
+        "/images/featured3.png"
+      ],
+      "video": "/images/youtube.mp4",
+      "lessons": 10,
+      "hour": 200,
+      "views": 830,
+      "isBesteller": true,
+      "description": "Master Python programming by building 100 unique projects over 100 days. Learn automation, game, web development, data science and machine learning!",
+      "features": [
+        "56.5 total hours • All Levels • Subtitles",
+        "Master the Python programming language by building 100 unique projects",
+        "Learn automation, game, app and web development, data science",
+        "Be able to program in Python professionally"
+      ]
+    },
+    {
+      "id": 7,
+      "author": "Monamedia",
+      "authorImage": "/images/team2.png",
+      "title": "Fundamental of UX for Application Design",
+      "rating": 4.5,
+      "reviews": 120,
+      "originalPrice": 150000,
+      "date": "2023-12-01",
+      "images": [
+        "/images/featured1.png",
+        "/images/featured2.png",
+        "/images/featured3.png"
+      ],
+      "video": "/images/youtube.mp4",
+      "lessons": 10,
+      "hour": 200,
+      "views": 830,
+      "isBesteller": true,
+      "description": "Master Python programming by building 100 unique projects over 100 days. Learn automation, game, web development, data science and machine learning!",
+      "features": [
+        "56.5 total hours • All Levels • Subtitles",
+        "Master the Python programming language by building 100 unique projects",
+        "Learn automation, game, app and web development, data science",
+        "Be able to program in Python professionally"
+      ]
+    },
+    {
+      "id": 8,
+      "author": "Monamedia",
+      "authorImage": "/images/team2.png",
+      "title": "Fundamental of UX for Application Design",
+      "rating": 4.5,
+      "reviews": 120,
+      "originalPrice": 150000,
+      "date": "2023-12-01",
+      "images": [
+        "/images/featured1.png",
+        "/images/featured2.png",
+        "/images/featured3.png"
+      ],
+      "video": "/images/youtube.mp4",
+      "lessons": 10,
+      "hour": 200,
+      "views": 830,
+      "isBesteller": true,
+      "description": "Master Python programming by building 100 unique projects over 100 days. Learn automation, game, web development, data science and machine learning!",
+      "features": [
+        "56.5 total hours • All Levels • Subtitles",
+        "Master the Python programming language by building 100 unique projects",
+        "Learn automation, game, app and web development, data science",
+        "Be able to program in Python professionally"
+      ]
+    }
+  ]
+}
