@@ -1,4 +1,5 @@
 import { FaCalendarAlt, FaFileInvoice, FaFileSignature, FaStamp } from 'react-icons/fa';
+import advanceFeature from '@/assets/images/advance_feature_img.png';
 
 const Advancefeature = () => {
   return (
@@ -64,11 +65,7 @@ const Advancefeature = () => {
           </div>
         </div>
         <div>
-          <img
-            src="src/assets/images/advance_feature_img.png"
-            alt="advanceFeture"
-            className="w-full h-auto"
-          />
+          <img src={advanceFeature} alt="advanceFeture" className="w-full h-auto" />
         </div>
       </div>
     </section>
