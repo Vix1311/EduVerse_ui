@@ -1,26 +1,23 @@
 {
-  "most-popular-paid": [
-    { "title": "Làm chủ React cho người mới bắt đầu", "trainer": "Sarah Lee", "published": "05/01/22", "enrolled": "53,200", "price": "899,000 VND" },
-    { "title": "Viết sáng tạo: Nghệ thuật kể chuyện", "trainer": "Michael Johnson", "published": "08/03/21", "enrolled": "42,150", "price": "899,000 VND" },
-    { "title": "Giới thiệu lập trình Python", "trainer": "Emma Clark", "published": "15/11/20", "enrolled": "60,120", "price": "899,000 VND" },
-    { "title": "Phát triển Web với HTML, CSS và JavaScript", "trainer": "James Peterson", "published": "22/02/21", "enrolled": "75,830", "price": "899,000 VND" }
+"most-popular-paid": [
+    { "title": "Mastering React for Beginners", "trainer": "Sarah Lee", "published": "05/01/22", "enrolled": "53,200", "price": "899,000 VND" },
+    { "title": "Creative Writing: The Art of Storytelling", "trainer": "Michael Johnson", "published": "08/03/21", "enrolled": "42,150", "price": "899,000 VND" },
+    { "title": "Introduction to Python Programming", "trainer": "Emma Clark", "published": "15/11/20", "enrolled": "60,120", "price": "899,000 VND" },
+    { "title": "Web Development with HTML, CSS and JavaScript", "trainer": "James Peterson", "published": "02/22/21", "enrolled": "75,830", "price": "899,000 VND" }
   ],
   "most-popular-free": [
-    { "title": "Lập trình Web với ASP.NET Core", "trainer": "Nguyễn Minh Tâm", "published": "12/04/22", "enrolled": "45,350", "price": "799,000 VND" },
-    { "title": "Photoshop cho người mới bắt đầu", "trainer": "Lê Thị Lan", "published": "07/06/21", "enrolled": "38,950", "price": "499,000 VND" },
-    { "title": "Làm phim hoạt hình 2D với Toon Boom", "trainer": "Hoàng Anh Tuấn", "published": "22/08/20", "enrolled": "32,780", "price": "899,000 VND" },
-    { "title": "SEO nâng cao cho người chuyên nghiệp", "trainer": "Trần Minh Hoàng", "published": "14/03/21", "enrolled": "50,400", "price": "649,000 VND" }
-  ],
+    { "title": "Web Programming with ASP.NET Core", "trainer": "Nguyen Minh Tam", "published": "12/04/22", "enrolled": "45,350", "price": "799,000 VND" },
+    { "title": "Photoshop for Beginners", "trainer": "Le Thi Lan", "published": "07/06/21", "enrolled": "38,950", "price": "499,000 VND" },
+    { "title": "Making 2D Animations with Toon Boom", "trainer": "Hoang Anh Tuan", "published": "22/08/20", "enrolled": "32,780", "price": "899,000 VND" },
+    { "title": "Advanced SEO for Professionals", "trainer": "Trần Minh Hoàng", "published": "14/03/21", "enrolled": "50,400", "price": "$649,000 VND" }  ],
   "top-rated-paid": [
-    { "title": "Thiết kế giao diện UI/UX với Figma", "trainer": "Phan Tuấn Anh", "published": "15/05/22", "enrolled": "52,300", "price": "1,199,000 VND" },
-    { "title": "Marketing Digital cho doanh nghiệp nhỏ", "trainer": "Nguyễn Hoàng Nam", "published": "19/09/21", "enrolled": "41,720", "price": "799,000 VND" },
-    { "title": "Phát triển ứng dụng di động với React Native", "trainer": "Lâm Minh Đức", "published": "10/01/22", "enrolled": "33,510", "price": "1,099,000 VND" },
-    { "title": "Dự án phần mềm từ A đến Z với Java", "trainer": "Trương Văn Cường", "published": "25/11/20", "enrolled": "27,840", "price": "1,499,000 VND" }
-  ],
+    { "title": "UI/UX Interface Design with Figma", "trainer": "Phan Tuan Anh", "published": "15/05/22", "enrolled": "52,300", "price": "1,199,000 VND" },
+    { "title": "Digital Marketing for Small Businesses", "trainer": "Nguyen Hoang Nam", "published": "19/09/21", "enrolled": "41,720", "price": "799,000 VND" },
+    { "title": "Mobile Application Development with React Native", "trainer": "Lam Minh Duc", "published": "10/01/22", "enrolled": "33,510", "price": "1,099,000 VND" },
+    { "title": "Software Project from A to Z with Java", "trainer": "Truong Van Cuong", "published": "25/11/20", "enrolled": "27,840", "price": "1,499,000 VND" }  ],
   "top-rated-free": [
     { "title": "Advanced Design Tools for Modern Designs", "trainer": "Bill finger", "published": "01/10/21", "enrolled": "47,726", "price": "$39.99" },
-    { "title": "Photography Basics: Get Familiar Standing Behind Lens", "trainer": "Bruce Timm", "published": "11/12/21", "enrolled": "38,541", "price": "$19.99" },
-    { "title": "Abstract Painting: Zero to Mastery in Traditional Medium", "trainer": "J. H. Williams III", "published": "03/09/21", "enrolled": "35,666", "price": "$45.49" },
-    { "title": "Character Design Masterclass: Your First Supervillain", "trainer": "Bill finger", "published": "31/12/21", "enrolled": "29,988", "price": "$99.99" }
-  ]
+    { "title": "Photography Basics: Get Familiar Standing Behind Lens", "trainer": "Bruce Timm", "published": "12/11/21", "enrolled": "38,541", "price": "$19.99" },
+    { "title": "Abstract Painting: Zero to Mastery in Traditional Medium", "trainer": "J. H. Williams III", "published": "09/03/21", "enrolled": "35,666", "price": "$45.49" },
+    { "title": "Character Design Masterclass: Your First Supervillain", "trainer": "Bill finger", "published": "12/31/21", "enrolled": "29,988", "price": "$99.99" }  ]
 }

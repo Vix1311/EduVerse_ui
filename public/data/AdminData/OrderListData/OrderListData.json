@@ -1,14 +1,14 @@
 [
   {
     "id": "H",
-    "courseName": "NodeJS Cơ Bản",
+    "courseName": "NodeJS Basic",
     "courseType": "Backend",
     "price": 1311,
     "image": "https://img-c.udemycdn.com/course/240x135/1879018_95b6_2.jpg"
   },
   {
     "id": "N",
-    "courseName": "ReactJS Nâng Cao",
+    "courseName": "ReactJS Advanced",
     "courseType": "Frontend",
     "price": 860,
     "image": "https://img-c.udemycdn.com/course/240x135/1565838_e54e_16.jpg"
@@ -29,7 +29,7 @@
   },
   {
     "id": "R",
-    "courseName": "Marketing Online",
+    "courseName": "Online Marketing",
     "courseType": "Marketing",
     "price": 234,
     "image": "https://vinuni.edu.vn/wp-content/uploads/2024/05/marketing-online-la-gi-2.jpg"
