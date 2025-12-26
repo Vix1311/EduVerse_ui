@@ -390,12 +390,12 @@ const Header: React.FC = () => {
               )}
             </div>
           ) : (
-            <a
-              href="/auth"
+            <Link
+              to="/auth"
               className={`border hover:bg-[#F48C06] transition-colors duration-500 px-6 py-2 rounded-full hover:text-white font-semibold text-white border-white`}
             >
               Log in
-            </a>
+            </Link>
           )}
         </div>{' '}
         {window.innerWidth >= 768 && <CategoryBar isScrolled={isScrolled} isInHeader={true} />}
