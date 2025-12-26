@@ -36,7 +36,7 @@ export const getModules = createAsyncThunk(
   async (courseId: number, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/api/v1/course/${courseId}/builder/modules`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/builder/modules`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export const createModule = createAsyncThunk(
   ) => {
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/v1/course/${courseId}/builder/modules`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/builder/modules`,
         [payload],
         {
           headers: {
@@ -102,7 +102,7 @@ export const getModule = createAsyncThunk(
   async ({ courseId, moduleId }: { courseId: number; moduleId: number }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/api/v1/course/${courseId}/builder/modules/${moduleId}`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/builder/modules/${moduleId}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ export const updateModule = createAsyncThunk(
   ) => {
     try {
       const res = await axios.patch(
-        `http://localhost:8080/api/v1/course/${courseId}/builder/modules/${moduleId}`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/builder/modules/${moduleId}`,
         payload,
         {
           headers: {
@@ -165,7 +165,7 @@ export const deleteModule = createAsyncThunk(
   'module/delete',
   async ({ courseId, id }: { courseId: number; id: number }, { rejectWithValue }) => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/course/${courseId}/builder/modules/${id}`, {
+      await axios.delete(`https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/builder/modules/${id}`, {
         headers: {
           'Content-Type': 'application/json',
           'X-API-KEY': 'NestjsSuper@Elearning$2025',
@@ -186,7 +186,7 @@ export const getLessons = createAsyncThunk(
   async ({ courseId, moduleId }: { courseId: number; moduleId: number }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/api/v1/course/${courseId}/builder/modules/${moduleId}/lessons`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/builder/modules/${moduleId}/lessons`,
         {
           headers: {
             'X-API-KEY': 'NestjsSuper@Elearning$2025',
@@ -232,7 +232,7 @@ export const createLesson = createAsyncThunk(
   ) => {
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/v1/course/${courseId}/builder/modules/${moduleId}/lessons`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/builder/modules/${moduleId}/lessons`,
         { lessons: [payload] },
         {
           headers: {
@@ -273,7 +273,7 @@ export const updateLesson = createAsyncThunk(
   ) => {
     try {
       const res = await axios.patch(
-        `http://localhost:8080/api/v1/course/${courseId}/builder/modules/${moduleId}/lessons/${lessonId}`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/builder/modules/${moduleId}/lessons/${lessonId}`,
         payload,
         {
           headers: {

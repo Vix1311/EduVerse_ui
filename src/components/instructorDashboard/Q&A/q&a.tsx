@@ -6,7 +6,7 @@ import { logo } from '@/assets/images';
 import { path as PATHS } from '@/core/constants/path';
 import DetailPanel from './detailPanel';
 
-const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
+const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || 'https://eduverseapi-production.up.railway.app/api/v1';
 
 export type QARole = 'instructor' | 'client';
 

@@ -31,7 +31,7 @@ export const fetchUserProfile = createAsyncThunk(
     if (!token) return rejectWithValue('No token');
 
     try {
-      const res = await axios.get('http://localhost:8080/api/v1/auth/profile', {
+      const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/auth/profile', {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -61,7 +61,7 @@ export const logoutUser = createAsyncThunk('user/logout', async (_, { rejectWith
     const refreshToken = localStorage.getItem('refresh_token');
     if (!refreshToken) throw new Error('Missing refresh token');
 
-    await axios.post('http://localhost:8080/api/v1/auth/logout', {
+    await axios.post('https://eduverseapi-production.up.railway.app/api/v1/auth/logout', {
       refresh_token: refreshToken,
     });
 

@@ -64,7 +64,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
   const avatarUrl = userProfile?.avatar
     ? userProfile.avatar.startsWith('http')
       ? userProfile.avatar
-      : `http://localhost:8080/${userProfile.avatar}`
+      : `https://eduverseapi-production.up.railway.app/${userProfile.avatar}`
     : (defaultAvatar as string);
 
   const scrollEndRef = useRef<HTMLDivElement | null>(null);

@@ -2,7 +2,7 @@
 
 # 🎓 **Online Learning Platform**
 
-<img src="https://cdn-icons-png.flaticon.com/512/10180/10180874.png" width="140" alt="E-Learning Logo" />
+<img src="https://avatars.githubusercontent.com/u/251194299?s=200&v=4" width="140" alt="500InternalServer Logo" />
 
 **Empowering knowledge sharing with an intuitive and modern frontend**
 
@@ -86,7 +86,7 @@ Ensure you have:
 3. **Configure Environment** Create a `.env` file in the root directory:
 
    ```env
-   VITE_API_URL=http://localhost:8080/api/v1
+   VITE_API_URL=https://eduverseapi-production.up.railway.app/api/v1
    VITE_NODE_ENV=development
    ```
 
@@ -248,11 +248,18 @@ Developed by the talented **New Bie Coder Team**:
 <table align="center">
   <tr>
     <td align="center">
-      <a href="https://github.com/qoucname2202">
-        <img src="https://avatars.githubusercontent.com/qoucname2202" width="100px;" alt="Dương Quốc Nam"/>
-        <br /><sub><b>Dương Quốc Nam</b></sub>
+      <a href="https://github.com/Vix1311">
+        <img src="https://avatars.githubusercontent.com/u/166972180?v=4" width="100px;" alt="Mai Kỳ Vĩ"/>
+        <br /><sub><b>Mai Kỳ Vĩ</b></sub>
       </a><br />
-      <a href="#" title="Guide">📝</a>
+      <a href="#" title="Code">💻</a>
+    </td>
+    <td align="center">
+      <a href="https://github.com/GiaHuy88693">
+        <img src="https://avatars.githubusercontent.com/u/181533253?v=4" width="100px;" alt="Huỳnh Lê Gia Huy"/>
+        <br /><sub><b>Huỳnh Lê Gia Huy</b></sub>
+      </a><br />
+      <a href="#" title="Code">💻</a>
     </td>
     <td align="center">
       <a href="https://github.com/truongquangquoc2011">
@@ -273,6 +280,6 @@ This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for d
 ---
 
 <div align="center">
-  Built with ❤️ by the NewBie Coder Team<br />
+  Built with ❤️ by the 500InternalServer<br />
   <a href="https://github.com/your-username/elearning-ui">⭐ Star us on GitHub!</a>
 </div>

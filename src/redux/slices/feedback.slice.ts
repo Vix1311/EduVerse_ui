@@ -61,7 +61,7 @@ export const submitCourseFeedback = createAsyncThunk<
 >('feedback/submitCourseFeedback', async (payload, { rejectWithValue }) => {
   try {
     await axios.post(
-      'http://localhost:8080/api/v1/feedback',
+      'https://eduverseapi-production.up.railway.app/api/v1/feedback',
       {
         title: payload.title,
         content: payload.content,
@@ -100,7 +100,7 @@ export const fetchAdminFeedbacks = createAsyncThunk<
   const skip = (page - 1) * take;
 
   try {
-    const res = await axios.get('http://localhost:8080/api/v1/feedback', {
+    const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/feedback', {
       params: {
         feedbackType: params?.feedbackType || "General", 
         status: params?.status || "Pending", 
@@ -140,7 +140,7 @@ export const deleteFeedback = createAsyncThunk<number, number, { rejectValue: st
   'feedback/deleteFeedback',
   async (id, { rejectWithValue }) => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/feedback/${id}`, {
+      await axios.delete(`https://eduverseapi-production.up.railway.app/api/v1/feedback/${id}`, {
         headers: {
           'X-API-KEY': 'NestjsSuper@Elearning$2025',
           ...authHeaders(),

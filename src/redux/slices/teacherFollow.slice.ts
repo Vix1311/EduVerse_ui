@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { RootState } from '@/core/store/store';
+import { ChatUser } from './chat.slice';
 
 // ====== Types ======
 
@@ -40,7 +41,7 @@ const initialState: TeacherFollowState = {
 // ====== Axios instance & helpers ======
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
+  baseURL: import.meta.env.VITE_API_URL || 'https://eduverseapi-production.up.railway.app',
 });
 
 const authHeaders = (_state: RootState) => {
@@ -221,6 +222,30 @@ export const fetchTeacherFollowingByUserId = createAsyncThunk<
     return rejectWithValue(msg);
   }
 });
+
+export const createDirectConversationWithTeacherUser = createAsyncThunk<
+  ChatUser,
+  number | string,
+  { rejectValue: string; state: RootState }
+>(
+  'teacherFollow/createDirectConversationWithTeacherUser',
+  async (teacherUserId, { rejectWithValue, getState }) => {
+    const state = getState();
+    const res = await axiosInstance.post(
+      `/api/v1/conversations/direct/teacher-user/${teacherUserId}`,
+      {},
+      { headers: { 'Content-Type': 'application/json', ...authHeaders(state) } },
+    );
+
+    const conv = res.data?.data ?? res.data;
+    return {
+      _id: String(conv.id),
+      fullName: conv.title || conv.name || conv.conversationName || `Conversation #${conv.id}`,
+      profilePic: conv.avatar || conv.imageUrl || undefined,
+      bio: conv.description || '',
+    };
+  },
+);
 
 // ====== Slice ======
 

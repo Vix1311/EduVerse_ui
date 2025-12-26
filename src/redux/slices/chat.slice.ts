@@ -140,7 +140,7 @@ const initialState: ChatState = {
 // ====== Axios instance & helpers ======
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
+  baseURL: import.meta.env.VITE_API_URL || 'https://eduverseapi-production.up.railway.app',
 });
 
 const authHeaders = (_state: RootState) => {
@@ -429,20 +429,28 @@ export const uploadConversationPdf = createAsyncThunk(
   async (file: File, { rejectWithValue, getState }) => {
     try {
       const state = getState() as RootState;
+
       const formData = new FormData();
       formData.append('file', file);
-
+      console.log(
+        'UPLOAD PDF to:',
+        axiosInstance.defaults.baseURL + '/api/v1/conversations/upload/pdf',
+      );
+      console.log('file.type:', file.type, 'file.name:', file.name);
       const res = await axiosInstance.post('/api/v1/conversations/upload/pdf', formData, {
-        headers: { ...authHeaders(state) },
+        headers: {
+          ...authHeaders(state),
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
       const data = res.data;
-      const url = data?.data?.secure_url || data?.secure_url || data?.url || data?.data?.url;
-
+      const url = data?.data?.url || data?.data?.secure_url || data?.url || data?.secure_url;
+      console.log('uploadConversationPdf response data:', data);
       if (!url) throw new Error('No URL returned from upload pdf');
-      return url as string;
+
+      return String(url);
     } catch (error: any) {
-      console.error('uploadConversationPdf error:', error?.response?.data || error);
       const msg = error?.response?.data?.message || error?.message || 'Upload pdf failed';
       return rejectWithValue(msg);
     }

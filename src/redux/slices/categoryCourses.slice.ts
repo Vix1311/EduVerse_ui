@@ -58,7 +58,7 @@ export const fetchCoursesByCategory = createAsyncThunk(
   'categoryCourses/fetchByCategory',
   async (categoryId: string, { rejectWithValue }) => {
     try {
-      const res = await axios.get('http://localhost:8080/api/v1/course/public', {
+      const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/course/public', {
         params: { categoryId },
       });
 

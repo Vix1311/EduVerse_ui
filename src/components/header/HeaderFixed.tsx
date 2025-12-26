@@ -18,6 +18,7 @@ import defaultAvatar from '@/assets/icons/user.png';
 import { clearWishlist } from '@/redux/slices/wishlist.slice';
 import { clearCart } from '@/redux/slices/cart.slice';
 import { disconnectSocket } from '@/core/services/socket-client';
+import { clearCourseSearchResults, searchCourses } from '@/redux/slices/courseSearch.slice';
 
 const Header: React.FC = () => {
   const userProfile = useUserProfile();
@@ -33,6 +34,8 @@ const Header: React.FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchTextMobile, setSearchTextMobile] = useState('');
   const searchResults = useSelector((state: RootState) => state.categorySearch);
+  const courseSearchResults = useSelector((state: RootState) => state.courseSearch);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isHoverable, setIsHoverable] = useState(false);
 
@@ -51,12 +54,25 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('resize', checkHoverable);
   }, []);
 
+  // Call debounce when user types
+  const handleSearchInput = debounce((val: string) => {
+    if (val.trim()) {
+      dispatch(searchCategories(val));
+      dispatch(searchCourses(val));
+    } else {
+      dispatch(clearSearchResults());
+      dispatch(clearCourseSearchResults());
+    }
+  }, 200);
+
   // Call debounce when mobile user types
   const handleSearchInputMobile = debounce((val: string) => {
     if (val.trim()) {
       dispatch(searchCategories(val));
+      dispatch(searchCourses(val));
     } else {
       dispatch(clearSearchResults());
+      dispatch(clearCourseSearchResults());
     }
   }, 200);
 
@@ -141,19 +157,10 @@ const Header: React.FC = () => {
     };
   }, []);
 
-  // Call debounce when user types
-  const handleSearchInput = debounce((val: string) => {
-    if (val.trim()) {
-      dispatch(searchCategories(val));
-    } else {
-      dispatch(clearSearchResults());
-    }
-  }, 200);
-
   const avatarUrl = userProfile?.avatar
     ? userProfile.avatar.startsWith('http')
       ? userProfile.avatar
-      : `http://localhost:8080/${userProfile.avatar}`
+      : `https://eduverseapi-production.up.railway.app/${userProfile.avatar}`
     : defaultAvatar;
 
   const formatCount = (n: number) => (n >= 99 ? '99+' : String(n));
@@ -191,7 +198,9 @@ const Header: React.FC = () => {
               type="text"
               placeholder="Search for anything"
               className={`w-full px-4 py-2 border border-gray-300 text-lg placeholder-gray-500 focus:outline-none focus:border-orange-500 transition-all duration-200 ${
-                searchResults.data.length > 0 ? 'rounded-t-md rounded-b-none' : 'rounded-full'
+                searchResults.data.length > 0 || courseSearchResults.data.length > 0
+                  ? 'rounded-t-md rounded-b-none'
+                  : 'rounded-full'
               }`}
               // Assign input value to input box
               value={searchText}
@@ -206,6 +215,7 @@ const Header: React.FC = () => {
               onBlur={() => {
                 setTimeout(() => {
                   dispatch(clearSearchResults());
+                  dispatch(clearCourseSearchResults());
                 }, 150);
               }}
             />
@@ -215,27 +225,51 @@ const Header: React.FC = () => {
             >
               <FaSearch />
             </button>
-            {searchResults.data.length > 0 && (
+            {(searchResults.data.length > 0 || courseSearchResults.data.length > 0) && (
               <div className="absolute top-full left-0 w-full bg-white shadow-md border border-gray-200 rounded-b-md overflow-y-auto max-h-80 z-50">
-                {searchResults.data.length > 0 && (
-                  <div className="p-2">
-                    <h3 className="text-sm font-semibold text-gray-600 mb-1">Categories</h3>
-                    {searchResults.data.map((cat: any) => {
-                      const key = cat._id ?? cat.id ?? cat.name;
-                      const slugOrId = cat.slug ?? cat._id ?? cat.id;
-                      return (
+                <div className="p-2">
+                  {searchResults.data.length > 0 && (
+                    <div className="mb-2">
+                      <h3 className="text-sm font-semibold text-gray-600 mb-1">Categories</h3>
+                      {searchResults.data.map((cat: any) => (
                         <Link
-                          key={key}
-                          to={`/category/${slugOrId}`}
+                          key={cat._id ?? cat.id ?? cat.name}
+                          to={`/courses/category/${cat.id}`}
                           className="block p-2 hover:bg-gray-100"
+                          onMouseDown={e => e.preventDefault()}
+                          onClick={() => {
+                            dispatch(clearSearchResults());
+                            dispatch(clearCourseSearchResults());
+                          }}
                         >
                           <div className="font-medium text-gray-900">{cat.name}</div>
                           <div className="text-xs text-gray-500">{cat.description}</div>
                         </Link>
-                      );
-                    })}
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  )}
+
+                  {courseSearchResults.data.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-600 mb-1">Courses</h3>
+                      {courseSearchResults.data.map((course: any) => (
+                        <Link
+                          key={course._id ?? course.id ?? course.title}
+                          to={`/course/${course.id}`}
+                          className="block p-2 hover:bg-gray-100"
+                          onMouseDown={e => e.preventDefault()}
+                          onClick={() => {
+                            dispatch(clearSearchResults());
+                            dispatch(clearCourseSearchResults());
+                          }}
+                        >
+                          <div className="font-medium text-gray-900">{course.title}</div>
+                          <div className="text-xs text-gray-500">{course.description}</div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -272,6 +306,7 @@ const Header: React.FC = () => {
                     setIsSearchOpen(false);
                     setSearchTextMobile('');
                     dispatch(clearSearchResults());
+                    dispatch(clearCourseSearchResults());
                   }}
                   className="ml-3 text-gray-600 text-2xl"
                 >
@@ -291,12 +326,33 @@ const Header: React.FC = () => {
                       return (
                         <Link
                           key={key}
-                          to={`/category/${slugOrId}`}
+                          to={`/courses/category/${cat.id}`}
                           className="block p-2 border rounded hover:bg-gray-100"
                           onClick={() => setIsSearchOpen(false)}
                         >
                           <div className="font-medium text-gray-900">{cat.name}</div>
                           <div className="text-xs text-gray-500">{cat.description}</div>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+                {courseSearchResults.data.length > 0 && (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-600 mb-1">Courses</h3>
+                    {courseSearchResults.data.map((course: any) => {
+                      const key = course._id ?? course.id ?? course.title;
+                      const slugOrId = course.slug ?? course._id ?? course.id;
+
+                      return (
+                        <Link
+                          key={key}
+                          to={`/course/${slugOrId}`}
+                          className="block p-2 border rounded hover:bg-gray-100"
+                          onClick={() => setIsSearchOpen(false)}
+                        >
+                          <div className="font-medium text-gray-900">{course.title}</div>
+                          <div className="text-xs text-gray-500">{course.description}</div>
                         </Link>
                       );
                     })}

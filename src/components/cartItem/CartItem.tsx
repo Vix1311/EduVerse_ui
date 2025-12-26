@@ -32,7 +32,7 @@ const CartItem = ({
           try {
             if (courseId) {
               const token = localStorage.getItem('access_token');
-              await axios.delete(`http://localhost:8080/api/v1/cart/${courseId}`, {
+              await axios.delete(`https://eduverseapi-production.up.railway.app/api/v1/cart/${courseId}`, {
                 headers: {
                   Authorization: `Bearer ${token}`,
                 },

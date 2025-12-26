@@ -43,7 +43,7 @@ export const fetchModuleQuizzesForStudy = createAsyncThunk(
       dispatch(showLoading());
 
       const res = await axios.get(
-        `http://localhost:8080/api/v1/course/${courseId}/modules/${moduleId}/quizzes`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/modules/${moduleId}/quizzes`,
         {
           headers: authHeaders(),
           params: { skip, take },
@@ -87,7 +87,7 @@ export const fetchModuleQuizAttempt = createAsyncThunk(
       dispatch(showLoading());
 
       const res = await axios.get(
-        `http://localhost:8080/api/v1/course/${courseId}/modules/${moduleId}/quizzes/${quizId}/attempt`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/modules/${moduleId}/quizzes/${quizId}/attempt`,
         {
           headers: authHeaders(),
         },
@@ -127,7 +127,7 @@ export const submitModuleQuizAttempt = createAsyncThunk(
       dispatch(showLoading());
 
       const res = await axios.post(
-        `http://localhost:8080/api/v1/course/${courseId}/modules/${moduleId}/quizzes/${quizId}/attempt`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/modules/${moduleId}/quizzes/${quizId}/attempt`,
         { answers },
         {
           headers: {

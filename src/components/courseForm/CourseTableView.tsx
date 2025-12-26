@@ -39,7 +39,7 @@ const CourseTableView: React.FC<Props> = ({ courses, onAddNew, onContinueCourse 
   const fetchTopics = async (courseId: string) => {
     if (allTopics[courseId]) return;
     try {
-      const res = await axios.get(`http://localhost:8080/api/v1/courses/${courseId}/topics`, {
+      const res = await axios.get(`https://eduverseapi-production.up.railway.app/api/v1/courses/${courseId}/topics`, {
         headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` },
       });
       setAllTopics(prev => ({ ...prev, [courseId]: res.data.data }));
@@ -51,7 +51,7 @@ const CourseTableView: React.FC<Props> = ({ courses, onAddNew, onContinueCourse 
   const fetchLessons = async (courseId: string, topicId: string) => {
     try {
       const res = await axios.get(
-        `http://localhost:8080/api/v1/courses/${courseId}/topics/${topicId}/lessons`,
+        `https://eduverseapi-production.up.railway.app/api/v1/courses/${courseId}/topics/${topicId}/lessons`,
         { headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` } },
       );
       setAllLessons(prev => ({ ...prev, [topicId]: res.data.data }));
