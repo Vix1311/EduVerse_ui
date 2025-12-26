@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getAccessTokenFromLS } from '@/core/shared/storage';
 import { logoutUser } from '@/core/store/user.slice';
 
-const BASE = 'http://localhost:8080/api/v1';
+const BASE = 'https://eduverseapi-production.up.railway.app/api/v1';
 
 export interface WishlistCourseItem {
   courseId: number;

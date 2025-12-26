@@ -11,7 +11,7 @@ const Step4UploadContent = ({ courseId, topicTitle, lessonTitle, goBack, onCompl
     try {
       if (videoUrl && thumbnailUrl) {
         await axios.post(
-          `http://localhost:8080/api/v1/courses/${courseId}/preview`,
+          `https://eduverseapi-production.up.railway.app/api/v1/courses/${courseId}/preview`,
           { video_url: videoUrl, thumbnail: thumbnailUrl },
           { headers: { Authorization: `Bearer ${localStorage.getItem('access_token')}` } },
         );
@@ -20,7 +20,7 @@ const Step4UploadContent = ({ courseId, topicTitle, lessonTitle, goBack, onCompl
         const formData = new FormData();
         formData.append('documents', document);
         await axios.post(
-          `http://localhost:8080/api/v1/courses/${courseId}/upload-material`,
+          `https://eduverseapi-production.up.railway.app/api/v1/courses/${courseId}/upload-material`,
           formData,
           {
             headers: {

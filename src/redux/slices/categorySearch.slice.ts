@@ -23,7 +23,7 @@ export const searchCategories = createAsyncThunk(
       const take = 20;
 
       const res = await axios.get(
-        `http://localhost:8080/api/v1/category?text=${encodeURIComponent(text)}&skip=${skip}&take=${take}`,
+        `https://eduverseapi-production.up.railway.app/api/v1/category?text=${encodeURIComponent(text)}&skip=${skip}&take=${take}`,
       );
 
       const list = res.data?.data;

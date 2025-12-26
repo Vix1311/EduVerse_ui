@@ -15,7 +15,7 @@ const headers = () => ({
 // List courses
 export const listCourses = createAsyncThunk('course/list', async (_: void, { rejectWithValue }) => {
   try {
-    const res = await axios.get('http://localhost:8080/api/v1/course', {
+    const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/course', {
       headers: {
         'X-API-KEY': 'NestjsSuper@Elearning$2025',
         ...headers(),
@@ -40,7 +40,7 @@ export const updateCourseStatus = createAsyncThunk(
         status:
           status === 'approved' ? 'Approved' : status === 'blacklisted' ? 'Blacklisted' : 'Pending',
       };
-      await axios.patch(`http://localhost:8080/api/v1/course/${id}/status`, body, {
+      await axios.patch(`https://eduverseapi-production.up.railway.app/api/v1/course/${id}/status`, body, {
         headers: {
           'Content-Type': 'application/json',
           'X-API-KEY': 'NestjsSuper@Elearning$2025',
@@ -59,7 +59,7 @@ export const softDeleteCourse = createAsyncThunk(
   'course/softDelete',
   async ({ id }: { id: number }, { rejectWithValue }) => {
     try {
-      await axios.delete(`http://localhost:8080/api/v1/course/${id}`, {
+      await axios.delete(`https://eduverseapi-production.up.railway.app/api/v1/course/${id}`, {
         headers: {
           'X-API-KEY': 'NestjsSuper@Elearning$2025',
           Authorization: `Bearer ${localStorage.getItem('access_token') || ''}`,
@@ -77,7 +77,7 @@ export const restoreCourse = createAsyncThunk(
   'course/restore',
   async ({ id }: { id: number }, { rejectWithValue }) => {
     try {
-      await axios.patch(`http://localhost:8080/api/v1/course/${id}/restore`, null, {
+      await axios.patch(`https://eduverseapi-production.up.railway.app/api/v1/course/${id}/restore`, null, {
         headers: {
           'X-API-KEY': 'NestjsSuper@Elearning$2025',
           Authorization: `Bearer ${localStorage.getItem('access_token') || ''}`,
@@ -95,7 +95,7 @@ export const createCourse = createAsyncThunk(
   'course/create',
   async (body: CreateCoursePayload, { rejectWithValue }) => {
     try {
-      const res = await axios.post('http://localhost:8080/api/v1/course', body, {
+      const res = await axios.post('https://eduverseapi-production.up.railway.app/api/v1/course', body, {
         headers: {
           'Content-Type': 'application/json',
           'X-API-KEY': 'NestjsSuper@Elearning$2025',
@@ -114,7 +114,7 @@ export const updateCourse = createAsyncThunk(
   'course/update',
   async ({ id, body }: { id: number; body: CreateCoursePayload }, { rejectWithValue }) => {
     try {
-      const res = await axios.patch(`http://localhost:8080/api/v1/course/${id}`, body, {
+      const res = await axios.patch(`https://eduverseapi-production.up.railway.app/api/v1/course/${id}`, body, {
         headers: {
           'Content-Type': 'application/json',
           'X-API-KEY': 'NestjsSuper@Elearning$2025',
@@ -133,7 +133,7 @@ export const createTopic = createAsyncThunk(
   'courseForm/createTopic',
   async ({ courseId, topicData }: CreateTopicPayload, thunkAPI) => {
     const res = await axios.post(
-      `http://localhost:8080/api/v1/courses/${courseId}/topics`,
+      `https://eduverseapi-production.up.railway.app/api/v1/courses/${courseId}/topics`,
       topicData,
       { headers: headers() },
     );
@@ -147,7 +147,7 @@ export const createLesson = createAsyncThunk(
   async ({ courseId, topicId, lessonData }: CreateLessonPayload, thunkAPI) => {
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/v1/courses/${courseId}/topics/${topicId}/lessons`,
+        `https://eduverseapi-production.up.railway.app/api/v1/courses/${courseId}/topics/${topicId}/lessons`,
         lessonData,
         { headers: headers() },
       );
@@ -168,7 +168,7 @@ export const deleteLesson = createAsyncThunk(
   ) => {
     try {
       await axios.delete(
-        `http://localhost:8080/api/v1/course/${courseId}/builder/modules/${moduleId}/lessons/${lessonId}`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/builder/modules/${moduleId}/lessons/${lessonId}`,
         {
           headers: {
             'X-API-KEY': 'NestjsSuper@Elearning$2025',
@@ -203,7 +203,7 @@ export const uploadLessonPdf = createAsyncThunk(
       formData.append('file', file);
 
       await axios.post(
-        `http://localhost:8080/api/v1/course/${courseId}/builder/modules/${moduleId}/lessons/${lessonId}/pdf`,
+        `https://eduverseapi-production.up.railway.app/api/v1/course/${courseId}/builder/modules/${moduleId}/lessons/${lessonId}/pdf`,
         formData,
         {
           headers: {

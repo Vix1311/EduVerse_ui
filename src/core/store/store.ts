@@ -27,6 +27,8 @@ import chatReducer from '@/redux/slices/chat.slice';
 import teacherFollowReducer from '@/redux/slices/teacherFollow.slice';
 import moduleQuizReducer from '@/redux/slices/moduleQuiz.slice';
 import lessonQuizReducer from '@/redux/slices/lessonQuiz.slice';
+import courseSearchReducer from '@/redux/slices/courseSearch.slice';
+
 export const store = configureStore({
   reducer: {
     user: userReducer,
@@ -44,6 +46,7 @@ export const store = configureStore({
     otpConfirm: otpConfirmReducer,
     userProfile: editUserReducer,
     categorySearch: categorySearchReducer,
+    courseSearch: courseSearchReducer,
     courseForm: CourseFormReducer,
     myLearning: myLearningReducer,
     ui: uiReducer,

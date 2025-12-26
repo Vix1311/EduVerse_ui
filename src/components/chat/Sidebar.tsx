@@ -22,6 +22,12 @@ import type { ServerUser } from '@/redux/slices/adminSlices/user.slice';
 import { fetchUsers as fetchServerUsers } from '@/redux/slices/adminSlices/user.slice';
 import { Link } from 'react-router-dom';
 
+// ====== ADDED ======
+import {
+  createDirectConversationWithTeacherUser,
+  fetchTeacherFollowing,
+} from '@/redux/slices/teacherFollow.slice';
+
 interface SidebarProps {
   onOpenChatMobile?: () => void;
 }
@@ -61,6 +67,39 @@ const Sidebar: React.FC<SidebarProps> = ({ onOpenChatMobile }) => {
   // user picker modal: null / 'DIRECT' / 'GROUP'
   const [pickerMode, setPickerMode] = useState<'DIRECT' | 'GROUP' | null>(null);
   const [pickerSearch, setPickerSearch] = useState('');
+
+  // ====== ADDED ======
+  const [checkingUserId, setCheckingUserId] = useState<number | null>(null);
+
+  // ====== ADDED ======
+  const isTeacher = useMemo(() => {
+    const role = (authUser as any)?.role ?? (authUser as any)?.userType;
+    return String(role || '').toLowerCase() === 'teacher';
+  }, [authUser]);
+
+  // ====== ADDED ======
+  const extractFollowedUserId = (item: any): number | null => {
+    const direct =
+      item?.userId ??
+      item?.id ??
+      item?.followingUserId ??
+      item?.targetUserId ??
+      item?.studentId ??
+      item?.followerId;
+
+    if (direct != null && !Number.isNaN(Number(direct))) return Number(direct);
+
+    const nested =
+      item?.user?.id ??
+      item?.following?.id ??
+      item?.targetUser?.id ??
+      item?.student?.id ??
+      item?.follower?.id;
+
+    if (nested != null && !Number.isNaN(Number(nested))) return Number(nested);
+
+    return null;
+  };
 
   // ===== load conversations for sidebar =====
   useEffect(() => {
@@ -203,6 +242,18 @@ const Sidebar: React.FC<SidebarProps> = ({ onOpenChatMobile }) => {
           return;
         }
 
+        // ====== ADDED/CHANGED: teacher uses createDirectConversationWithTeacherUser ======
+        if (isTeacher) {
+          const newConv = await dispatch(
+            createDirectConversationWithTeacherUser(selectedDirectUser.id),
+          ).unwrap();
+
+          toast.success('Live chat created successfully');
+          dispatch(setSelectedUser(newConv));
+          closeCreateModal();
+          return;
+        }
+
         const titleToSend = directTitle.trim() || '';
         const descToSend = directDescription.trim() || undefined;
 
@@ -282,7 +333,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onOpenChatMobile }) => {
             </Link>
             <div className="leading-tight">
               <p className="text-sm font-semibold text-white">Chat Center</p>
-              <p className="text-[11px] text-gray-400">Danh sách cuộc trò chuyện</p>
+              <p className="text-[11px] text-gray-400">List of conversations</p>
             </div>
           </div>
         </div>
@@ -369,32 +420,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onOpenChatMobile }) => {
                 className="text-xs px-2 py-1 rounded-full text-white"
               >
                 <FaTimes />
-              </button>
-            </div>
-
-            {/* Switch DIRECT / GROUP */}
-            <div className="flex gap-2 mb-3 text-[11px]">
-              <button
-                type="button"
-                onClick={() => setCreateType('DIRECT')}
-                className={`flex-1 py-1.5 rounded-full border ${
-                  createType === 'DIRECT'
-                    ? 'bg-[#6D28D9] border-[#6D28D9] text-white'
-                    : 'bg-[#1E1D33] border-[#3B3A5C] text-gray-300'
-                }`}
-              >
-                New chat
-              </button>
-              <button
-                type="button"
-                onClick={() => setCreateType('GROUP')}
-                className={`flex-1 py-1.5 rounded-full border ${
-                  createType === 'GROUP'
-                    ? 'bg-[#6D28D9] border-[#6D28D9] text-white'
-                    : 'bg-[#1E1D33] border-[#3B3A5C] text-gray-300'
-                }`}
-              >
-                New group
               </button>
             </div>
 
@@ -579,14 +604,54 @@ const Sidebar: React.FC<SidebarProps> = ({ onOpenChatMobile }) => {
                           <button
                             key={u.id}
                             type="button"
-                            onClick={() => {
+                            // ====== ADDED/CHANGED: follow-check when teacher selects DIRECT user ======
+                            onClick={async () => {
                               if (pickerMode === 'DIRECT') {
+                                // Teacher: when selecting -> check following first
+                                if (isTeacher && authUser?.id) {
+                                  setCheckingUserId(u.id);
+                                  try {
+                                    const res = await dispatch(
+                                      fetchTeacherFollowing({
+                                        teacherId: authUser.id,
+                                        page: 1,
+                                        limit: 1000,
+                                      }),
+                                    ).unwrap();
+
+                                    const items = (res as any)?.items ?? [];
+                                    const isFollowing = items.some(
+                                      (it: any) => extractFollowedUserId(it) === u.id,
+                                    );
+
+                                    if (!isFollowing) {
+                                      toast.error(
+                                        'Bạn chưa follow người này nên không thể tạo chat trực tiếp.',
+                                      );
+                                      return;
+                                    }
+
+                                    setSelectedDirectUser(u);
+                                    setPickerMode(null);
+                                  } catch (err: any) {
+                                    toast.error(
+                                      err?.toString?.() || 'Không kiểm tra được following',
+                                    );
+                                  } finally {
+                                    setCheckingUserId(null);
+                                  }
+                                  return;
+                                }
+
+                                // Non-teacher: keep old behavior
                                 setSelectedDirectUser(u);
                                 setPickerMode(null);
                               } else {
                                 toggleGroupUser(u);
                               }
                             }}
+                            // ====== ADDED ======
+                            disabled={checkingUserId === u.id}
                             className={`w-full flex items-center gap-2 px-2 py-1.5 rounded-xl border text-left ${
                               isSelected
                                 ? 'bg-[#6D28D9] border-[#6D28D9]'

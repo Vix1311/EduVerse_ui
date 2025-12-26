@@ -6,7 +6,7 @@ export const sendForgotPasswordEmail = createAsyncThunk(
   'auth/sendForgotPasswordEmail',
   async (email: string, { rejectWithValue }) => {
     try {
-      await axios.post('http://localhost:8080/api/v1/auth/otp', {
+      await axios.post('https://eduverseapi-production.up.railway.app/api/v1/auth/otp', {
         email,
         type: 'FORGOT_PASSWORD', 
       });
@@ -30,7 +30,7 @@ export const resetPassword = createAsyncThunk(
     { rejectWithValue },
   ) => {
     try {
-      await axios.post('http://localhost:8080/api/v1/auth/forgot-password', {
+      await axios.post('https://eduverseapi-production.up.railway.app/api/v1/auth/forgot-password', {
         email,
         code,
         newPassword,

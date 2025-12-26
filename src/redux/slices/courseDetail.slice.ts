@@ -44,7 +44,7 @@ export const fetchCourseDetail = createAsyncThunk<any, string>(
   'courseDetail/fetch',
   async (courseId, { rejectWithValue }) => {
     try {
-      const res = await axios.get(`http://localhost:8080/api/v1/course/public/${courseId}`);
+      const res = await axios.get(`https://eduverseapi-production.up.railway.app/api/v1/course/public/${courseId}`);
       return res.data?.data ?? res.data?.result ?? res.data ?? null;
     } catch (err: any) {
       const msg = err?.response?.data?.message || 'Course not found';
@@ -77,7 +77,7 @@ export const fetchCourseComments = createAsyncThunk(
     const token = localStorage.getItem('access_token');
     try {
       const lessonRes = await axios.get(
-        `http://localhost:8080/api/v1/courses/my-courses/${courseId}`,
+        `https://eduverseapi-production.up.railway.app/api/v1/courses/my-courses/${courseId}`,
         { headers: { Authorization: `Bearer ${token}` } },
       );
 
@@ -91,7 +91,7 @@ export const fetchCourseComments = createAsyncThunk(
       const commentFetches = allLessons.map(async ({ lesson }: { lesson: any }) => {
         try {
           const res = await axios.get(
-            `http://localhost:8080/api/v1/comments/lessons/${lesson._id}`,
+            `https://eduverseapi-production.up.railway.app/api/v1/comments/lessons/${lesson._id}`,
             { headers: { Authorization: `Bearer ${token}` } },
           );
           return { lesson, comments: res.data?.data?.results || [] };
