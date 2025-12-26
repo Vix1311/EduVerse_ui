@@ -1,5 +1,4 @@
 import { FaArrowRight, FaChevronRight, FaStar } from 'react-icons/fa';
-import testimonial from '@/assets/images/testimonial.png';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { TestimonialData } from '@/models/interface/testimonial.interface';
@@ -12,7 +11,7 @@ const Testimonial = () => {
   const nextSlide = () => {
     setCurrentIndex(prevIndex => (prevIndex === testimonials.length - 1 ? 0 : prevIndex + 1));
   };
-  
+
   useEffect(() => {
     axios
       .get('/data/TestimonialsData/Testimonials.json')
@@ -69,7 +68,7 @@ const Testimonial = () => {
                   <div key={item.id} className="flex-shrink-0 w-full rounded-lg shadow-lg">
                     <div className="rounded-xl overflow-hidden w-full max-w-[420px] h-[560px]">
                       <img
-                        src={item.image || testimonial}
+                        src={item.image}
                         alt="testimonial"
                         className="object-cover w-full h-full"
                       />
