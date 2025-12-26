@@ -16,17 +16,17 @@
     "phone": "0773241039",
     "role": "teacher",
     "facebookUrl": "https://www.facebook.com/TQuangQuoc.Info",
-    "createdAt": "24-07-2024",
+    "createdAt": "July 24, 2024",
     "isActive": false
   },
   {
     "id": "3",
-    "fullName": "Vĩ Lét Biên",
+    "fullName": "Vi Let Bien",
     "email": "a@gmail.com",
     "phone": "0123456789",
     "role": "admin",
     "facebookUrl": "https://www.facebook.com/endy.oyster",
-    "createdAt": "20-07-2024",
+    "createdAt": "2024-07-20",
     "isActive": true
   }
 ]

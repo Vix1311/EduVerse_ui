@@ -75,7 +75,7 @@ const CourseDonutChart = () => {
                 y="50%"
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="text-xl font-semibold text-gray-800"
+                className="text-base font-semibold text-gray-800"
               >
                 {total} Course
               </text>

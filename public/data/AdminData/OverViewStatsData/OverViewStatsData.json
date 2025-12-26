@@ -2,29 +2,29 @@
   {
     "icon": "FaDollarSign",
     "border": "border-blue-500 text-blue-500",
-    "value": "60 triệu VND",
-    "label": "Doanh thu",
-    "change": "+3.5% so với tháng trước"
+    "value": "60 million VND",
+    "label": "Revenue",
+    "change": "+3.5% compared to the previous month"
   },
   {
     "icon": "FaChalkboardTeacher",
     "border": "border-green-500 text-green-500",
-    "value": "120 nghìn",
-    "label": "Lượt truy cập",
-    "change": "+2.1% so với tháng trước"
+    "value": "120 thousand",
+    "label": "Visits",
+    "change": "+2.1% compared to the previous month"
   },
   {
     "icon": "FaBookOpen",
     "border": "border-orange-500 text-orange-500",
-    "value": "15 bài học",
-    "label": "Số bài học",
-    "change": "+10% so với tháng trước"
+    "value": "15 lessons",
+    "label": "Number of lessons",
+    "change": "+10% compared to the previous month"
   },
   {
     "icon": "FaUserGraduate",
     "border": "border-purple-500 text-purple-500",
-    "value": "100 học viên",
-    "label": "Tổng số học viên mới",
-    "change": "+5.0% so với tháng trước"
+    "value": "100 students",
+    "label": "Total number of new students",
+    "change": "+5.0% compared to the previous month"
   }
 ]
