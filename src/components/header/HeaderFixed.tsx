@@ -411,12 +411,12 @@ const Header: React.FC = () => {
               )}
             </div>
           ) : (
-            <a
-              href="/auth"
+            <Link
+              to="/auth"
               className={`border hover:bg-[#F48C06] bg-white transition-colors duration-500 px-6 py-2 rounded-full text-[#6C6C6C] hover:text-white font-semibold ${isScrolled ? 'border-white' : 'border-transparent'}`}
             >
               Log in
-            </a>
+            </Link>
           )}
         </div>
         {showCategoryBar && window.innerWidth >= 768 && (
