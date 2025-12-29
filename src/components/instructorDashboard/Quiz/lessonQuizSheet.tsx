@@ -422,6 +422,67 @@ export default function LessonQuizSheet({
     }
   };
 
+  const handleToggleExistingOptionCorrect = async (opt: any) => {
+    if (
+      !baseSelected?.courseId ||
+      !baseSelected?.moduleId ||
+      !baseSelected.lessonId ||
+      !selectedQuizId ||
+      !selectedQuestionId
+    )
+      return;
+
+    try {
+      const q = previewQuestions.find(q => q.id === selectedQuestionId);
+      const existing = q?.options || [];
+
+      const nextValue = !opt.isCorrect;
+
+      // ✅ nếu bạn muốn chỉ 1 đáp án đúng:
+      // - nếu bật true cho opt này, tắt tất cả option khác
+      if (nextValue) {
+        const others = existing.filter((o: any) => o.id !== opt.id && o.isCorrect);
+
+        // tắt các đáp án đúng khác trước
+        for (const o of others) {
+          await dispatch(
+            updateOptionByLesson({
+              path: {
+                courseId: baseSelected.courseId!,
+                moduleId: baseSelected.moduleId!,
+                lessonId: baseSelected.lessonId!,
+                quizId: selectedQuizId,
+                questionId: selectedQuestionId,
+                optionId: o.id,
+              },
+              body: { content: o.content, isCorrect: false },
+            }),
+          ).unwrap?.();
+        }
+      }
+
+      // update option đang click
+      await dispatch(
+        updateOptionByLesson({
+          path: {
+            courseId: baseSelected.courseId!,
+            moduleId: baseSelected.moduleId!,
+            lessonId: baseSelected.lessonId!,
+            quizId: selectedQuizId,
+            questionId: selectedQuestionId,
+            optionId: opt.id,
+          },
+          body: { content: opt.content, isCorrect: nextValue },
+        }),
+      ).unwrap?.();
+
+      toast.success('Updated correct answer!');
+      await loadPreviewForQuiz(selectedQuizId);
+    } catch (e: any) {
+      toast.error(e?.message || 'Update correct answer failed');
+    }
+  };
+
   /* ==========================================================
      Option helpers
   ========================================================== */
@@ -689,6 +750,19 @@ export default function LessonQuizSheet({
                                 size="icon"
                                 variant="outline"
                                 className="h-7 w-7"
+                                title="Correct"
+                                onClick={() => handleToggleExistingOptionCorrect(opt)}
+                              >
+                                {opt.isCorrect ? (
+                                  <CheckSquare className="h-4 w-4 text-green-700" />
+                                ) : (
+                                  <Square className="h-4 w-4" />
+                                )}
+                              </Button>
+                              <Button
+                                size="icon"
+                                variant="outline"
+                                className="h-7 w-7"
                                 onClick={() => {
                                   setEditingOptionId(opt.id);
                                   setNewOptions([
@@ -756,23 +830,11 @@ export default function LessonQuizSheet({
                       <span className="text-sm font-medium">
                         {editingOptionId ? 'Edit Option' : 'Add New Options'}
                       </span>
-                      {!editingOptionId && (
-                        <Button size="sm" variant="outline" onClick={handleAddNewOptionRow}>
-                          <Plus className="h-4 w-4 mr-1" /> Add Row
-                        </Button>
-                      )}
                     </div>
 
                     <div className="space-y-2">
                       {newOptions.map(o => (
-                        <div key={o.id} className="border rounded-md p-2 gap-2 flex items-center">
-                          <button
-                            className="p-2 shrink-0"
-                            onClick={() => handleToggleNewOptionCorrect(o.id)}
-                          >
-                            {o.isCorrect ? <CheckSquare /> : <Square />}
-                          </button>
-
+                        <div key={o.id} className="p-2 gap-2 flex items-center">
                           <div className="flex-1 space-y-1">
                             <Input
                               value={o.content}

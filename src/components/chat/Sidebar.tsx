@@ -363,7 +363,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onOpenChatMobile }) => {
         </div>
 
         {/* Conversation list */}
-        <div className="flex-1 overflow-y-auto px-2 py-2 space-y-1">
+        <div className="flex-1 overflow-y-auto scrollbar-soft px-2 py-2 space-y-1">
           {loading && <p className="text-[12px] text-gray-400 px-2">Loading conversation...</p>}
 
           {!loading && filteredUsers.length === 0 && (

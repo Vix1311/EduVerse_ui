@@ -24,31 +24,24 @@ import ModuleBuilder from '@/components/moduleBuilder/ModuleBuilder';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 
-/* ----------------------------- Toggle Switch ----------------------------- */
-function Toggle({
-  checked,
-  onChange,
-  onClickCapture,
-}: {
-  checked: boolean;
-  onChange: () => void;
-  onClickCapture?: (e: React.MouseEvent) => void;
-}) {
+/* ----------------------------- Status Label ----------------------------- */
+function StatusLabel({ status }: { status: 'pending' | 'approved' }) {
+  const ui =
+    status === 'approved'
+      ? { text: 'Approved', cls: 'bg-sky-100 text-sky-700 border-sky-200' }
+      : { text: 'Pending', cls: 'bg-violet-100 text-violet-700 border-violet-200' };
+
   return (
-    <button
-      type="button"
-      onClickCapture={onClickCapture}
-      onClick={onChange}
-      className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors duration-200 focus:outline-none
-        ${checked ? 'bg-purple-500' : 'bg-gray-300'}`}
-      aria-label={checked ? 'Approved' : 'Pending'}
-      title={checked ? 'Approved' : 'Pending'}
+    <span
+      className={[
+        'inline-flex items-center justify-center px-2 py-0.5 rounded font-semibold border text-xs capitalize',
+        ui.cls,
+      ].join(' ')}
+      title={ui.text}
+      aria-label={ui.text}
     >
-      <span
-        className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform duration-200
-          ${checked ? 'translate-x-5' : 'translate-x-0.5'}`}
-      />
-    </button>
+      {ui.text}
+    </span>
   );
 }
 
@@ -333,23 +326,7 @@ function CourseList({
                       Blacklisted
                     </span>
                   ) : (
-                    <Toggle
-                      checked={it.status === 'approved'}
-                      onClickCapture={e => {
-                        e.stopPropagation();
-                      }}
-                      onChange={async () => {
-                        const next = it.status === 'approved' ? 'pending' : 'approved';
-                        try {
-                          await dispatch(
-                            updateCourseStatus({ id: Number(it.id), status: next }),
-                          ).unwrap();
-                          await dispatch(listCourses()).unwrap();
-                        } catch (err: any) {
-                          toast.error(err || 'Update status failed');
-                        }
-                      }}
-                    />
+                    <StatusLabel status={it.status} />
                   )}
                 </td>
                 <td className="px-2 py-2 border border-slate-200 text-sm text-gray-500">
@@ -1052,11 +1029,6 @@ function CourseEdit({
             className="w-full border rounded-md p-2 text-sm"
             placeholder="Short teaser shown to users…"
           />
-        </div>
-
-        <div>
-          <label className="block text-sm mb-1">Dịch vụ sử dụng (Hashtags)</label>
-          <TagPicker value={hashtagIds} onChange={setHashtagIds} options={hashtagOptions} />
         </div>
 
         <div className="flex items-center gap-2 pt-2">

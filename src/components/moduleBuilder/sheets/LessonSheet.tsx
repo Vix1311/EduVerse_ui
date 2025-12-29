@@ -1,5 +1,3 @@
-// src/components/ModuleBuilder/sheets/LessonSheet.tsx
-
 import {
   Sheet,
   SheetContent,
@@ -274,15 +272,17 @@ export default function LessonSheet({
           </div>
 
           {/* Lesson order */}
-          <div>
-            <label className="block text-sm mb-1">Lesson order</label>
-            <Input
-              type="number"
-              min={1}
-              value={lessonOrder}
-              onChange={e => setLessonOrder(Number(e.target.value) || 1)}
-            />
-          </div>
+          {mode === 'edit' && (
+            <div>
+              <label className="block text-sm mb-1">Lesson order</label>
+              <Input
+                type="number"
+                min={1}
+                value={lessonOrder}
+                onChange={e => setLessonOrder(Number(e.target.value) || 1)}
+              />
+            </div>
+          )}
         </div>
 
         <SheetFooter className="mt-6 flex justify-between">

@@ -2,10 +2,10 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export enum FeedbackType {
+  General = 'General',
   Bug = 'Bug',
   FeatureRequest = 'FeatureRequest',
   CourseContent = 'CourseContent',
-  General = 'General',
 }
 
 export interface SubmitFeedbackPayload {
@@ -102,8 +102,8 @@ export const fetchAdminFeedbacks = createAsyncThunk<
   try {
     const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/feedback', {
       params: {
-        feedbackType: params?.feedbackType || "General", 
-        status: params?.status || "Pending", 
+        feedbackType: params?.feedbackType || 'General',
+        status: params?.status || 'Pending',
         take,
         skip,
       },
@@ -146,7 +146,7 @@ export const deleteFeedback = createAsyncThunk<number, number, { rejectValue: st
           ...authHeaders(),
         },
       });
-      return id; 
+      return id;
     } catch (err: any) {
       const message = err?.response?.data?.message || err?.message || 'Failed to delete feedback';
       return rejectWithValue(message);

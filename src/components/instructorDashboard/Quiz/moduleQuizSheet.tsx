@@ -487,6 +487,58 @@ export default function ModuleQuizSheet({
     resetNewOptionsForm();
   };
 
+  const handleToggleExistingOptionCorrect = async (opt: any) => {
+    if (
+      !baseSelected?.courseId ||
+      !baseSelected?.moduleId ||
+      !selectedQuizId ||
+      !selectedQuestionId
+    )
+      return;
+
+    try {
+      const q = previewQuestions.find(q => q.id === selectedQuestionId);
+      const existing = q?.options || [];
+      const nextValue = !opt.isCorrect;
+
+      if (nextValue) {
+        const others = existing.filter((o: any) => o.id !== opt.id && o.isCorrect);
+        for (const o of others) {
+          await dispatch(
+            updateOption({
+              path: {
+                courseId: baseSelected.courseId!,
+                moduleId: baseSelected.moduleId!,
+                quizId: selectedQuizId,
+                questionId: selectedQuestionId,
+                optionId: o.id,
+              },
+              body: { content: o.content, isCorrect: false },
+            }),
+          ).unwrap?.();
+        }
+      }
+
+      await dispatch(
+        updateOption({
+          path: {
+            courseId: baseSelected.courseId!,
+            moduleId: baseSelected.moduleId!,
+            quizId: selectedQuizId,
+            questionId: selectedQuestionId,
+            optionId: opt.id,
+          },
+          body: { content: opt.content, isCorrect: nextValue },
+        }),
+      ).unwrap?.();
+
+      toast.success('Updated correct answer!');
+      await loadPreviewForQuiz(selectedQuizId);
+    } catch (e: any) {
+      toast.error(e?.message || 'Update correct answer failed');
+    }
+  };
+
   /* ==========================================================
      UI
   ========================================================== */
@@ -676,6 +728,19 @@ export default function ModuleQuizSheet({
                                 size="icon"
                                 variant="outline"
                                 className="h-7 w-7"
+                                title="Correct"
+                                onClick={() => handleToggleExistingOptionCorrect(opt)}
+                              >
+                                {opt.isCorrect ? (
+                                  <CheckSquare className="h-4 w-4 text-green-700" />
+                                ) : (
+                                  <Square className="h-4 w-4" />
+                                )}
+                              </Button>
+                              <Button
+                                size="icon"
+                                variant="outline"
+                                className="h-7 w-7"
                                 onClick={() => {
                                   setEditingOptionId(opt.id);
                                   setNewOptions([
@@ -689,7 +754,6 @@ export default function ModuleQuizSheet({
                               >
                                 <Pencil className="h-4 w-4" />
                               </Button>
-
                               {/* DELETE OPTION */}
                               <Button
                                 size="icon"
@@ -745,14 +809,7 @@ export default function ModuleQuizSheet({
 
                     <div className="space-y-2">
                       {newOptions.map(o => (
-                        <div key={o.id} className="border rounded-md p-2 gap-2 flex items-center">
-                          <button
-                            className="p-2 shrink-0"
-                            onClick={() => handleToggleNewOptionCorrect(o.id)}
-                          >
-                            {o.isCorrect ? <CheckSquare /> : <Square />}
-                          </button>
-
+                        <div key={o.id} className=" p-2 gap-2 flex items-center">
                           <div className="flex-1 space-y-1">
                             <Input
                               value={o.content}

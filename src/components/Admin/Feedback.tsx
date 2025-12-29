@@ -61,7 +61,6 @@ const FeedbackPage = () => {
               onChange={e => setFeedbackTypeFilter(e.target.value as FeedbackType | '')}
               className="border px-3 py-2 rounded min-w-[180px]"
             >
-              <option value="">All</option>
               {Object.values(FeedbackType).map(type => (
                 <option key={type} value={type}>
                   {type}
@@ -78,7 +77,6 @@ const FeedbackPage = () => {
               onChange={e => setStatusFilter(e.target.value as FeedbackStatus | '')}
               className="border px-3 py-2 rounded min-w-[180px]"
             >
-              <option value="">All</option>
               {Object.values(FeedbackStatus).map(status => (
                 <option key={status} value={status}>
                   {status}

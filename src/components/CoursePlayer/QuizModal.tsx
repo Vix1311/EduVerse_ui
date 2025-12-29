@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/core/store/store';
 import { fetchModuleQuizAttempt, submitModuleQuizAttempt } from '@/redux/slices/moduleQuiz.slice';
@@ -10,7 +10,6 @@ export type QuizModalProps = {
   courseId: string;
   moduleId: string;
   mode: 'take' | 'review';
-
   reviewData?: {
     questions: any[];
     userAnswers: Record<string, string | string[]>;
@@ -29,6 +28,7 @@ const QuizModal = ({
   moduleId,
   onClose,
   onOpen,
+  onComplete,
   mode = 'take',
 }: QuizModalProps) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,40 +37,48 @@ const QuizModal = ({
   const attempt = quizAttemptById[quizId];
 
   const [localQuestions, setLocalQuestions] = useState<any[]>([]);
-
-  const questions = localQuestions;
-
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedOptionId, setSelectedOptionId] = useState<number | null>(null);
-  const [hasChecked, setHasChecked] = useState(false);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
-  const [showAnswerButton, setShowAnswerButton] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
-  /** FETCH ATTEMPT */
+  // ======= HOOKS ABOVE RETURNS =======
   useEffect(() => {
     if (!courseId || !moduleId || !quizId) return;
-
-    dispatch(
-      fetchModuleQuizAttempt({
-        courseId,
-        moduleId,
-        quizId,
-      }),
-    );
+    dispatch(fetchModuleQuizAttempt({ courseId, moduleId, quizId }));
   }, [dispatch, courseId, moduleId, quizId]);
 
-  /** COPY QUESTIONS TO LOCAL STATE */
   useEffect(() => {
     if (attempt?.questions?.length) {
       setLocalQuestions(attempt.questions);
+      setCurrentQuestionIndex(0);
+      setSelectedOptionId(null);
     }
   }, [attempt]);
 
   useEffect(() => {
     onOpen?.();
-  }, []);
+  }, [onOpen]);
+
+  const questions = localQuestions;
+
+  const currentQuestion = useMemo(() => {
+    if (!questions.length) return null;
+    return questions[currentQuestionIndex] ?? null;
+  }, [questions, currentQuestionIndex]);
+
+  useEffect(() => {
+    if (!currentQuestion) return;
+    const saved = answers[String(currentQuestion.questionId)];
+    setSelectedOptionId(saved ?? null);
+  }, [currentQuestion, answers]);
+
+  const isLast = useMemo(
+    () => questions.length > 0 && currentQuestionIndex === questions.length - 1,
+    [questions.length, currentQuestionIndex],
+  );
+
+  const canContinue = selectedOptionId !== null;
 
   const fireConfetti = () => {
     confetti({
@@ -84,36 +92,15 @@ const QuizModal = ({
 
   const handleAnswerChange = (questionId: number, optionId: number) => {
     setSelectedOptionId(optionId);
-    setHasChecked(false);
-    setIsCorrect(null);
-    setShowAnswerButton(true);
-  };
-
-  const handleCheckAnswer = (questionId: number) => {
-    if (!selectedOptionId) return;
-
-    const q = questions.find(q => q.questionId === questionId);
-    const correctOption = q?.options?.find((o: any) => o.isCorrect);
-    const correct = Number(correctOption?.optionId) === Number(selectedOptionId);
-
-    setHasChecked(true);
-    setIsCorrect(correct);
-
-    if (correct) {
-      setAnswers(prev => ({
-        ...prev,
-        [String(questionId)]: selectedOptionId,
-      }));
-      fireConfetti();
-    }
+    setAnswers(prev => ({
+      ...prev,
+      [String(questionId)]: optionId,
+    }));
   };
 
   const handleContinue = () => {
-    setSelectedOptionId(null);
-    setHasChecked(false);
-    setIsCorrect(null);
-    setShowAnswerButton(false);
-    setCurrentQuestionIndex(i => i + 1);
+    if (!canContinue) return;
+    setCurrentQuestionIndex(i => Math.min(i + 1, Math.max(questions.length - 1, 0)));
   };
 
   const handleSubmit = async () => {
@@ -129,7 +116,7 @@ const QuizModal = ({
 
     setSubmitting(true);
     try {
-      await dispatch(
+      const result = await dispatch(
         submitModuleQuizAttempt({
           courseId,
           moduleId,
@@ -139,6 +126,10 @@ const QuizModal = ({
       ).unwrap();
 
       toast.success('Quiz submitted successfully!');
+      fireConfetti();
+      onComplete?.(result);
+
+      // đóng modal (không reload)
       onClose();
     } catch (e: any) {
       toast.error(e?.message || 'Quiz submission failed');
@@ -147,26 +138,31 @@ const QuizModal = ({
     }
   };
 
-  if (loading && !attempt) {
+  // ======= RETURNS (after ALL hooks) =======
+  const showInitialLoading = loading && !attempt;
+  const showInitialError = !!error && !attempt;
+  const noQuestions = !questions.length;
+
+  if (showInitialLoading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
-  if (error && !attempt) {
+  if (showInitialError) {
     return (
       <div className="min-h-screen flex items-center justify-center text-red-600">{error}</div>
     );
   }
 
-  if (!questions.length) {
+  if (noQuestions) {
     return (
       <div className="min-h-screen flex items-center justify-center">
+        <button className="absolute top-3 right-3 text-xl" onClick={onClose}>
+          ×
+        </button>
         <p>No questions available</p>
       </div>
     );
   }
-
-  const currentQuestion = questions[currentQuestionIndex];
-  const correctOption = currentQuestion.options?.find((o: any) => o.isCorrect);
 
   return (
     <div className="min-h-screen flex justify-center px-4 pt-10">
@@ -178,22 +174,18 @@ const QuizModal = ({
         <h2 className="text-2xl font-bold text-center text-purple-700 mb-8">📝 Take Quiz</h2>
 
         <p className="font-medium mb-3">
-          {currentQuestionIndex + 1}. {currentQuestion.content}
+          {currentQuestionIndex + 1}. {currentQuestion?.content}
         </p>
 
         <div className="space-y-2">
-          {currentQuestion.options.map((opt: any) => (
+          {currentQuestion?.options?.map((opt: any) => (
             <label
               key={opt.optionId}
               className={`block px-4 py-2 rounded border cursor-pointer
                 ${
                   selectedOptionId === opt.optionId
-                    ? hasChecked
-                      ? isCorrect
-                        ? 'bg-green-50 border-green-600'
-                        : 'bg-red-50 border-red-600'
-                      : 'bg-purple-50 border-purple-600'
-                    : 'border-gray-300'
+                    ? 'bg-purple-50 border-purple-600'
+                    : 'border-gray-300 hover:bg-gray-50'
                 }`}
             >
               <input
@@ -208,41 +200,28 @@ const QuizModal = ({
         </div>
 
         <div className="mt-4 flex justify-end gap-3">
-          {!hasChecked && (
+          {isLast ? (
             <button
-              onClick={() => handleCheckAnswer(currentQuestion.questionId)}
-              disabled={selectedOptionId === null}
-              className="px-4 py-2 border border-purple-600 text-purple-600 rounded"
+              onClick={handleSubmit}
+              disabled={submitting || !canContinue}
+              className="px-4 py-2 bg-green-600 text-white rounded disabled:opacity-50"
             >
-              CHECK ANSWER
+              {submitting ? 'Submitting...' : 'FINISH QUIZ'}
+            </button>
+          ) : (
+            <button
+              onClick={handleContinue}
+              disabled={!canContinue}
+              className="px-4 py-2 bg-purple-600 text-white rounded disabled:opacity-50"
+            >
+              CONTINUE
             </button>
           )}
-
-          {hasChecked &&
-            (currentQuestionIndex === questions.length - 1 ? (
-              <button
-                onClick={handleSubmit}
-                disabled={submitting}
-                className="px-4 py-2 bg-green-600 text-white rounded"
-              >
-                FINISH QUIZ
-              </button>
-            ) : (
-              <button
-                onClick={handleContinue}
-                className="px-4 py-2 bg-purple-600 text-white rounded"
-              >
-                CONTINUE
-              </button>
-            ))}
         </div>
 
-        {hasChecked && isCorrect && (
-          <div className="mt-4 text-sm">
-            <p className="text-green-600 font-medium">Correct answer: {correctOption?.content}</p>
-            <p className="text-gray-600 mt-1">{currentQuestion.explanation || 'No explanation'}</p>
-          </div>
-        )}
+        <div className="min-h-[24px] mt-3 text-sm text-gray-600">
+          {!canContinue ? 'Please select an answer to continue.' : ''}
+        </div>
       </div>
     </div>
   );

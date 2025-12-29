@@ -258,14 +258,14 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout, onClose }) => {
             </div>
           </details>
         </div>
-        <div className="flex flex-col -mx-4 border-b">
+        {/* <div className="flex flex-col -mx-4 border-b">
           <Link
             to="/purchase-history"
             className="block w-full px-4 py-3 hover:bg-purple-100 hover:text-purple-600"
           >
             Purchase history
           </Link>
-        </div>
+        </div> */}
         <div className="flex flex-col -mx-4 border-b">
           <Link
             to="/edit-profile"

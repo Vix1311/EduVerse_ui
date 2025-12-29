@@ -53,7 +53,7 @@ type CreateCouponPayload = {
   maxUses: number;
   perUserLimit: number;
   expirationDate: string;
-  courseId: number;
+  courseId: number | null;
 };
 
 const CouponPage = () => {
@@ -277,8 +277,8 @@ const CouponPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.discountType || !form.expirationDate) {
-      toast.error('Please fill in the Discount type and Expiration date');
+    if (!form.expirationDate) {
+      toast.error('Please fill in the Expiration date');
       return;
     }
 
@@ -292,7 +292,7 @@ const CouponPage = () => {
         maxUses: Number(form.maxUses),
         perUserLimit: Number(form.perUserLimit),
         expirationDate: isoExpiration,
-        courseId: form.courseId ?? 0, // ✅ không còn null
+        courseId: form.courseId ?? null, 
       };
 
       if (editingRow) {
@@ -386,9 +386,7 @@ const CouponPage = () => {
                       <td className="p-2">{formatDiscountValue(row)}</td>
                       <td className="p-2">{row.maxUses}</td>
                       <td className="p-2">{row.perUserLimit}</td>
-                      <td className="p-2">
-                        {row.courseId ? `#${row.courseId}` : 'Tất cả khóa học'}
-                      </td>
+                      <td className="p-2">{row.courseId ? `#${row.courseId}` : 'All courses'} </td>
                       <td className="p-2">{formatDateTime(row.expirationDate)}</td>
                       <td className="p-2">
                         <div className="flex items-center justify-center gap-2">
@@ -454,7 +452,7 @@ const CouponPage = () => {
                       className="w-full border rounded px-3 py-2"
                       value={form.code}
                       onChange={e => handleChange('code', e.target.value)}
-                      placeholder="Để trống để random"
+                      placeholder="Leave blank for random"
                     />
                   </div>
                   <div>
@@ -544,7 +542,7 @@ const CouponPage = () => {
                     type="submit"
                     className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
                   >
-                    {editingRow ? 'Lưu thay đổi' : 'Tạo mới'}
+                    {editingRow ? 'Save changes' : 'Create new'}
                   </button>
                 </div>
               </form>
