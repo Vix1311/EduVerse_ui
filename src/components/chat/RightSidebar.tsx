@@ -463,7 +463,7 @@ const RightSidebar: React.FC = () => {
       <div className="px-5 text-xs mt-6">
         <p className="font-semibold text-[#F48C06]">Media</p>
 
-        <div className="mt-3 max-h-[200px] overflow-y-auto grid grid-cols-2 gap-3">
+        <div className="mt-3 max-h-[200px] overflow-y-auto scrollbar-soft grid grid-cols-2 gap-3">
           {msgImages.map((url, index) => (
             <a
               key={index}
@@ -484,7 +484,7 @@ const RightSidebar: React.FC = () => {
       {/* Members section with Kick button */}
       <div className="px-5 text-xs mt-6 pb-4">
         <p className="font-semibold text-[#F48C06]">Members</p>
-        <div className="mt-3 flex flex-col gap-3 max-h-60 overflow-y-auto">
+        <div className="mt-3 flex flex-col gap-3 max-h-60 overflow-y-auto scrollbar-soft">
           {members.map((m: ConversationMember) => {
             const isMe = myMember && myMember.userId === m.userId;
             return (

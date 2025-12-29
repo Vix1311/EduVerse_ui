@@ -28,19 +28,19 @@ export type Coupon = {
   createdAt: string;
   updatedAt: string | null;
   deletedAt: string | null;
-  courseId: number;
+  courseId: number | null;
   createdById?: number | null;
   updatedById?: number | null;
 };
 
 export type CreateCouponPayload = {
-  code?: string; 
+  code?: string;
   discountType: 'Fixed' | 'Percent' | string;
   discountAmount: number;
   maxUses: number;
   perUserLimit: number;
   expirationDate: string; // ISO string
-  courseId: number;
+  courseId: number | null;
 };
 
 type CouponState = {

@@ -186,7 +186,7 @@ const HashtagPage = () => {
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md mx-4">
               <div className="border-b px-6 py-4 flex justify-between items-center">
                 <h2 className="text-lg font-semibold">
-                  {editingRow ? 'Sửa hashtag' : 'Thêm hashtag'}
+                  {editingRow ? 'Edit hashtag' : 'Add hashtag'}
                 </h2>
                 <button
                   type="button"

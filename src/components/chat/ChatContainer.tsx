@@ -286,9 +286,6 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
               <span className="text-sm md:text-base font-semibold text-black">
                 {selectedUser.fullName}
               </span>
-              <span className="text-[11px] text-gray-400">
-                {isOnline ? 'Online' : 'Offline'} · Chat support
-              </span>
             </div>
           </div>
         </div>
@@ -334,7 +331,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
           </button>
 
           {pinnedExpanded && (
-            <div className="mt-2 bg-[#1E1D33] rounded-2xl p-2 max-h-48 overflow-y-auto space-y-1">
+            <div className="mt-2 bg-[#1E1D33] rounded-2xl p-2 max-h-48 overflow-y-auto scrollbar-soft space-y-1">
               {pinnedMessages.map(msg => {
                 const messageId = String(msg._id || (msg as any).id);
                 const isImageMsg = msg.messageType === 'IMAGE';
@@ -370,7 +367,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
       )}
 
       {/* ====== MESSAGES ====== */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3 space-y-3">
+      <div className="flex-1 min-h-0 overflow-y-auto scrollbar-soft px-4 py-3 space-y-3">
         {messages.map(msg => {
           const messageId = String(msg._id || (msg as any).id);
           const isMine = !!currentUserId && String(msg.senderId) === currentUserId;

@@ -124,16 +124,17 @@ export default function ModuleSheet({
               placeholder="Short description of chapter content"
             />
           </div>
-
-          <div>
-            <label className="block text-sm mb-1">Chapter Order</label>
-            <Input
-              type="number"
-              value={chapterOrder}
-              onChange={e => setChapterOrder(Number(e.target.value) || 1)}
-              min={1}
-            />
-          </div>
+          {mode === 'edit' && (
+            <div>
+              <label className="block text-sm mb-1">Chapter Order</label>
+              <Input
+                type="number"
+                value={chapterOrder}
+                onChange={e => setChapterOrder(Number(e.target.value) || 1)}
+                min={1}
+              />
+            </div>
+          )}
         </div>
 
         <SheetFooter className="mt-6 flex justify-between">

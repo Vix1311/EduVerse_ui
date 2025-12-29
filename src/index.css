@@ -181,3 +181,33 @@ body {
     width: 500px !important;
   }
 }
+
+/* 1) Chặn layout shift khi scrollbar xuất hiện/mất */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* 2) Scrollbar gọn + auto-hide (Webkit: Chrome/Edge/Safari) */
+.scrollbar-soft::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-soft::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-soft::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0);
+  border-radius: 999px;
+}
+.scrollbar-soft:hover::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.45); 
+}
+
+/* 3) Firefox */
+.scrollbar-soft {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0) transparent; 
+}
+.scrollbar-soft:hover {
+  scrollbar-color: rgba(100, 116, 139, 0.45) transparent;
+}
