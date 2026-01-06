@@ -124,10 +124,14 @@ const LessonQuizModal = ({
   const noQuestions = !questions.length;
 
   const ReviewBlock = () => (
-    <div className="w-full max-w-screen-sm pb-10">
-      <h2 className="text-2xl font-bold text-purple-700 text-center mt-10 mb-8">🔎 Review Quiz</h2>
+    <div className="w-full max-w-screen-sm h-[80vh] flex flex-col">
+      {/* Header */}
+      <div className="shrink-0 pt-6 pb-4">
+        <h2 className="text-2xl font-bold text-purple-700 text-center">🔎 Review Quiz</h2>
+      </div>
 
-      <div className="max-h-[70vh] overflow-y-auto scrollbar-soft pr-2">
+      {/* Body scroll */}
+      <div className="flex-1 overflow-y-auto scrollbar-soft pr-2 pb-6">
         {questions.map((q, idx) => {
           const correct = q.options?.find((o: any) => o.isCorrect);
           const userPicked = answers[String(q.questionId)];
@@ -174,8 +178,8 @@ const LessonQuizModal = ({
         })}
       </div>
 
-      {/* nút Finish nằm ngoài vùng scroll */}
-      <div className="mt-6 flex justify-center">
+      {/* Footer sticky */}
+      <div className="shrink-0 sticky backdrop-blurpy-4 flex justify-center">
         <button
           onClick={onClose}
           className="px-8 py-3 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition"

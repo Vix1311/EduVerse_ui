@@ -52,7 +52,6 @@ export default function RegisterFormContent({ onSwitchToLogin }: Props) {
     onSuccess: () => {
       const email = form.getValues().email;
       toast.success('Register success 🚀');
-      setTimeout(() => navigate(`/verify-otp?email=${email}`), 800);
     },
     onError: (error: any) => {
       console.error('❌ Register failed:', error);

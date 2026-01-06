@@ -3,6 +3,7 @@ import { Lesson } from '@/models/interface/moduleBuilder.interface';
 import { Pencil, Trash2, ExternalLink } from 'lucide-react';
 import type { AppDispatch } from '@/core/store/store';
 import { deleteLesson } from '@/redux/slices/courseForm.slice';
+import { getLessons } from '@/redux/slices/module.slice';
 import { toast } from 'react-toastify';
 
 interface Props {
@@ -26,6 +27,7 @@ export default function LessonItem({ lesson, courseId, moduleId, onEdit }: Props
           lessonId: Number(lesson.id),
         }),
       ).unwrap();
+      await dispatch(getLessons({ courseId, moduleId })).unwrap();
       toast.success('Delete successfully');
     } catch (err: any) {
       console.error(err);
@@ -72,7 +74,6 @@ export default function LessonItem({ lesson, courseId, moduleId, onEdit }: Props
       </div>
 
       <div className="flex items-center gap-2">
-        {/* Delete */}
         <button
           type="button"
           onClick={handleDelete}
@@ -82,7 +83,6 @@ export default function LessonItem({ lesson, courseId, moduleId, onEdit }: Props
           <Trash2 size={14} className="text-red-600" />
         </button>
 
-        {/* Edit */}
         <button
           type="button"
           onClick={() => onEdit(lesson)}

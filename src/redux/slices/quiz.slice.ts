@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE_URL = 'https://eduverseapi-production.up.railway.app/api/v1';
+const API_BASE_URL = 'http://localhost:8080/api/v1';
 const API_KEY = 'NestjsSuper@Elearning$2025';
 
 const headers = () => ({

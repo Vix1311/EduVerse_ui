@@ -38,7 +38,7 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout, onClose }) => {
   const avatarUrl = user?.avatar
     ? user.avatar.startsWith('http')
       ? user.avatar
-      : `https://eduverseapi-production.up.railway.app/${user.avatar}`
+      : `http://localhost:8080/${user.avatar}`
     : defaultAvatar;
 
   if (!user) return null;

@@ -83,13 +83,20 @@ const Users = () => {
         isApproved: !!u.isApproved,
       }))
       .filter(u => {
+        // Tránh duplicate với extraRows
         if (extraRows.some(x => x.id === u.id)) return false;
 
+        // Filter theo role nếu có selectedRole
         if (!selectedRole) return true;
 
-        if (selectedRole === 'student') return true; 
-        if (selectedRole === 'instructor') return true; 
-        return true;
+        // Map selectedRole sang roleId (giả sử: student=1, instructor=2, admin=3)
+        const roleMap: Record<string, number> = {
+          student: 1,
+          instructor: 2,
+          admin: 5,
+        };
+        const expectedRoleId = roleMap[selectedRole];
+        return expectedRoleId ? u.roleId === expectedRoleId : true;
       }),
   ];
 

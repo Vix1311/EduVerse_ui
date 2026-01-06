@@ -23,6 +23,7 @@ import { toast } from 'react-toastify';
 import ModuleBuilder from '@/components/moduleBuilder/ModuleBuilder';
 import { FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
+import { set } from 'lodash';
 
 /* ----------------------------- Status Label ----------------------------- */
 function StatusLabel({ status }: { status: 'pending' | 'approved' }) {
@@ -51,6 +52,7 @@ type Course = {
   title: string;
   description: string;
   thumbnail: string;
+  videoUrl: string;
   categoryId: number;
   categoryName: string;
   price: number;
@@ -120,6 +122,7 @@ export default function CourseFormPage() {
           title: apiItem.title,
           description: apiItem.description,
           thumbnail: apiItem.thumbnail,
+          videoUrl: apiItem.videoUrl || '',
           categoryId,
           categoryName: catMap[categoryId] ?? '',
           price: Number(apiItem.price || 0),
@@ -447,6 +450,7 @@ function CourseCreate({
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [videoUrl, setVideoUrl] = useState('');
   const [thumbnail, setThumbnail] = useState('');
   const [categoryId, setCategoryId] = useState<number | ''>('');
   const [price, setPrice] = useState<number>(0);
@@ -485,7 +489,8 @@ function CourseCreate({
     if (isFree) setPrice(0);
   }, [isFree]);
 
-  const canCreate = title.trim() && description.trim() && thumbnail.trim() && categoryId;
+  const canCreate =
+    title.trim() && description.trim() && thumbnail.trim() && videoUrl.trim() && categoryId;
 
   // Hashtag manage handlers
   const handleCreateHashtag = async () => {
@@ -572,6 +577,16 @@ function CourseCreate({
           />
         </div>
 
+        <div>
+          <label className="block text-sm mb-1">Preview Video URL</label>
+          <textarea
+            value={videoUrl}
+            onChange={e => setVideoUrl(e.target.value)}
+            rows={2}
+            className="w-full border rounded-md p-2 text-sm"
+            placeholder="https://youtube.com/watch?v=..."
+          />
+        </div>
         <div>
           <label className="block text-sm mb-1">Thumbnail URL</label>
           <textarea
@@ -761,6 +776,7 @@ function CourseCreate({
                 description: description.trim(),
                 thumbnail: thumbnail.trim(),
                 categoryId: Number(categoryId),
+                videoUrl: videoUrl.trim(),
                 price: isFree ? 0 : Number(price || 0),
                 hashtagIds,
                 isFree,
@@ -777,6 +793,7 @@ function CourseCreate({
                 setTitle('');
                 setDescription('');
                 setThumbnail('');
+                setVideoUrl('');
                 setCategoryId('');
                 setPrice(0);
                 setIsFree(false);
@@ -886,6 +903,7 @@ function CourseEdit({
   const [title, setTitle] = useState(course.title);
   const [description, setDescription] = useState(course.description);
   const [thumbnail, setThumbnail] = useState(course.thumbnail);
+  const [videoUrl, setVideoUrl] = useState(course.videoUrl);
   const [categoryId, setCategoryId] = useState<number | ''>(course.categoryId || '');
   const [price, setPrice] = useState<number>(course.price);
   const [isFree, setIsFree] = useState(course.isFree);
@@ -898,6 +916,7 @@ function CourseEdit({
     setTitle(course.title);
     setDescription(course.description);
     setThumbnail(course.thumbnail);
+    setVideoUrl(course.videoUrl || '');
     setCategoryId(course.categoryId || '');
     setPrice(course.price);
     setIsFree(course.isFree);
@@ -924,7 +943,8 @@ function CourseEdit({
     if (isFree) setPrice(0);
   }, [isFree]);
 
-  const canSave = title.trim() && description.trim() && thumbnail.trim() && categoryId;
+  const canSave =
+    title.trim() && description.trim() && thumbnail.trim() && videoUrl.trim() && categoryId;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6">
@@ -953,6 +973,17 @@ function CourseEdit({
             rows={3}
             className="w-full border rounded-md p-2 text-sm"
             placeholder="Describe the course…"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm mb-1">Preview Video URL</label>
+          <textarea
+            value={videoUrl}
+            onChange={e => setVideoUrl(e.target.value)}
+            rows={2}
+            className="w-full border rounded-md p-2 text-sm"
+            placeholder="https://youtube.com/watch?v=..."
           />
         </div>
 
@@ -1041,6 +1072,7 @@ function CourseEdit({
                 title: title.trim(),
                 description: description.trim(),
                 thumbnail: thumbnail.trim(),
+                videoUrl: videoUrl.trim(),
                 categoryId: Number(categoryId),
                 price: isFree ? 0 : Number(price || 0),
                 hashtagIds,
@@ -1072,6 +1104,7 @@ function CourseEdit({
               setTitle(course.title);
               setDescription(course.description);
               setThumbnail(course.thumbnail);
+              setVideoUrl(course.videoUrl || '');
               setCategoryId(course.categoryId || '');
               setPrice(course.price);
               setIsFree(course.isFree);

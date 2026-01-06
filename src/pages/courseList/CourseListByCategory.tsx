@@ -16,7 +16,7 @@ const CourseByCategory = () => {
       dispatch(fetchCoursesByCategory(categoryId));
     }
   }, [categoryId, dispatch]);
-
+  console.log('Courses in category:', courses);
   return (
     <>
       <Header />

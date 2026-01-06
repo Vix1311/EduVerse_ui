@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import useRoutesElements from '@/hooks/useRouterElement';
 import ScrollToTop from './components/scrollToTop/ScrollToTop';
-// import FeedbackWidget from './components/feedback/Feedback';
+import FeedbackWidget from './components/feedback/Feedback';
 import { RootState } from './core/store/store';
 import { useSelector } from 'react-redux';
 import LoaderOverlay from './components/loader/LoaderOverlay';
@@ -75,7 +75,7 @@ function App() {
       <ScrollToTop />
       {routerDom}
       {showLoader && <LoaderOverlay />}
-
+      <FeedbackWidget />
     </>
   );
 }

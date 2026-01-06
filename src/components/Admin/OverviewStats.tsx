@@ -19,7 +19,7 @@ interface StatItem {
 const OverviewStats = () => {
   const [stats, setStats] = useState<StatItem[]>([]);
   useEffect(() => {
-    axios(' https://eduverseapi-production.up.railway.app/data/overviewStats.json').then(res => {
+    axios(' http://localhost:8080/data/overviewStats.json').then(res => {
       setStats(res.data);
     });
   }, []);

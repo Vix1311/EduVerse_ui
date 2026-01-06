@@ -9,7 +9,7 @@ const Step3Lesson = ({ courseId, topicId, topicTitle, setCourseData, goNext, goB
   const createLesson = async (withNext: boolean = true) => {
     try {
       const res = await axios.post(
-        `https://eduverseapi-production.up.railway.app/api/v1/courses/${courseId}/topics/${topicId}/lessons`,
+        `http://localhost:8080/api/v1/courses/${courseId}/topics/${topicId}/lessons`,
         { title, duration },
         {
           headers: {

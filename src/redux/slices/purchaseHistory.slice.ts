@@ -19,7 +19,7 @@ export const fetchPurchases = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('access_token');
-      const res = await axios.get(`https://eduverseapi-production.up.railway.app/api/v1/orders`, {
+      const res = await axios.get(`http://localhost:8080/api/v1/orders`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

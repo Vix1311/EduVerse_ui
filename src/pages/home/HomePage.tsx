@@ -1,4 +1,5 @@
 import Advancefeature from '@/components/advanceFeature/Advancefeature';
+import ChatbotFloating from '@/components/chatbox/ChatbotFloating';
 import Companies from '@/components/companies/Companies';
 import Comunities from '@/components/comunities/Comunities';
 import Comunities2 from '@/components/comunities/Comunities2';
@@ -24,6 +25,7 @@ const HomePage = () => {
         <Comunities />
         <Companies />
         <Testimonial />
+        <ChatbotFloating />
         <Footer />
       </div>
     </div>

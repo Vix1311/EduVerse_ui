@@ -160,7 +160,7 @@ const Header: React.FC = () => {
   const avatarUrl = userProfile?.avatar
     ? userProfile.avatar.startsWith('http')
       ? userProfile.avatar
-      : `https://eduverseapi-production.up.railway.app/${userProfile.avatar}`
+      : `http://localhost:8080/${userProfile.avatar}`
     : defaultAvatar;
 
   const formatCount = (n: number) => (n >= 99 ? '99+' : String(n));

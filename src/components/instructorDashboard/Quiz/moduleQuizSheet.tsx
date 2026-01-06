@@ -429,6 +429,7 @@ export default function ModuleQuizSheet({
   /* ==========================================================
      Submit new / edited OPTIONS
   ========================================================== */
+  const MAX_OPTIONS = 4;
   const handleSubmitNewOptions = async () => {
     if (!canSubmitNewOptions) return;
     if (
@@ -461,6 +462,20 @@ export default function ModuleQuizSheet({
       );
       toast.success('Option updated!');
     } else {
+      const q = previewQuestions.find(q => q.id === selectedQuestionId);
+      const existingCount = q?.options?.length ?? 0;
+
+      if (!editingOptionId) {
+        const trimmed = newOptions.filter(o => o.content.trim());
+
+        if (existingCount + trimmed.length > MAX_OPTIONS) {
+          toast.error(
+            `Max ${MAX_OPTIONS} options per question. You already have ${existingCount}.`,
+          );
+          return;
+        }
+      }
+
       // CREATE NHIỀU OPTION
       for (let i = 0; i < trimmed.length; i++) {
         const opt = trimmed[i];

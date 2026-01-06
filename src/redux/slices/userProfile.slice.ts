@@ -44,7 +44,7 @@ export const fetchUserProfile = createAsyncThunk('userProfile/fetch', async (_, 
     const token = getAccessTokenFromLS();
     if (!token) return thunkAPI.rejectWithValue('No token');
 
-    const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/auth/profile', {
+    const res = await axios.get('http://localhost:8080/api/v1/auth/profile', {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -93,7 +93,7 @@ export const updateUserProfile = createAsyncThunk(
         dateOfBirth: formData.date_of_birth || '',
       };
 
-      await axios.patch('https://eduverseapi-production.up.railway.app/api/v1/auth/profile', payload, {
+      await axios.patch('http://localhost:8080/api/v1/auth/profile', payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -115,7 +115,7 @@ export const uploadUserImage = createAsyncThunk(
       const form = new FormData();
       form.append('file', file);
 
-      const res = await axios.post('https://eduverseapi-production.up.railway.app/api/v1/auth/avatar', form, {
+      const res = await axios.post('http://localhost:8080/api/v1/auth/avatar', form, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,

@@ -82,7 +82,7 @@ export const fetchCoursesAndWishlist = createAsyncThunk(
   async (_, { rejectWithValue, dispatch }) => {
     try {
       const token = localStorage.getItem('access_token');
-      const courseRes = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/course/public');
+      const courseRes = await axios.get('http://localhost:8080/api/v1/course/public');
       let rawCourses: any[] =
         courseRes?.data?.items ??
         courseRes?.data?.data?.items ??
@@ -98,10 +98,10 @@ export const fetchCoursesAndWishlist = createAsyncThunk(
           .sort(() => 0.5 - Math.random())
           .slice(0, 10)
           .map(mapToCourse);
-
+      console.log('Fetched courses:', rawCourses);
       let wishlistIds: string[] = [];
       if (token) {
-        const wl = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/wishlist', {
+        const wl = await axios.get('http://localhost:8080/api/v1/wishlist', {
           headers: { Authorization: `Bearer ${token}` },
         });
         const results = wl.data?.data?.results ?? [];
@@ -132,7 +132,7 @@ export const fetchWishlist = createAsyncThunk(
       const token = localStorage.getItem('access_token');
       if (!token) return [];
 
-      const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/wishlist', {
+      const res = await axios.get('http://localhost:8080/api/v1/wishlist', {
         headers: { Authorization: `Bearer ${token}` },
       });
 

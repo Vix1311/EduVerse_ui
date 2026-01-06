@@ -64,8 +64,20 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
   const avatarUrl = userProfile?.avatar
     ? userProfile.avatar.startsWith('http')
       ? userProfile.avatar
-      : `https://eduverseapi-production.up.railway.app/${userProfile.avatar}`
-    : (defaultAvatar as string);
+      : `http://localhost:8080/${userProfile.avatar}`
+    : defaultAvatar;
+
+  const resolveAvatar = (avatar?: string | null) => {
+    const a = (avatar ?? '').trim();
+    if (!a || a === 'null' || a === 'undefined') return defaultAvatar;
+
+    if (a.startsWith('data:')) return a;
+
+    if (a.startsWith('http://') || a.startsWith('https://')) return a;
+
+    const cleaned = a.startsWith('/') ? a.slice(1) : a;
+    return `http://localhost:8080/${cleaned}`;
+  };
 
   const scrollEndRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null); // textarea auto-grow
@@ -273,10 +285,15 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
           <div className="flex items-center gap-3">
             <div className="relative">
               <img
-                src={selectedUser.profilePic || (defaultAvatar as string)}
+                src={resolveAvatar(selectedUser.profilePic)}
+                onError={e => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = defaultAvatar as string;
+                }}
                 alt="avatar"
                 className="w-9 h-9 rounded-full object-cover border border-purple-600/70"
               />
+
               {isOnline && (
                 <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border border-[#252641] bg-green-500"></span>
               )}
@@ -292,10 +309,15 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
 
         <div className="flex items-center gap-2">
           <img
-            src={avatarUrl}
+            src={resolveAvatar(userProfile?.avatar)}
+            onError={e => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = defaultAvatar as string;
+            }}
             alt="me"
             className="hidden md:block w-9 h-9 rounded-full object-cover border border-purple-600/60"
           />
+
           <button
             type="button"
             className="inline-flex items-center justify-center w-9 h-9 rounded-full   "
@@ -387,10 +409,11 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
           const senderMember = members.find(
             m => String(m.user?.id ?? m.userId) === String(msg.senderId),
           );
-          const otherAvatar =
-            senderMember?.user?.avatar || selectedUser.profilePic || (defaultAvatar as string);
+          const otherAvatar = resolveAvatar(senderMember?.user?.avatar);
 
-          const avatarSrc = isMine ? avatarUrl : otherAvatar;
+          const avatarSrc = isMine
+            ? resolveAvatar(userProfile?.avatar)
+            : resolveAvatar(senderMember?.user?.avatar);
           const createdAtText = new Date(msg.createdAt).toLocaleString();
 
           return (
@@ -409,6 +432,10 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
                 {/* AVATAR */}
                 <img
                   src={avatarSrc}
+                  onError={e => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = defaultAvatar as string;
+                  }}
                   alt="avatar"
                   className="w-7 h-7 rounded-full object-cover border border-purple-600/50 flex-shrink-0"
                 />

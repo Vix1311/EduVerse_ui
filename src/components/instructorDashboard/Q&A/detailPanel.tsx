@@ -1,19 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { FaAngleLeft, FaArrowLeft } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaArrowLeft } from 'react-icons/fa';
 import type { QARole, ThreadStatus, ThreadSummary } from './q&a';
 import { path as PATHS } from '@/core/constants/path';
 
-const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || 'https://eduverseapi-production.up.railway.app/api/v1';
+const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
 
 interface ThreadDetail extends ThreadSummary {
   locked?: boolean;
   acceptedPostId?: number | null;
   isResolved?: boolean;
-  courseName?: string;
+  courseName?: string | null;
   lessonName?: string | null;
   participants?: string[];
-  // NOTE: layout mới còn có category, participants chi tiết... hiện BE chưa trả -> không dùng
+  // NOTE: The new layout may include category/participant details, but the backend doesn't provide them yet.
 }
 
 interface Post {
@@ -24,8 +23,8 @@ interface Post {
   content: string;
   isEdited?: boolean;
   parentId?: number | null;
-  // EXTRA vs qa-thread.html:
-  // backend có thể trả flag isMine, dùng để cho phép client Edit/Delete
+
+  // Backend may return `isMine` to allow client Edit/Delete
   isMine?: boolean;
 }
 
@@ -34,26 +33,25 @@ interface DetailPanelProps {
   onClose: () => void;
   role: QARole;
   thread: ThreadSummary | null;
-  onAfterChange?: () => void; // reload list khi status/lock/accept thay đổi
+  onAfterChange?: () => void; // reload list when status/lock/accept changes
 }
 
 /* ===== Helpers ===== */
 
 const api = (path: string) => `${API_BASE}${path}`;
 
-// Giữ nguyên headers & auth giống file cũ
 const buildHeaders = (): HeadersInit => {
-  // Token từ app (login thật)
+  // Real token from app login
   let token = localStorage.getItem('access_token') || '';
 
-  // Nếu token không có prefix Bearer thì tự thêm
+  // Ensure Bearer prefix
   if (token && !token.toLowerCase().startsWith('bearer ')) {
     token = `Bearer ${token}`;
   }
 
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
-    'x-api-key': 'NestjsSuper@Elearning$2025', // ĐÚNG EXACT như BE đang dùng
+    'x-api-key': 'NestjsSuper@Elearning$2025', // Must match backend exactly
   };
 
   if (token) {
@@ -76,7 +74,7 @@ const timeAgo = (iso: string) => {
 
 const classNames = (...xs: (string | null | false | undefined)[]) => xs.filter(Boolean).join(' ');
 
-const Dot = ({ className = '' }) => (
+const Dot = ({ className = '' }: { className?: string }) => (
   <span className={classNames('inline-block h-1.5 w-1.5 rounded-full', className)} />
 );
 
@@ -114,8 +112,9 @@ const StatusBadge: React.FC<{ status: ThreadStatus }> = ({ status }) => {
 };
 
 const Avatar: React.FC<{ name: string }> = ({ name }) => {
-  const initials = name
+  const initials = (name || 'U')
     .split(' ')
+    .filter(Boolean)
     .map(p => p[0])
     .join('')
     .slice(0, 2)
@@ -129,8 +128,7 @@ const Avatar: React.FC<{ name: string }> = ({ name }) => {
 };
 
 /**
- * EXTRA vs qa-thread.html:
- * HTML gốc chỉ innerText, ở đây cho phép một chút format:
+ * Slightly richer than plain text:
  *  - `code`
  *  - [link](https://...)
  *  - **bold**
@@ -138,7 +136,7 @@ const Avatar: React.FC<{ name: string }> = ({ name }) => {
  *  - > quote
  */
 function renderRichText(raw: string): React.ReactNode {
-  const lines = raw.split(/\r?\n/);
+  const lines = (raw || '').split(/\r?\n/);
 
   const renderInline = (t: string): React.ReactNode[] => {
     let out: React.ReactNode[] = [t];
@@ -240,7 +238,7 @@ function renderRichText(raw: string): React.ReactNode {
   return <>{children}</>;
 }
 
-/* ===== Post item (giữ logic cũ, style giống layout mới hơn) ===== */
+/* ===== Post Item ===== */
 
 const PostItem: React.FC<{
   post: Post;
@@ -254,7 +252,6 @@ const PostItem: React.FC<{
   onDelete?: (post: Post) => void;
 }> = ({ post, childrenPosts, role, thread, onReply, onAccept, onUnaccept, onEdit, onDelete }) => {
   const accepted = thread.acceptedPostId === post.id;
-
   const actions: React.ReactNode[] = [];
 
   if (role === 'instructor') {
@@ -330,10 +327,12 @@ const PostItem: React.FC<{
                 {post.isEdited && ' • edited'}
               </span>
             </div>
+
             {actions.length > 0 && (
               <div className="flex flex-wrap items-center gap-2">{actions}</div>
             )}
           </div>
+
           <div className="mt-1 text-[13px] leading-relaxed text-slate-800">
             {renderRichText(post.content || '')}
           </div>
@@ -383,8 +382,7 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
   const [editingPostId, setEditingPostId] = useState<number | null>(null);
   const [editingContent, setEditingContent] = useState<string>('');
 
-  // EXTRA vs qa-thread.html:
-  // Khoá scroll body khi panel mở
+  // Lock body scroll when panel is open
   useEffect(() => {
     if (!open) return;
     const body = document.body;
@@ -404,13 +402,13 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
     try {
       const path =
         role === 'instructor' ? `/qa/seller/threads/${threadId}` : `/qa/client/threads/${threadId}`;
-      const res = await fetch(api(path), {
-        headers: buildHeaders(),
-      });
+
+      const res = await fetch(api(path), { headers: buildHeaders() });
       if (!res.ok) {
         const txt = await res.text();
         throw new Error(`Error ${res.status}: ${txt}`);
       }
+
       const t = await res.json();
       const mapped: ThreadDetail = {
         id: t.id,
@@ -428,6 +426,7 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
         lessonName: t.lesson?.title || null,
         participants: [t.author?.fullname, t.instructor?.fullname].filter(Boolean),
       };
+
       setDetail(mapped);
     } catch (e: any) {
       setError(e?.message || String(e));
@@ -445,13 +444,13 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
         role === 'instructor'
           ? `/qa/seller/threads/${threadId}/posts`
           : `/qa/client/threads/${threadId}/posts`;
-      const res = await fetch(api(path), {
-        headers: buildHeaders(),
-      });
+
+      const res = await fetch(api(path), { headers: buildHeaders() });
       if (!res.ok) {
         const txt = await res.text();
         throw new Error(`Error ${res.status}: ${txt}`);
       }
+
       const data = await res.json();
       const items = data.items || data || [];
 
@@ -463,8 +462,9 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
         content: p.content,
         isEdited: p.isEdited,
         parentId: p.parentId,
-        isMine: p.isMine, // nếu backend có
+        isMine: p.isMine,
       }));
+
       setPosts(mapped);
     } catch (e: any) {
       setError(e?.message || String(e));
@@ -487,6 +487,7 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
   const roots = useMemo(() => {
     const byParent: Record<number, Post[]> = {};
     const rootList: Post[] = [];
+
     posts.forEach(p => {
       if (p.parentId) {
         if (!byParent[p.parentId]) byParent[p.parentId] = [];
@@ -495,6 +496,7 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
         rootList.push(p);
       }
     });
+
     return { rootList, byParent };
   }, [posts]);
 
@@ -516,22 +518,24 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
         parentId,
       };
 
-      // API giống qa-thread.html: POST /qa/.../threads/{id}/posts
       const res = await fetch(api(path), {
         method: 'POST',
         headers: buildHeaders(),
         body: JSON.stringify(body),
       });
+
       if (!res.ok) {
         const txt = await res.text();
-        alert(`Send fail ${res.status}: ${txt}`);
+        alert(`Send failed ${res.status}: ${txt}`);
         return;
       }
+
       setReplyContent('');
       setParentId(null);
+
       await loadPosts();
       await loadDetail();
-      if (onAfterChange) onAfterChange();
+      onAfterChange?.();
     } catch (e: any) {
       alert('Network error: ' + (e?.message || String(e)));
     }
@@ -547,12 +551,12 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
       });
       if (!res.ok) {
         const txt = await res.text();
-        alert('Accept fail: ' + txt);
+        alert('Accept failed: ' + txt);
         return;
       }
       await loadDetail();
       await loadPosts();
-      if (onAfterChange) onAfterChange();
+      onAfterChange?.();
     } catch (e: any) {
       alert('Network error: ' + (e?.message || String(e)));
     }
@@ -567,12 +571,12 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
       });
       if (!res.ok) {
         const txt = await res.text();
-        alert('Unaccept fail: ' + txt);
+        alert('Unaccept failed: ' + txt);
         return;
       }
       await loadDetail();
       await loadPosts();
-      if (onAfterChange) onAfterChange();
+      onAfterChange?.();
     } catch (e: any) {
       alert('Network error: ' + (e?.message || String(e)));
     }
@@ -581,7 +585,6 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
   const handleSetStatus = async (status: ThreadStatus) => {
     if (role !== 'instructor' || !threadId) return;
     try {
-      // GIỐNG qa-thread.html: PATCH /qa/seller/threads/{id}/status
       const res = await fetch(api(`/qa/seller/threads/${threadId}/status`), {
         method: 'PATCH',
         headers: buildHeaders(),
@@ -589,11 +592,11 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
       });
       if (!res.ok) {
         const txt = await res.text();
-        alert('Update status fail: ' + txt);
+        alert('Failed to update status: ' + txt);
         return;
       }
       await loadDetail();
-      if (onAfterChange) onAfterChange();
+      onAfterChange?.();
     } catch (e: any) {
       alert('Network error: ' + (e?.message || String(e)));
     }
@@ -602,7 +605,6 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
   const handleSetLock = async (locked: boolean) => {
     if (role !== 'instructor' || !threadId) return;
     try {
-      // GIỐNG qa-thread.html: PATCH /qa/seller/threads/{id}/lock
       const res = await fetch(api(`/qa/seller/threads/${threadId}/lock`), {
         method: 'PATCH',
         headers: buildHeaders(),
@@ -610,11 +612,11 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
       });
       if (!res.ok) {
         const txt = await res.text();
-        alert('Lock/unlock fail: ' + txt);
+        alert('Lock/unlock failed: ' + txt);
         return;
       }
       await loadDetail();
-      if (onAfterChange) onAfterChange();
+      onAfterChange?.();
     } catch (e: any) {
       alert('Network error: ' + (e?.message || String(e)));
     }
@@ -628,9 +630,9 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
 
   const submitEditPost = async () => {
     if (role !== 'client' || !editingPostId) return;
+
     const content = editingContent.trim() || '(empty)';
     try {
-      // GIỐNG qa-thread.html: PATCH /qa/client/posts/{postId}
       const res = await fetch(api(`/qa/client/posts/${editingPostId}`), {
         method: 'PATCH',
         headers: buildHeaders(),
@@ -638,9 +640,10 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
       });
       if (!res.ok) {
         const txt = await res.text();
-        alert('Edit fail: ' + txt);
+        alert('Edit failed: ' + txt);
         return;
       }
+
       setEditingPostId(null);
       setEditingContent('');
       await loadPosts();
@@ -651,16 +654,16 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
 
   const handleDeletePost = async (post: Post) => {
     if (role !== 'client') return;
-    if (!window.confirm('Xoá bình luận này?')) return;
+    if (!window.confirm('Delete this comment?')) return;
+
     try {
-      // GIỐNG qa-thread.html: DELETE /qa/client/posts/{postId}
       const res = await fetch(api(`/qa/client/posts/${post.id}`), {
         method: 'DELETE',
         headers: buildHeaders(),
       });
       if (!res.ok) {
         const txt = await res.text();
-        alert('Delete fail: ' + txt);
+        alert('Delete failed: ' + txt);
         return;
       }
       await loadPosts();
@@ -677,9 +680,8 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
 
   return (
     <aside className="fixed inset-y-0 right-0 z-40 w-full bg-white shadow-xl flex">
-      {/* Cột chính */}
       <div className="flex-1 flex flex-col">
-        {/* Header trên cùng: giống kiểu mới nhưng giữ nút Back cũ cho mobile */}
+        {/* Header */}
         <header className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
           <div className="flex min-w-0 md:ml-2 justify-between items-center gap-3 ">
             <button onClick={onClose}>
@@ -687,15 +689,17 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
                 <FaArrowLeft />
               </div>
             </button>
+
             <div className="border-l-2 border-black pl-3 min-w-0">
               <p className="truncate text-xs text-slate-500">
-                Course {detail.courseName} • Lesson #{detail.lessonName}
+                Course {detail.courseName} • Lesson {detail.lessonName}
               </p>
               <h2 className="truncate text-[18px] md:text-[22px] font-semibold text-slate-900">
                 {detail.title || detail.lessonTitle || '(no title)'}
               </h2>
             </div>
           </div>
+
           <div className="flex items-center gap-2 ml-2">
             {detail.locked && (
               <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700 ring-1 ring-amber-200">
@@ -711,21 +715,21 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
           </div>
         </header>
 
-        {/* Body: 2 cột giống layout mới (conversation + meta) */}
+        {/* Body */}
         <div className="flex-1 min-h-0 overflow-y-auto bg-slate-50">
           <div className="px-10 pt-4 pb-6">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-              {/* ===== Cột trái: discussion ===== */}
+              {/* Left column: Discussion */}
               <div className="min-w-0 space-y-4">
-                {/* Info đầu bài (author + thời gian) */}
+                {/* Top info */}
                 <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600">
                   <span className="font-medium">{detail.authorName}</span>
                   <span className="text-xs text-slate-500">
-                    • Last activity {timeAgo(detail.lastActivityAt)} • #{detail.id}
+                    • Last activity {timeAgo(detail.lastActivityAt)} • {detail.courseName}
                   </span>
                 </div>
 
-                {/* Seller tools (giống file cũ, chỉ đổi style) */}
+                {/* Instructor tools */}
                 {role === 'instructor' && (
                   <div className="flex flex-wrap gap-2 text-xs">
                     <button
@@ -740,6 +744,7 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
                     >
                       Set Resolved
                     </button>
+
                     {!detail.locked ? (
                       <button
                         onClick={() => handleSetLock(true)}
@@ -767,8 +772,9 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
                 {/* Discussion list */}
                 <section className="space-y-3">
                   <div className="text-sm font-semibold text-slate-700">Discussion</div>
+
                   {loadingPosts ? (
-                    <div className="text-sm text-slate-500">Đang tải bình luận...</div>
+                    <div className="text-sm text-slate-500">Loading comments...</div>
                   ) : posts.length === 0 ? (
                     <div className="rounded-lg border border-dashed border-slate-200 px-3 py-4 text-center text-sm text-slate-500 bg-white">
                       No comments yet.
@@ -791,30 +797,31 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
                   )}
                 </section>
 
-                {/* Composer đơn giản (textarea) — giữ nguyên chức năng cũ
-                    NOTE: layout mới dùng InlineComposer + reactions FB, do BE chưa có nên mình KHÔNG dùng,
-                    nếu cần sau này có thể port logic vào đây. */}
+                {/* Reply composer */}
                 {(role === 'instructor' || !detail.locked) && (
                   <section className="mt-4 rounded-lg border border-slate-200 bg-white p-4 space-y-2">
                     <div className="text-xs font-medium text-slate-600 mb-1">
                       {parentId
-                        ? `Replying to comment #${parentId} (click Send để gửi)`
+                        ? `Replying to comment `
                         : 'Your reply'}
                     </div>
+
                     <textarea
                       rows={3}
                       value={replyContent}
                       onChange={e => setReplyContent(e.target.value)}
                       placeholder={
                         detail.locked
-                          ? 'Thread đã bị khoá, không thể trả lời.'
+                          ? 'This thread is locked. You cannot reply.'
                           : 'Type your answer for this learner...'
                       }
                       disabled={detail.locked}
                       className="w-full resize-none rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-800 outline-none focus:border-sky-400 focus:ring-1 focus:ring-sky-300 disabled:bg-slate-100"
                     />
+
                     <div className="flex items-center justify-between text-xs text-slate-500">
                       <span>{remainingChars} characters left</span>
+
                       <div className="flex items-center gap-2">
                         <button
                           type="button"
@@ -826,6 +833,7 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
                         >
                           Clear
                         </button>
+
                         <button
                           type="button"
                           onClick={handleSendReply}
@@ -845,7 +853,7 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
                 )}
               </div>
 
-              {/* ===== Cột phải: meta info giống layout mới ===== */}
+              {/* Right column: Meta */}
               <aside className="min-w-0 space-y-3">
                 {/* Lesson box */}
                 <div className="rounded-lg border border-slate-200 bg-white overflow-hidden">
@@ -860,7 +868,7 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
                   </div>
                 </div>
 
-                {/* Participants box (từ BE: array string đơn giản) */}
+                {/* Participants */}
                 {detail.participants && detail.participants.length > 0 && (
                   <div className="rounded-lg border border-slate-200 bg-white overflow-hidden">
                     <div className="flex items-center justify-between px-3 py-2 border-b border-slate-100">
@@ -880,32 +888,34 @@ const DetailPanel: React.FC<DetailPanelProps> = ({
                 )}
 
                 {/*
-                  ====== CÁC PHẦN CỦA LAYOUT MỚI NHƯNG HIỆN CHƯA CÓ DỮ LIỆU/CHỨC NĂNG BE ======
-                  - Category + icon CATEGORY_ICON dựa vào CommentItem.category
-                  - Reactions (Like/Love/Haha/...) + FacebookCounter, FacebookSelector
-                  - InlineComposer rich (contentEditable) cho reply
-                  - Thread replies dạng "FB style" (chỉ load 1 số, "See more X replies", modal reactions...)
+                  Sections from the newer UI that are not wired yet:
+                  - Category
+                  - Reactions (Like/Love/Haha...)
+                  - Rich inline composer
+                  - "See more replies" behavior
 
-                  TODO sau này nếu BE bổ sung:
-                  - Thêm field category / participants chi tiết vào ThreadDetail
-                  - Thêm API reactions và content rich -> tái sử dụng InlineComposer, ReplyRow, ThreadList
+                  TODO when backend supports them:
+                  - Add category/participant details fields to ThreadDetail
+                  - Add reactions API & rich content support
                 */}
               </aside>
             </div>
           </div>
         </div>
 
-        {/* Modal edit post cho client (giữ ngon như file cũ) */}
+        {/* Client edit modal */}
         {role === 'client' && editingPostId && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <div className="w-full max-w-md rounded-lg bg-white p-4 space-y-3">
               <h3 className="text-sm font-semibold text-slate-800">Edit your comment</h3>
+
               <textarea
                 rows={4}
                 value={editingContent}
                 onChange={e => setEditingContent(e.target.value)}
                 className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-slate-300"
               />
+
               <div className="flex justify-end gap-2 text-xs">
                 <button
                   onClick={() => {

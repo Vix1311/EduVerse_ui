@@ -95,7 +95,7 @@ export const fetchCategories = createAsyncThunk(
       if (token) headers.Authorization = `Bearer ${token}`;
       if (apiKey) headers['x-api-key'] = apiKey;
 
-      const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/category', {
+      const res = await axios.get('http://localhost:8080/api/v1/category', {
         params: { skip, take },
         headers,
       });
@@ -143,7 +143,7 @@ export const createCategory = createAsyncThunk(
         data.parentCategoryId = Number(payload.parent_id);
       }
 
-      const res = await axios.post('https://eduverseapi-production.up.railway.app/api/v1/category', data, {
+      const res = await axios.post('http://localhost:8080/api/v1/category', data, {
         headers: buildHeaders(),
       });
 
@@ -169,7 +169,7 @@ export const updateCategory = createAsyncThunk(
         body.parentCategoryId = Number(data.parent_id);
       }
 
-      const res = await axios.patch(`https://eduverseapi-production.up.railway.app/api/v1/category/${id}`, body, {
+      const res = await axios.patch(`http://localhost:8080/api/v1/category/${id}`, body, {
         headers: buildHeaders(),
       });
 
@@ -186,7 +186,7 @@ export const deleteCategory = createAsyncThunk(
   'categories/delete',
   async (id: string, { rejectWithValue }) => {
     try {
-      await axios.delete(`https://eduverseapi-production.up.railway.app/api/v1/category/${id}`, {
+      await axios.delete(`http://localhost:8080/api/v1/category/${id}`, {
         headers: buildHeaders(),
       });
 
