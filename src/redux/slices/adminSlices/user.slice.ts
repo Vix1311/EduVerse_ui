@@ -81,7 +81,7 @@ export const fetchUsers = createAsyncThunk<UsersResponse, UsersParams | void>(
   async params => {
     const token = localStorage.getItem('access_token');
 
-    const res = await axios.get<UsersEnvelope>('https://eduverseapi-production.up.railway.app/api/v1/auth', {
+    const res = await axios.get<UsersEnvelope>('http://localhost:8080/api/v1/auth', {
       headers: token ? { Authorization: `Bearer ${token}` } : undefined,
       params,
     });
@@ -104,7 +104,7 @@ export const disableUser = createAsyncThunk(
   async ({ userId, reason }: { userId: string; reason: string }) => {
     const token = localStorage.getItem('access_token');
 
-    const res = await fetch('https://eduverseapi-production.up.railway.app/api/v1/admin/disable-user', {
+    const res = await fetch('http://localhost:8080/api/v1/admin/disable-user', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ export const disableUser = createAsyncThunk(
 export const enableUser = createAsyncThunk('admin/enableUser', async (userId: string) => {
   const token = localStorage.getItem('access_token');
 
-  const res = await fetch('https://eduverseapi-production.up.railway.app/api/v1/admin/enable-user', {
+  const res = await fetch('http://localhost:8080/api/v1/admin/enable-user', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ export const approveTeacher = createAsyncThunk(
     try {
       const token = localStorage.getItem('access_token');
       const res = await axios.post(
-        'https://eduverseapi-production.up.railway.app/api/v1/admin/approve-teacher',
+        'http://localhost:8080/api/v1/admin/approve-teacher',
         { target_user_id: userId },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -171,7 +171,7 @@ export const resetUserPassword = createAsyncThunk(
       const token = localStorage.getItem('access_token');
 
       const res = await axios.post(
-        'https://eduverseapi-production.up.railway.app/api/v1/admin/reset-password',
+        'http://localhost:8080/api/v1/admin/reset-password',
         {
           target_user_id: userId,
           new_password: newPassword,
@@ -207,7 +207,7 @@ export const lockUser = createAsyncThunk(
     try {
       const token = localStorage.getItem('access_token');
       const res = await axios.put(
-        `https://eduverseapi-production.up.railway.app/api/v1/auth/${userId}/lock`,
+        `http://localhost:8080/api/v1/auth/${userId}/lock`,
         {
           durationMinutes,
           until,
@@ -233,7 +233,7 @@ export const unlockUser = createAsyncThunk(
     try {
       const token = localStorage.getItem('access_token');
       const res = await axios.put(
-        `https://eduverseapi-production.up.railway.app/api/v1/auth/${userId}/unlock`,
+        `http://localhost:8080/api/v1/auth/${userId}/unlock`,
         {},
         {
           headers: {
@@ -270,7 +270,7 @@ export const createUserViolation = createAsyncThunk(
     try {
       const token = localStorage.getItem('access_token');
       const res = await axios.post(
-        `https://eduverseapi-production.up.railway.app/api/v1/auth/${userId}/violations`,
+        `http://localhost:8080/api/v1/auth/${userId}/violations`,
         {
           reason,
           violationType,
@@ -297,7 +297,7 @@ export const fetchTeachers = createAsyncThunk<TeachersListResponse, void>(
     const token = localStorage.getItem('access_token');
 
     const res = await axios.get<TeachersListResponse>(
-      'https://eduverseapi-production.up.railway.app/api/v1/users/teachers',
+      'http://localhost:8080/api/v1/users/teachers',
       { headers: token ? { Authorization: `Bearer ${token}` } : undefined },
     );
     console.log('Fetched teachers:', res.data);
@@ -314,7 +314,7 @@ export const changeUserRole = createAsyncThunk<
     const token = localStorage.getItem('access_token');
 
     const res = await axios.put(
-      `https://eduverseapi-production.up.railway.app/api/v1/role/users/${userId}/roles`,
+      `http://localhost:8080/api/v1/role/users/${userId}/roles`,
       { roleId },
       { headers: { Authorization: `Bearer ${token}` } },
     );
@@ -332,7 +332,7 @@ export const ensureTeacher = createAsyncThunk(
       const token = localStorage.getItem('access_token');
 
       const res = await axios.post(
-        `https://eduverseapi-production.up.railway.app/api/v1/users/${userId}/ensure-teacher`,
+        `http://localhost:8080/api/v1/users/${userId}/ensure-teacher`,
         {},
         { headers: { Authorization: `Bearer ${token}` } },
       );

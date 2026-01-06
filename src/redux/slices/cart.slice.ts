@@ -40,7 +40,7 @@ export const addCourseToCart = createAsyncThunk(
       if (coupon) body1.couponCode = coupon;
 
       try {
-        const res = await axios.post('https://eduverseapi-production.up.railway.app/api/v1/cart', body1, { headers });
+        const res = await axios.post('http://localhost:8080/api/v1/cart', body1, { headers });
         window.dispatchEvent(new Event('cartUpdated'));
         return String(cidNum);
       } catch (err: any) {
@@ -50,7 +50,7 @@ export const addCourseToCart = createAsyncThunk(
         const body2: Record<string, any> = { course_id: cidNum, source: 'web' };
         if (coupon) body2.promotion_code = coupon;
 
-        const res2 = await axios.post('https://eduverseapi-production.up.railway.app/api/v1/cart', body2, { headers });
+        const res2 = await axios.post('http://localhost:8080/api/v1/cart', body2, { headers });
         window.dispatchEvent(new Event('cartUpdated'));
         return String(cidNum);
       }
@@ -69,7 +69,7 @@ export const addCourseToCart = createAsyncThunk(
       }
 
       if (status === 409) {
-        toast.info('Already in cart');
+        toast.info('You already own this course.');
         return String(courseId);
       }
 
@@ -95,7 +95,7 @@ export const fetchCart = createAsyncThunk('cart/fetchCart', async (_, { rejectWi
       return rejectWithValue('Unauthorized');
     }
 
-    const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/cart', {
+    const res = await axios.get('http://localhost:8080/api/v1/cart', {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -133,7 +133,7 @@ export const clearCartOnServer = createAsyncThunk(
     try {
       const token = localStorage.getItem('access_token');
       if (!token) throw new Error('Unauthorized');
-      await axios.delete('https://eduverseapi-production.up.railway.app/api/v1/cart', {
+      await axios.delete('http://localhost:8080/api/v1/cart', {
         headers: { Authorization: `Bearer ${token}` },
       });
       return [];
@@ -165,7 +165,7 @@ export const buyNowCourse = createAsyncThunk(
       const body: Record<string, any> = { courseId: cidNum };
       if (couponCode) body.couponCode = couponCode;
 
-      const res = await axios.post('https://eduverseapi-production.up.railway.app/api/v1/orders/buy-now', body, {
+      const res = await axios.post('http://localhost:8080/api/v1/orders/buy-now', body, {
         headers,
       });
 
@@ -212,7 +212,7 @@ export const checkMomoPayment = createAsyncThunk(
         Accept: 'application/json',
       };
 
-      const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/orders/momo/return', {
+      const res = await axios.get('http://localhost:8080/api/v1/orders/momo/return', {
         headers,
       });
 

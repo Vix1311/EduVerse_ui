@@ -9,7 +9,7 @@ export const initSocket = (token: string) => {
   }
 
   // Kết nối tới namespace /chat
-  socket = io('https://eduverseapi-production.up.railway.app/chat', {
+  socket = io('http://localhost:8080/chat', {
     transports: ['websocket'],
     // Gửi đủ cả token + Authorization cho chắc,
     // socketAuth có đọc cái nào thì cũng có dữ liệu

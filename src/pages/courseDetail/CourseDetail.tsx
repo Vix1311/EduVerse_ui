@@ -240,21 +240,24 @@ const CoursePreview: React.FC = () => {
     }
 
     if (data?.id && myLearningIds.includes(String(data.id))) {
-      toast.warning('You already enrolled in this course!');
+      if (mode === 'ADD') {
+        toast.warning('You already enrolled in this course!');
+      }
+      // Không toast cho 'ENROLL' mode
       return;
     }
 
     if (!data?.id) return;
     dispatch(addCourseToCart({ courseId: data.id, coupon: appliedCoupon || undefined }))
       .unwrap?.()
-      .then?.(() => {
+      .then?.((response: any) => {
         if (mode === 'ENROLL') {
+          if (response?.status === 409) return;
           toast.success('Enrolled successfully! Check My Learning.');
-        } else {
-          toast.success('Course added to cart!');
         }
       })
-      .catch?.(() => {
+      .catch?.((err: any) => {
+        if (err?.status === 409) return;
         toast.error(mode === 'ENROLL' ? 'Failed to enroll' : 'Failed to add to cart');
       });
   };

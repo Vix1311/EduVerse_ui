@@ -41,7 +41,7 @@ const initialState: TeacherFollowState = {
 // ====== Axios instance & helpers ======
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://eduverseapi-production.up.railway.app',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
 });
 
 const authHeaders = (_state: RootState) => {

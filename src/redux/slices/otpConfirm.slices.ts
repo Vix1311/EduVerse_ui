@@ -5,7 +5,7 @@ export const verifyEmailOtp = createAsyncThunk(
   'emailVerification/verify',
   async ({ email, otp }: { email: string; otp: string }, { rejectWithValue }) => {
     try {
-      const res = await axios.post('https://eduverseapi-production.up.railway.app/api/v1/auth/verify-email', {
+      const res = await axios.post('http://localhost:8080/api/v1/auth/verify-email', {
         email,
         otp,
       });
@@ -25,7 +25,7 @@ export const resendEmailOtp = createAsyncThunk(
   'emailVerification/resend',
   async (email: string, { rejectWithValue }) => {
     try {
-      const res = await axios.post('https://eduverseapi-production.up.railway.app/api/v1/auth/resend-otp', { email });
+      const res = await axios.post('http://localhost:8080/api/v1/auth/resend-otp', { email });
 
       if (res.data.success) {
         return true;

@@ -13,7 +13,7 @@ const Step1CourseInfo = ({ setCourseData, goNext, onBack, onComplete }: any) => 
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/categories', {
+        const res = await axios.get('http://localhost:8080/api/v1/categories', {
           params: { limit: 20 },
         });
         setCategories(res.data.data.categories || []);
@@ -34,7 +34,7 @@ const Step1CourseInfo = ({ setCourseData, goNext, onBack, onComplete }: any) => 
       console.log('Sending token:', accessToken);
 
       const res = await axios.post(
-        'https://eduverseapi-production.up.railway.app/api/v1/courses',
+        'http://localhost:8080/api/v1/courses',
         { title, description, price, level, category },
         {
           headers: {

@@ -6,11 +6,11 @@ import { logo } from '@/assets/images';
 import { path as PATHS } from '@/core/constants/path';
 import DetailPanel from './detailPanel';
 
-const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || 'https://eduverseapi-production.up.railway.app/api/v1';
+const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
 
 export type QARole = 'instructor' | 'client';
 
-// status giống backend HTML: PENDING / UNREAD / RESOLVED
+// Same as backend statuses: PENDING / UNREAD / RESOLVED
 export type ThreadStatus = 'PENDING' | 'UNREAD' | 'RESOLVED';
 
 export interface ThreadSummary {
@@ -40,16 +40,12 @@ interface Filters {
 /* ========== Helpers ========== */
 const api = (path: string) => `${API_BASE}${path}`;
 const token = localStorage.getItem('access_token');
-const buildHeaders = (): HeadersInit => {
-  return {
-    'Content-Type': 'application/json',
-    'X-API-KEY': 'NestjsSuper@Elearning$2025',
-    Authorization: `Bearer ${token}`,
 
-    // TODO: Thay bằng auth thật
-    // Authorization: `Bearer ${yourAccessToken}`,
-  };
-};
+const buildHeaders = (): HeadersInit => ({
+  'Content-Type': 'application/json',
+  'X-API-KEY': 'NestjsSuper@Elearning$2025',
+  Authorization: `Bearer ${token}`,
+});
 
 const timeAgo = (iso: string) => {
   const diff = Date.now() - new Date(iso).getTime();
@@ -104,16 +100,14 @@ const Navbar: React.FC<{ role: QARole; initialCourseId?: number }> = ({
           </Link>
         </div>
         <h1 className="text-sm font-semibold text-slate-800">
-          {role === 'instructor' ? 'Comments from learners' : 'Q&A khoá học'}
+          {role === 'instructor' ? 'Comments from learners' : 'Course Q&A'}
         </h1>
       </div>
     </header>
   );
 };
 
-/* ========== Sidebar (layout mới, giữ chức năng cũ) ========== */
-
-/* ========== Sidebar (layout mới, Status / Sort / Order đều dạng pill) ========== */
+/* ========== Sidebar (new layout, same behavior) ========== */
 
 const Sidebar: React.FC<{
   filters: Filters;
@@ -142,7 +136,7 @@ const Sidebar: React.FC<{
 
   return (
     <aside className="hidden md:flex sticky shrink-0 top-14 h-[calc(100vh-56px)] w-72 flex-col gap-3 bg-white p-4 ring-1 ring-slate-200">
-      {/* Search giống layout mới (input + icon) nhưng binding vào filters.search */}
+      {/* Search (input + icon) bound to filters.search */}
       <div className="relative w-full max-w-xl">
         <input
           placeholder="Search questions..."
@@ -180,7 +174,7 @@ const Sidebar: React.FC<{
             >
               <span className="inline-flex items-center gap-2">
                 <span className="inline-flex h-5 w-5 items-center justify-center">
-                  {/* Dot icon cho status */}
+                  {/* Dot indicator for status */}
                   <span
                     className={classNames(
                       'h-2 w-2 rounded-full',
@@ -218,7 +212,7 @@ const Sidebar: React.FC<{
             >
               <span className="inline-flex items-center gap-2">
                 <span className="inline-flex h-5 w-5 items-center justify-center">
-                  {/* icon nhỏ cho sort */}
+                  {/* Small icon for sort */}
                   <svg viewBox="0 0 24 24" className="h-4 w-4">
                     <path
                       d="M8 7h8M6 12h12M10 17h4"
@@ -253,7 +247,7 @@ const Sidebar: React.FC<{
             >
               <span className="inline-flex items-center gap-2">
                 <span className="inline-flex h-5 w-5 items-center justify-center">
-                  {/* icon mũi tên để gợi ý asc/desc */}
+                  {/* Arrow icon for asc/desc */}
                   <svg viewBox="0 0 24 24" className="h-4 w-4">
                     {opt.value === 'desc' ? (
                       <path
@@ -284,9 +278,8 @@ const Sidebar: React.FC<{
       </nav>
 
       {/*
-        PHẦN Categories + Most helpful của layout mới vẫn chưa có dữ liệu backend,
-        nên mình vẫn để comment ở bản trước. Khi nào có API categories / leaderboard
-        thì có thể thêm lại giống file mock.
+        The "Categories" and "Most helpful" sections in the new layout are not wired
+        because we don't have backend data yet. When APIs are available, we can add them.
       */}
     </aside>
   );
@@ -358,27 +351,31 @@ const ThreadRow: React.FC<{
   );
 };
 
-/* ========== Box tạo câu hỏi cho client (API như qa-client.html) ========== */
+/* ========== Ask Question box for clients (API matches qa-client.html) ========== */
 
 const AskQuestionBox: React.FC<{
   role: QARole;
   initialCourseId?: number;
   initialLessonId?: number;
+  threads?: ThreadSummary[];
   onCreated?: (thread: ThreadSummary) => void;
-}> = ({ role, initialCourseId, initialLessonId, onCreated }) => {
+}> = ({ role, initialCourseId, initialLessonId, threads = [], onCreated }) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
   if (role !== 'client' || !initialCourseId || !initialLessonId) return null;
+  const derivedCourseTitle = threads.find(t => !!t.courseTitle)?.courseTitle ?? null;
+  const derivedLessonTitle = threads.find(t => !!t.lessonTitle)?.lessonTitle ?? null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage(null);
+
     const trimmed = content.trim();
     if (!trimmed) {
-      setMessage('Vui lòng nhập nội dung câu hỏi');
+      setMessage('Please enter your question details.');
       return;
     }
 
@@ -391,19 +388,20 @@ const AskQuestionBox: React.FC<{
         content: trimmed || '(empty)',
       };
 
-      // GIỐNG qa-client.html: POST /qa/client/threads
+      // Same as qa-client.html: POST /qa/client/threads
       const res = await fetch(api('/qa/client/threads'), {
         method: 'POST',
         headers: buildHeaders(),
         body: JSON.stringify(body),
       });
+
       const data = await res.json();
       if (!res.ok) {
-        setMessage('Tạo câu hỏi thất bại: ' + (data?.message || res.status));
+        setMessage('Failed to create a question: ' + (data?.message || res.status));
         return;
       }
 
-      setMessage('Đã gửi câu hỏi thành công!');
+      setMessage('Your question was submitted successfully!');
       setTitle('');
       setContent('');
 
@@ -415,13 +413,13 @@ const AskQuestionBox: React.FC<{
           lessonId: data.lessonId,
           status: data.status as ThreadStatus,
           lastActivityAt: data.lastActivityAt,
-          authorName: data.author?.fullname || 'Bạn',
+          authorName: data.author?.fullname || 'You',
           lessonTitle: data.lesson?.title || null,
         };
         onCreated(newThread);
       }
     } catch (err: any) {
-      setMessage('Lỗi mạng: ' + (err?.message || String(err)));
+      setMessage('Network error: ' + (err?.message || String(err)));
     } finally {
       setSubmitting(false);
     }
@@ -432,24 +430,26 @@ const AskQuestionBox: React.FC<{
       onSubmit={handleSubmit}
       className="mb-4 mx-0 md:mx-4 rounded-lg border border-slate-200 bg-white p-4 space-y-3"
     >
-      <h2 className="text-sm font-semibold text-slate-800">Đặt câu hỏi cho bài học này</h2>
-      <p className="text-xs text-slate-500">
-        Course #{initialCourseId} • Lesson #{initialLessonId}
-      </p>
+      <h2 className="text-sm font-semibold text-slate-800">Ask a question about this lesson</h2>
+     
+
       <input
         value={title}
         onChange={e => setTitle(e.target.value)}
-        placeholder="Tiêu đề (tuỳ chọn)"
+        placeholder="Title (optional)"
         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-slate-300"
       />
+
       <textarea
         value={content}
         onChange={e => setContent(e.target.value)}
-        placeholder="Mô tả chi tiết câu hỏi của bạn..."
+        placeholder="Describe your question in detail..."
         rows={4}
         className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none placeholder:text-slate-400 focus:ring-2 focus:ring-slate-300 resize-y"
       />
+
       {message && <p className="text-xs text-red-500 whitespace-pre-line">{message}</p>}
+
       <div className="flex justify-end">
         <button
           type="submit"
@@ -458,14 +458,14 @@ const AskQuestionBox: React.FC<{
             submitting ? 'bg-slate-400 cursor-not-allowed' : 'bg-[#0969DA] hover:bg-[#0653aa]'
           }`}
         >
-          {submitting ? 'Sending...' : 'Submitting question'}
+          {submitting ? 'Sending...' : 'Submit question'}
         </button>
       </div>
     </form>
   );
 };
 
-/* ========== Dashboard chính ========== */
+/* ========== Main Dashboard ========== */
 
 interface QADashboardProps {
   role: QARole;
@@ -499,7 +499,7 @@ const QADashboard: React.FC<QADashboardProps> = ({ role, initialCourseId, initia
       if (filters.sortBy) qp.set('sortBy', filters.sortBy);
       if (filters.order) qp.set('order', filters.order);
 
-      // client: nếu vào từ course/lesson cụ thể thì filter theo đó
+      // Client: if opened from a specific course/lesson, filter by those
       if (role === 'client' && initialCourseId && initialLessonId) {
         qp.set('courseId', String(initialCourseId));
         qp.set('lessonId', String(initialLessonId));
@@ -507,14 +507,16 @@ const QADashboard: React.FC<QADashboardProps> = ({ role, initialCourseId, initia
 
       const basePath = role === 'instructor' ? '/qa/seller/threads' : '/qa/client/threads';
 
-      // GIỐNG qa-seller.html / qa-client.html
+      // Same as qa-seller.html / qa-client.html
       const res = await fetch(`${api(basePath)}?${qp.toString()}`, {
         headers: buildHeaders(),
       });
+
       if (!res.ok) {
         const txt = await res.text();
         throw new Error(`Error ${res.status}: ${txt}`);
       }
+
       const data: ThreadListResponse = await res.json();
       const items = data.items || [];
 
@@ -556,7 +558,7 @@ const QADashboard: React.FC<QADashboardProps> = ({ role, initialCourseId, initia
   };
 
   const handleThreadCreated = (t: ThreadSummary) => {
-    // Sau khi tạo câu hỏi, reload list và mở luôn thread đó
+    // After creating a thread, reload the list and open it
     void reloadThreads().then(() => {
       setSelected(t);
     });
@@ -564,8 +566,8 @@ const QADashboard: React.FC<QADashboardProps> = ({ role, initialCourseId, initia
 
   const emptyMessage =
     role === 'instructor'
-      ? 'Chưa có câu hỏi nào từ học viên.'
-      : 'Bạn chưa đặt câu hỏi nào cho bài học này.';
+      ? 'There are no questions from learners yet.'
+      : 'You have not asked any questions for this lesson yet.';
 
   return (
     <div className="flex min-h-screen bg-slate-50">
@@ -579,26 +581,30 @@ const QADashboard: React.FC<QADashboardProps> = ({ role, initialCourseId, initia
               role={role}
               initialCourseId={initialCourseId}
               initialLessonId={initialLessonId}
+              threads={threads}
               onCreated={handleThreadCreated}
             />
 
             <section className="min-w-0 w-full flex flex-col">
               <div className="flex items-center justify-between px-1 py-2">
                 <h2 className="text-sm font-semibold text-slate-800">
-                  {role === 'instructor' ? 'Comments from learners' : 'Các câu hỏi của bạn'}
+                  {role === 'instructor' ? 'Comments from learners' : 'Your questions'}
                 </h2>
               </div>
 
               <div className="bg-white w-full border border-slate-200 rounded-lg overflow-hidden">
                 {loading && (
-                  <div className="px-4 py-4 text-sm text-slate-500">Loading question list... </div>
+                  <div className="px-4 py-4 text-sm text-slate-500">Loading question list...</div>
                 )}
+
                 {error && !loading && (
                   <div className="px-4 py-4 text-sm text-red-500 whitespace-pre-line">{error}</div>
                 )}
+
                 {!loading && !error && threads.length === 0 && (
                   <div className="px-4 py-4 text-sm text-slate-500">{emptyMessage}</div>
                 )}
+
                 {!loading &&
                   !error &&
                   threads.map(t => <ThreadRow key={t.id} item={t} onOpen={handleOpen} />)}
@@ -619,10 +625,10 @@ const QADashboard: React.FC<QADashboardProps> = ({ role, initialCourseId, initia
   );
 };
 
-/* ========== Wrapper default export: quyết định role theo URL ========== */
+/* ========== Default export wrapper: role decided by URL ========== */
 /**
- * - Nếu path là /QnA -> không có courseId/lessonId => role = 'instructor'
- * - Nếu path là /qna/:courseId/:lessonId -> có params => role = 'client'
+ * - If the path is /QnA -> no courseId/lessonId => role = 'instructor'
+ * - If the path is /qna/:courseId/:lessonId -> has params => role = 'client'
  */
 const InstructorCommentsDashboard: React.FC = () => {
   const params = useParams<{ courseId?: string; lessonId?: string }>();

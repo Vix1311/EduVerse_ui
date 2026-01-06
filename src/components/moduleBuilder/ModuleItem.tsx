@@ -12,9 +12,17 @@ interface Props {
   onAddLesson: (moduleId: number) => void;
   onEdit: () => void;
   onEditLesson: (lesson: Lesson) => void;
+  onRefreshModules?: () => void;
 }
 
-export default function ModuleItem({ module, courseId, onAddLesson, onEdit, onEditLesson }: Props) {
+export default function ModuleItem({
+  module,
+  courseId,
+  onAddLesson,
+  onEdit,
+  onEditLesson,
+  onRefreshModules,
+}: Props) {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
 
@@ -29,6 +37,7 @@ export default function ModuleItem({ module, courseId, onAddLesson, onEdit, onEd
   const handleDelete = async () => {
     if (!confirm('Delete this module?')) return;
     await dispatch(deleteModule({ courseId, id: module.id }));
+    onRefreshModules?.();
   };
 
   return (

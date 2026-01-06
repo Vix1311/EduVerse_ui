@@ -140,7 +140,7 @@ const initialState: ChatState = {
 // ====== Axios instance & helpers ======
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://eduverseapi-production.up.railway.app',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
 });
 
 const authHeaders = (_state: RootState) => {
@@ -295,7 +295,7 @@ export const fetchPinnedMessages = createAsyncThunk(
       const { conversationId, skip = 0, take = 50 } = payload;
 
       const res = await axiosInstance.get(
-        `/api/v1/conversations/${conversationId}/messages/pinned`,
+        `/api/v1/conversations/${conversationId}/pins`,
         {
           headers: { ...authHeaders(state) },
           params: { skip, take },

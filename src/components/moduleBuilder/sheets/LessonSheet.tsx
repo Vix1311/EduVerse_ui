@@ -9,7 +9,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useDispatch } from 'react-redux';
 import type { AppDispatch } from '@/core/store/store';
-import { createLesson, updateLesson } from '@/redux/slices/module.slice';
+import { createLesson, updateLesson, getLessons } from '@/redux/slices/module.slice';
 import { uploadLessonPdf } from '@/redux/slices/courseForm.slice';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -26,13 +26,6 @@ interface LessonSheetProps {
   lesson?: Lesson | null;
 }
 
-/**
- * LessonSheet
- * Side sheet for creating and editing lessons.
- * - In CREATE mode: user can set title, video URL, document URL (link only).
- *   To upload PDF, they must first create the lesson, then edit it.
- * - In EDIT mode: user can choose between document link or uploading a PDF file.
- */
 export default function LessonSheet({
   open,
   onOpenChange,
@@ -43,19 +36,16 @@ export default function LessonSheet({
 }: LessonSheetProps) {
   const dispatch = useDispatch<AppDispatch>();
 
-  // Basic fields
   const [title, setTitle] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
 
-  // Document
-  const [useLink, setUseLink] = useState(true); // only meaningful in edit mode
+  const [useLink, setUseLink] = useState(true);
   const [documentUrl, setDocumentUrl] = useState('');
-  const [documentFile, setDocumentFile] = useState<File | null>(null); // only edit mode
+  const [documentFile, setDocumentFile] = useState<File | null>(null);
 
   const [isPreviewable, setIsPreviewable] = useState(false);
   const [lessonOrder, setLessonOrder] = useState<number>(1);
 
-  // Prefill / reset
   useEffect(() => {
     if (mode === 'edit' && lesson) {
       setTitle(lesson.title || '');
@@ -71,7 +61,7 @@ export default function LessonSheet({
         setDocumentUrl(docUrl);
         setDocumentFile(null);
       } else {
-        setUseLink(true); // default to link mode, empty
+        setUseLink(true);
         setDocumentUrl('');
         setDocumentFile(null);
       }
@@ -91,23 +81,9 @@ export default function LessonSheet({
 
   const canSubmit = !!moduleId && title.trim().length > 0;
 
-  const extractLessonId = (created: any): number | null => {
-    if (!created) return null;
-    return (
-      Number(created.id) ||
-      Number(created.lessonId) ||
-      Number(created.lesson_id) ||
-      Number(created.data?.id) ||
-      null
-    );
-  };
-
   const handleSubmit = async () => {
     if (!canSubmit || !moduleId) return;
 
-    // documentUrl logic:
-    // - create: always use documentUrl state (link only)
-    // - edit: only send when useLink === true
     const docUrlToSend =
       mode === 'create'
         ? documentUrl.trim() || undefined
@@ -125,7 +101,6 @@ export default function LessonSheet({
 
     try {
       if (mode === 'create') {
-        // Create lesson (NO file upload here)
         await dispatch(
           createLesson({
             courseId,
@@ -134,16 +109,17 @@ export default function LessonSheet({
           }),
         ).unwrap();
 
+        // ✅ refetch lessons ngay sau khi tạo
+        await dispatch(getLessons({ courseId, moduleId })).unwrap();
+
         toast.success('Lesson created');
 
-        // Reset for next lesson
         setTitle('');
         setVideoUrl('');
         setDocumentUrl('');
         setIsPreviewable(false);
         setLessonOrder(prev => prev + 1);
       } else if (mode === 'edit' && lesson) {
-        // Update lesson
         await dispatch(
           updateLesson({
             courseId,
@@ -153,7 +129,6 @@ export default function LessonSheet({
           }),
         ).unwrap();
 
-        // If in file mode and a PDF is selected, upload it
         if (!useLink && documentFile) {
           await dispatch(
             uploadLessonPdf({
@@ -164,6 +139,9 @@ export default function LessonSheet({
             }),
           ).unwrap();
         }
+
+        // ✅ refetch lessons ngay sau khi update/upload
+        await dispatch(getLessons({ courseId, moduleId })).unwrap();
 
         toast.success('Lesson updated');
         onOpenChange(false);
@@ -187,7 +165,6 @@ export default function LessonSheet({
         </SheetHeader>
 
         <div className="mt-4 space-y-3">
-          {/* Title */}
           <div>
             <label className="block text-sm mb-1">Title</label>
             <Input
@@ -197,7 +174,6 @@ export default function LessonSheet({
             />
           </div>
 
-          {/* Video URL */}
           <div>
             <label className="block text-sm mb-1">Video URL</label>
             <Input
@@ -207,7 +183,6 @@ export default function LessonSheet({
             />
           </div>
 
-          {/* Document */}
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
               <span className="font-medium">Document</span>
@@ -226,7 +201,6 @@ export default function LessonSheet({
               )}
             </div>
 
-            {/* CREATE MODE: only link + info message */}
             {mode === 'create' && (
               <>
                 <Input
@@ -241,7 +215,6 @@ export default function LessonSheet({
               </>
             )}
 
-            {/* EDIT MODE: link or file depending on useLink */}
             {mode === 'edit' && (
               <>
                 {useLink ? (
@@ -261,7 +234,6 @@ export default function LessonSheet({
             )}
           </div>
 
-          {/* Preview flag */}
           <div className="flex items-center gap-2 text-sm">
             <input
               type="checkbox"
@@ -271,7 +243,6 @@ export default function LessonSheet({
             <span>Allow preview for this lesson</span>
           </div>
 
-          {/* Lesson order */}
           {mode === 'edit' && (
             <div>
               <label className="block text-sm mb-1">Lesson order</label>

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { showLoading, hideLoading } from './ui.slice';
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://eduverseapi-production.up.railway.app';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
 
 const authHeaders = () => {
   const token = localStorage.getItem('access_token');

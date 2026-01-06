@@ -32,7 +32,7 @@ const CheckoutButton = ({ couponId, className }: CheckoutButtonProps) => {
       setIsLoading(true);
 
       const res = await axios.post(
-        'https://eduverseapi-production.up.railway.app/api/v1/orders/cart-checkout',
+        'http://localhost:8080/api/v1/orders/cart-checkout',
         {},
         {
           headers: {
@@ -67,7 +67,7 @@ const CheckoutButton = ({ couponId, className }: CheckoutButtonProps) => {
         bg-purple-600 hover:bg-purple-700 active:bg-purple-800 
         disabled:bg-gray-400 disabled:cursor-not-allowed ${className ?? ''}`}
     >
-      {isLoading ? 'Đang xử lý...' : 'Check out →'}
+      {isLoading ? 'Processing...' : 'Check →'}
     </button>
   );
 };

@@ -40,7 +40,7 @@ export const fetchInstructors = createAsyncThunk<
   const skip = args?.skip ?? 0;
   const take = args?.take ?? 10;
 
-  const res = await axios.get('https://eduverseapi-production.up.railway.app/api/v1/users/teachers', {
+  const res = await axios.get('http://localhost:8080/api/v1/users/teachers', {
     params: { skip, take },
   });
 

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_BASE = 'https://eduverseapi-production.up.railway.app/api/v1/coupon';
+const API_BASE = 'http://localhost:8080/api/v1/coupon';
 
 const buildHeaders = () => {
   const token = localStorage.getItem('access_token');

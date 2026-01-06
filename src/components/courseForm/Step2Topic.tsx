@@ -9,7 +9,7 @@ const Step2Topic = ({ courseId, courseTitle, setCourseData, goNext, goBack }: an
   const createTopic = async (withNext: boolean = true) => {
     try {
       const res = await axios.post(
-        `https://eduverseapi-production.up.railway.app/api/v1/courses/${courseId}/topics`,
+        `http://localhost:8080/api/v1/courses/${courseId}/topics`,
         { title, description },
         {
           headers: {

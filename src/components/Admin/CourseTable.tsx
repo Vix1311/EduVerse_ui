@@ -305,19 +305,9 @@ const AdminCoursesPage: React.FC = () => {
               <thead className="bg-slate-50 text-xs uppercase text-slate-500">
                 <tr>
                   <th className="px-4 py-3">Course</th>
+
                   <th
                     className="cursor-pointer px-4 py-3"
-                    onClick={() => handleSort('categoryName')}
-                  >
-                    <span className="inline-flex items-center gap-1">
-                      Category
-                      {sortField === 'categoryName' && (
-                        <span>{sortOrder === 'asc' ? '▲' : '▼'}</span>
-                      )}
-                    </span>
-                  </th>
-                  <th
-                    className="cursor-pointer px-4 py-3 text-right"
                     onClick={() => handleSort('price')}
                   >
                     <span className="inline-flex items-center gap-1">
@@ -382,11 +372,7 @@ const AdminCoursesPage: React.FC = () => {
                         </div>
                       </td>
 
-                      <td className="px-4 py-3 text-sm text-slate-600">
-                        {course.categoryName || '-'}
-                      </td>
-
-                      <td className="px-4 py-3 text-right text-sm">
+                      <td className="px-4 py-3 text-sm">
                         {course.isFree ? (
                           <Badge color="green">Free</Badge>
                         ) : course.price != null ? (
@@ -513,14 +499,6 @@ const AdminCoursesPage: React.FC = () => {
               <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
                 <button
                   type="button"
-                  className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-3 py-1.5 font-medium text-slate-700 hover:bg-slate-50"
-                  onClick={() => alert('Đi tới Course Form + Module Builder cho course này')}
-                >
-                  Open builder
-                </button>
-
-                <button
-                  type="button"
                   className="inline-flex items-center justify-center rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-1.5 font-medium text-emerald-700 hover:bg-emerald-100"
                   onClick={() => handleToggleStatus(selectedCourse)}
                 >
@@ -533,14 +511,6 @@ const AdminCoursesPage: React.FC = () => {
                   onClick={() => handleSoftDelete(selectedCourse)}
                 >
                   Soft delete
-                </button>
-
-                <button
-                  type="button"
-                  className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 font-medium text-slate-700 hover:bg-slate-100"
-                  onClick={() => handleRestore(selectedCourse)}
-                >
-                  Restore
                 </button>
 
                 <button
