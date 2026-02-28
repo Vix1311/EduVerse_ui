@@ -23,7 +23,8 @@ export const path = {
   purchaseHistory: '/purchase-history',
   chat: '/messages',
   qnaClient: '/qna/:courseId/:lessonId',
-
+  FlashcardMatchingGame: '/flashcardmatchinggame',
+  flashcardGame: '/flashcardgame',
   instructor: {
     instructorDashboard: '/instructor-dashboard',
     QnA: '/QnA',
