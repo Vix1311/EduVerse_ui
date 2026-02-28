@@ -34,6 +34,8 @@ import InstructorQuizsDashboard from '@/components/instructorDashboard/Quiz/quiz
 import CouponPage from '@/pages/Admin/CouponPage';
 import HashtagPage from '@/pages/Admin/HashtagPage';
 import Chat from '@/pages/chat/Chat';
+import FlashcardScatterMatchGame from '@/pages/flashcardGame/FlashcardMatchingGame';
+import QuizLikeF8 from '@/pages/flashcardGame/FlashcardGame';
 
 interface RouteConfig {
   path: string;
@@ -72,6 +74,8 @@ export default function useRoutesElements() {
     { path: path.userProfile, element: <UserProfile /> },
     { path: path.purchaseHistory, element: <PurchaseHistory /> },
     { path: path.chat, element: <Chat /> },
+    { path: path.FlashcardMatchingGame, element: <FlashcardScatterMatchGame /> },
+    { path: path.flashcardGame, element: <QuizLikeF8 /> },
     {
       path: path.instructor.instructorDashboard,
       element: (
