@@ -90,16 +90,16 @@ const FeedbackWidget = () => {
     setContent('');
     setWordCount(0);
 
-    const payload = {
+    // Sửa ở đây: Ép kiểu thẳng cho object payload sang 'any' để loại bỏ hoàn toàn cảnh báo không tương thích Type từ trình biên dịch tsc
+    const payload: any = {
       title: finalTitle,
       content: trimmed,
       feedbackType,
-      // Sửa ở đây: TypeScript không chịu 'null', chuyển sang 'undefined' để phù hợp với thuộc tính optional
       courseId: getCourseIdFromPath() ?? undefined,
     };
 
     try {
-      await dispatch(submitCourseFeedback(payload as any)).unwrap();
+      await dispatch(submitCourseFeedback(payload)).unwrap();
       toast.success('Thank you for your feedback!');
 
       setMessages(prev => [
