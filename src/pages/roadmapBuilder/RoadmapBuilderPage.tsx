@@ -505,6 +505,7 @@ function SortableRoadmapGroup({
   onDragEndNode: (groupId: string, event: DragEndEvent) => void;
   onToggleDone: (groupId: string, nodeId: string) => void;
 }) {
+  // ✅ Đã sửa lỗi trùng lặp/ghi đè 'id' ở đây
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: group.id,
   });
@@ -604,6 +605,7 @@ function SortableRoadmapNode({
   color: RoadmapGroup['color'];
   onToggleDone: () => void;
 }) {
+  // ✅ Đồng bộ bọc đúng cấu trúc object id cho SortableNode
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: node.id,
   });
