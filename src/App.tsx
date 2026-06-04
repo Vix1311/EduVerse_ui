@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import useRoutesElements from '@/hooks/useRouterElement';
 import ScrollToTop from './components/scrollToTop/ScrollToTop';
 import FeedbackWidget from './components/feedback/Feedback';
+import ChatbotWidget from './components/chatbox/ChatbotFloating';
 import { RootState } from './core/store/store';
 import { useSelector } from 'react-redux';
 import LoaderOverlay from './components/loader/LoaderOverlay';
@@ -41,7 +42,6 @@ function App() {
       localStorage.setItem('refresh_token', refreshToken);
       localStorage.setItem('isLoggedIn', 'true');
 
-
       navigate(location.pathname, { replace: true });
     }
   }, [location, navigate]);
@@ -76,6 +76,7 @@ function App() {
       {routerDom}
       {showLoader && <LoaderOverlay />}
       <FeedbackWidget />
+      <ChatbotWidget />
     </>
   );
 }

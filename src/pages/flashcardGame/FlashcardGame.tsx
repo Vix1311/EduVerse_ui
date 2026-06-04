@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { FaCheck } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 type QuizQuestion = {
   id: string;
@@ -7,13 +8,13 @@ type QuizQuestion = {
   code: string;
   options: Array<{ id: string; label: string; value: number }>;
   correctOptionId: string;
-  explanation?: string; // nếu có thì hiện dưới "Chính xác!" / "Sai rồi"
+  explanation?: string;
 };
 
 const MOCK_QUESTIONS: QuizQuestion[] = [
   {
     id: 'q1',
-    question: 'Có mấy phần tử trong đoạn code?',
+    question: 'How many elements are there in the code snippet?',
     code: `<h1>Hello World</h1>`,
     options: [
       { id: 'a', label: '0', value: 0 },
@@ -21,19 +22,19 @@ const MOCK_QUESTIONS: QuizQuestion[] = [
       { id: 'c', label: '2', value: 2 },
     ],
     correctOptionId: 'b',
-    explanation: 'Thẻ h1 là một phần tử HTML duy nhất.',
+    explanation: 'The h1 tag is a single HTML element.',
   },
   {
     id: 'q2',
-    question: 'Thẻ nào có tác dụng in nghiêng nội dung văn bản?',
-    code: `<p>Xin chào</p>`,
+    question: 'Which tag makes text appear italic?',
+    code: `<p>Hello</p>`,
     options: [
       { id: 'a', label: '<b>', value: 0 },
       { id: 'b', label: '<i>', value: 1 },
       { id: 'c', label: '<u>', value: 2 },
     ],
     correctOptionId: 'b',
-    explanation: 'Thẻ <i> (hoặc <em>) dùng để hiển thị chữ nghiêng.',
+    explanation: 'The <i> tag (or <em>) is used to display italic text.',
   },
 ];
 
@@ -42,7 +43,6 @@ function clamp(n: number, min: number, max: number) {
 }
 
 function ConfettiDots() {
-  // nền chấm màu nhẹ như ảnh (decorative)
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       <div className="absolute left-10 top-40 h-2 w-2 rounded-full bg-emerald-200 opacity-60" />
@@ -55,8 +55,6 @@ function ConfettiDots() {
 }
 
 function SunIllustration() {
-  // Bạn có thể thay bằng asset giống F8 nếu có.
-  // SVG này chỉ để tạo vibe tương tự.
   return (
     <svg viewBox="0 0 240 240" className="h-44 w-44" role="img" aria-label="Congrats">
       <defs>
@@ -66,7 +64,6 @@ function SunIllustration() {
         </linearGradient>
       </defs>
       <circle cx="120" cy="120" r="54" fill="url(#g)" />
-      {/* rays */}
       {Array.from({ length: 16 }).map((_, i) => {
         const a = (i * Math.PI) / 8;
         const x1 = 120 + Math.cos(a) * 70;
@@ -86,7 +83,6 @@ function SunIllustration() {
           />
         );
       })}
-      {/* face */}
       <path
         d="M96 124c8 10 40 10 48 0"
         fill="none"
@@ -110,7 +106,6 @@ function SunIllustration() {
       />
       <circle cx="82" cy="122" r="8" fill="#FF7AA2" opacity="0.9" />
       <circle cx="156" cy="122" r="8" fill="#FF7AA2" opacity="0.9" />
-      {/* small stars */}
       <path d="M38 90l8 6-8 6-8-6 8-6z" fill="#A5B4FC" opacity="0.9" />
       <path d="M200 150l8 6-8 6-8-6 8-6z" fill="#67E8F9" opacity="0.9" />
     </svg>
@@ -160,31 +155,32 @@ export default function QuizLikeF8() {
 
   useEffect(() => {
     function onKeyDown(e: KeyboardEvent) {
-      if (e.key.toLowerCase() === 'h') alert('Phím tắt (demo): H');
+      if (e.key.toLowerCase() === 'h') alert('Shortcut key (demo): H');
     }
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  // FINISHED SCREEN
+  const navigate = useNavigate();
+
   if (finished) {
     return (
       <div className="relative min-h-screen bg-white">
         <ConfettiDots />
 
-        <div className="mx-auto w-full px-4 pt-16 pb-36 text-center">
-          <div className="text-lg font-semibold text-gray-800">Chúc mừng bạn</div>
+        <div className="mx-auto w-full px-4 pb-36 pt-16 text-center">
+          <div className="text-lg font-semibold text-gray-800">Congratulations</div>
 
           <div className="mt-8 flex justify-center">
             <SunIllustration />
           </div>
 
           <div className="mt-8 text-sm text-gray-600">
-            Bạn đã trả lời đúng{' '}
+            You answered{' '}
             <span className="font-bold text-blue-600">
               {correctCount}/{total}
             </span>{' '}
-            câu.
+            questions correctly.
           </div>
 
           <div className="mx-auto mt-12 max-w-4xl rounded-xl border-2 border-blue-400 bg-white">
@@ -208,7 +204,7 @@ export default function QuizLikeF8() {
               className="w-full rounded-xl bg-blue-600 py-5 text-center text-sm font-bold text-white hover:bg-blue-700"
               onClick={resetToHome}
             >
-              VỀ TRANG CHỦ
+              BACK TO HOME
             </button>
           </div>
         </div>
@@ -216,16 +212,14 @@ export default function QuizLikeF8() {
     );
   }
 
-  // QUIZ SCREEN
   return (
     <div className="relative min-h-screen bg-white">
-      {/* Header */}
       <div className="mx-auto w-full px-4 pt-6">
         <div className="flex items-center justify-between">
           <button
             className="rounded-full p-2 hover:bg-gray-100"
             aria-label="Close"
-            onClick={() => alert('Close clicked (demo)')}
+            onClick={() => navigate('/leaderboard')}
           >
             <span className="text-xl leading-none">✕</span>
           </button>
@@ -235,11 +229,11 @@ export default function QuizLikeF8() {
           </div>
 
           <div className="hidden items-center gap-2 text-sm text-gray-500 sm:flex">
-            <span>Nhấn</span>
+            <span>Press</span>
             <kbd className="rounded-md border border-gray-200 bg-gray-50 px-2 py-0.5 text-xs font-semibold text-gray-600">
               H
             </kbd>
-            <span>để xem phím tắt</span>
+            <span>to view shortcuts</span>
           </div>
         </div>
 
@@ -251,8 +245,7 @@ export default function QuizLikeF8() {
         </div>
       </div>
 
-      {/* Body */}
-      <div className="mx-auto w-full px-4 pt-10 pb-44">
+      <div className="mx-auto w-full px-4 pb-44 pt-10">
         <h1 className="text-2xl font-bold text-gray-900">{current.question}</h1>
 
         <div className="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-4">
@@ -261,9 +254,8 @@ export default function QuizLikeF8() {
           </pre>
         </div>
 
-        <p className="mt-6 text-sm text-gray-500">Chọn 1 đáp án đúng</p>
+        <p className="mt-6 text-sm text-gray-500">Choose 1 correct answer</p>
 
-        {/* Options - bỏ radio */}
         <div className="mt-4 space-y-4">
           {current.options.map(opt => {
             const checked = picked === opt.id;
@@ -297,17 +289,15 @@ export default function QuizLikeF8() {
         </div>
       </div>
 
-      {/* Sticky bottom action bar - feedback nằm ngay trên nút */}
       <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white">
         <div className="mx-auto w-full px-4 py-4">
-          {/* Feedback đặt ở đây để không tạo khoảng trống ở body */}
           {submitted && (
-            <div className="flex gap-2 mb-3">
+            <div className="mb-3 flex gap-2">
               {isCorrect ? (
-                <div className="text-sm font-semibold text-gray-800">🎉 Chính xác!</div>
+                <div className="text-sm font-semibold text-gray-800">🎉 Correct!</div>
               ) : (
                 <div className="text-sm font-semibold text-gray-800">
-                  ❌ Sai rồi. Đáp án đúng là{' '}
+                  ❌ Incorrect. The correct answer is{' '}
                   <span className="font-bold text-blue-600">
                     {current.options.find(o => o.id === current.correctOptionId)?.label}
                   </span>
@@ -331,14 +321,14 @@ export default function QuizLikeF8() {
               onClick={onSubmit}
               disabled={!picked}
             >
-              TRẢ LỜI
+              ANSWER
             </button>
           ) : (
             <button
               className="w-full rounded-xl bg-blue-600 py-5 text-center text-sm font-bold text-white hover:bg-blue-700"
               onClick={nextQuestion}
             >
-              TIẾP TỤC
+              CONTINUE
             </button>
           )}
         </div>

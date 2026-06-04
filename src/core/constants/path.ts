@@ -25,6 +25,9 @@ export const path = {
   qnaClient: '/qna/:courseId/:lessonId',
   FlashcardMatchingGame: '/flashcardmatchinggame',
   flashcardGame: '/flashcardgame',
+  leaderBoard: '/leaderboard',
+  PlacementPage: '/placement',
+  RoadmapBuilderPage: '/roadmap',
   instructor: {
     instructorDashboard: '/instructor-dashboard',
     QnA: '/QnA',

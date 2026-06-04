@@ -149,6 +149,31 @@ export default function ChatbotFloating() {
       removePendingById(tempId); // lỗi thì mới xoá
     }
   };
+  const currentPath = location.pathname;
+
+  const hiddenPaths = useMemo(
+    () => [
+      '/auth',
+      '/login',
+      '/register',
+      '/admin/dashboard',
+      '/admin/users',
+      '/admin/courses',
+      '/admin/courses/new',
+      '/admin/categories',
+      '/admin/feedback',
+      '/QnA',
+      '/add-course',
+      '/instructor-dashboard',
+      '/messages',
+    ],
+    [],
+  );
+  const isHiddenByRegex = /^\/course-player\/[^/]+/.test(currentPath);
+
+  if (hiddenPaths.some(path => currentPath.startsWith(path)) || isHiddenByRegex) {
+    return null;
+  }
 
   return createPortal(
     <>
