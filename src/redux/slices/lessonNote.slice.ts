@@ -43,7 +43,7 @@ export const fetchLessonNotes = createAsyncThunk(
 
     try {
       const res = await axios.get(
-        `http://localhost:8080/api/v1/lessons/${lessonId}/notes?skip=${skip}&take=${take}`,
+        `https://edu-verse-api-rho.vercel.app/api/v1/lessons/${lessonId}/notes?skip=${skip}&take=${take}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         },
@@ -79,7 +79,7 @@ export const createLessonNote = createAsyncThunk(
 
     try {
       const res = await axios.post(
-        `http://localhost:8080/api/v1/lessons/${lessonId}/notes`,
+        `https://edu-verse-api-rho.vercel.app/api/v1/lessons/${lessonId}/notes`,
         {
           content,
           timestampSec,
@@ -116,7 +116,7 @@ export const pinLessonNote = createAsyncThunk(
 
     try {
       const res = await axios.patch(
-        `http://localhost:8080/api/v1/notes/${noteId}/pin`,
+        `https://edu-verse-api-rho.vercel.app/api/v1/notes/${noteId}/pin`,
         { isPinned },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -147,7 +147,7 @@ export const deleteLessonNote = createAsyncThunk(
     const token = localStorage.getItem('access_token');
 
     try {
-      await axios.delete(`http://localhost:8080/api/v1/notes/${noteId}`, {
+      await axios.delete(`https://edu-verse-api-rho.vercel.app/api/v1/notes/${noteId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
