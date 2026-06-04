@@ -1,3 +1,12 @@
+import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/core/store/store';
+import {
+  createLessonNote,
+  deleteLessonNote,
+  fetchLessonNotes,
+  pinLessonNote,
+} from '@/redux/slices/lessonNote.slice';
 import { logo } from '@/assets/images';
 import CourseSidebar from '@/components/CoursePlayer/CourseSidebar';
 import CourseTabs from '@/components/CoursePlayer/CourseTabs';
@@ -11,6 +20,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 type QuizMode = 'take' | 'review';
 
 const CoursePlayerPage = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const { courseId } = useParams<{ courseId: string }>();
   const navigate = useNavigate();
 
@@ -18,15 +28,16 @@ const CoursePlayerPage = () => {
   const [videoUrl, setVideoUrl] = useState<string>('');
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [totalLessons, setTotalLessons] = useState<number>(0);
-  const percentComplete =
-    totalLessons === 0 ? 0 : Math.round((completedLessons.length / totalLessons) * 100);
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
 
-  // module quiz modal
+  const [currentVideoTime, setCurrentVideoTime] = useState(0);
+  const [noteDraft, setNoteDraft] = useState('');
+  const [seekTo, setSeekTo] = useState<number | null>(null);
+
   const [showQuizModal, setShowQuizModal] = useState(false);
   const [quizId, setQuizId] = useState<string | null>(null);
   const [quizModuleId, setQuizModuleId] = useState<string | null>(null);
 
-  // lesson quiz modal
   const [showLessonQuizModal, setShowLessonQuizModal] = useState(false);
   const [lessonQuizId, setLessonQuizId] = useState<string | null>(null);
   const [lessonQuizLessonId, setLessonQuizLessonId] = useState<string | null>(null);
@@ -34,9 +45,6 @@ const CoursePlayerPage = () => {
   const [scrollLocked, setScrollLocked] = useState(false);
   const [isLoadingNext, setIsLoadingNext] = useState(false);
   const [lastCompletedLessonId, setLastCompletedLessonId] = useState<string | null>(null);
-  const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
-
-  const modalRef = useRef<HTMLDivElement>(null);
 
   const [mode, setMode] = useState<QuizMode>('take');
   const [reviewData, setReviewData] = useState<{
@@ -46,6 +54,17 @@ const CoursePlayerPage = () => {
     score?: number;
   } | null>(null);
 
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  const percentComplete =
+    totalLessons === 0 ? 0 : Math.round((completedLessons.length / totalLessons) * 100);
+
+  const lessonNotes = useSelector((state: RootState) =>
+    selectedLessonId ? state.lessonNote.notesByLesson[selectedLessonId] || [] : [],
+  );
+
+  const isCreatingNote = useSelector((state: RootState) => state.lessonNote.creating);
+
   useEffect(() => {
     if ((showQuizModal || showLessonQuizModal) && modalRef.current) {
       modalRef.current.scrollTo({ top: 0, behavior: 'auto' });
@@ -53,14 +72,78 @@ const CoursePlayerPage = () => {
   }, [showQuizModal, showLessonQuizModal]);
 
   useEffect(() => {
+    if (!selectedLessonId) return;
+    dispatch(fetchLessonNotes({ lessonId: selectedLessonId, skip: 0, take: 100 }));
+  }, [dispatch, selectedLessonId]);
+
+  useEffect(() => {
     document.body.style.overflow = scrollLocked ? 'hidden' : 'auto';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
   }, [scrollLocked]);
+
+  const handleCreateNote = async () => {
+    if (!selectedLessonId || !noteDraft.trim()) return;
+
+    const resultAction = await dispatch(
+      createLessonNote({
+        lessonId: selectedLessonId,
+        content: noteDraft.trim(),
+        timestampSec: Math.floor(currentVideoTime),
+      }),
+    );
+
+    if (createLessonNote.fulfilled.match(resultAction)) {
+      setNoteDraft('');
+      toast.success('Note added successfully');
+    } else {
+      toast.error((resultAction.payload as string) || 'Failed to create note');
+    }
+  };
+
+  const handleDeleteNote = async (noteId: number) => {
+    if (!selectedLessonId) return;
+
+    const resultAction = await dispatch(
+      deleteLessonNote({
+        lessonId: selectedLessonId,
+        noteId,
+      }),
+    );
+
+    if (deleteLessonNote.fulfilled.match(resultAction)) {
+      toast.success('Note deleted successfully');
+    } else {
+      toast.error((resultAction.payload as string) || 'Failed to delete note');
+    }
+  };
+
+  const handleTogglePinNote = async (noteId: number, isPinned: boolean) => {
+    if (!selectedLessonId) return;
+
+    const resultAction = await dispatch(
+      pinLessonNote({
+        lessonId: selectedLessonId,
+        noteId,
+        isPinned,
+      }),
+    );
+
+    if (!pinLessonNote.fulfilled.match(resultAction)) {
+      toast.error((resultAction.payload as string) || 'Failed to update note');
+    }
+  };
+
+  const handleSeekToNote = (seconds: number) => {
+    setSeekTo(seconds);
+    window.setTimeout(() => setSeekTo(null), 0);
+  };
 
   if (!courseId) return <div>Course ID not found</div>;
 
   return (
     <div className="h-screen flex flex-col overflow-hidden">
-      {/* Header */}
       <div className="flex-shrink-0 w-full p-2 bg-[#252641]">
         <div className="flex gap-3 items-center justify-between">
           <div className="flex items-center gap-2">
@@ -104,13 +187,13 @@ const CoursePlayerPage = () => {
         </div>
       </div>
 
-      {/* Body */}
       <div className="flex-1 flex flex-col lg:flex-row bg-white overflow-hidden relative">
         <div
           ref={modalRef}
-          className={`flex-1 relative custom-scrollbar ${scrollLocked ? 'overflow-hidden' : 'overflow-y-auto'}`}
+          className={`flex-1 relative custom-scrollbar ${
+            scrollLocked ? 'overflow-hidden' : 'overflow-y-auto'
+          }`}
         >
-          {/* Video */}
           <CourseVideoPlayer
             videoUrl={videoUrl}
             onVideoEnded={() => {
@@ -119,18 +202,35 @@ const CoursePlayerPage = () => {
               if (!completedLessons.includes(selectedLessonId)) {
                 setCompletedLessons(prev => [...prev, selectedLessonId]);
               }
+
               setLastCompletedLessonId(selectedLessonId);
             }}
             isLoadingNext={isLoadingNext}
+            onTimeUpdate={setCurrentVideoTime}
+            seekTo={seekTo}
+            timedNotes={lessonNotes.map(note => ({
+              id: note.id,
+              content: note.content,
+              timestampSec: note.timestampSec,
+              isPinned: note.isPinned,
+            }))}
           />
 
-          {/* Tabs (Overview / Quiz / ...) */}
           <div className="px-4">
             <CourseTabs
               courseId={courseId}
               currentLessonId={selectedLessonId}
               savedIds={savedIds}
               setSavedIds={setSavedIds}
+              lessonNotes={lessonNotes}
+              currentVideoTime={currentVideoTime}
+              noteDraft={noteDraft}
+              onChangeNoteDraft={setNoteDraft}
+              onCreateNote={handleCreateNote}
+              onDeleteNote={handleDeleteNote}
+              onTogglePinNote={handleTogglePinNote}
+              onSeekToNote={handleSeekToNote}
+              isCreatingNote={isCreatingNote}
               onStartQuiz={(id: string, moduleId: string | null) => {
                 setQuizId(id);
                 setQuizModuleId(moduleId);
@@ -142,7 +242,6 @@ const CoursePlayerPage = () => {
             />
           </div>
 
-          {/* Module Quiz Modal overlay */}
           {showQuizModal && quizId && (
             <div className="absolute inset-0 z-50 flex justify-center items-start bg-black/40">
               <div className="bg-slate-100 w-full px-5 max-h-[100vh] overflow-hidden overscroll-contain custom-scrollbar relative">
@@ -170,7 +269,6 @@ const CoursePlayerPage = () => {
             </div>
           )}
 
-          {/* Lesson Quiz Modal overlay */}
           {showLessonQuizModal && lessonQuizId && lessonQuizLessonId && (
             <div className="absolute inset-0 z-50 flex justify-center items-start bg-black/40">
               <div className="bg-slate-100 w-full px-5 max-h-[100vh] overflow-hidden overscroll-contain custom-scrollbar relative">
@@ -196,7 +294,6 @@ const CoursePlayerPage = () => {
           )}
         </div>
 
-        {/* Sidebar */}
         <div className="w-[350px] border-t hidden lg:block border-l shadow-lg overflow-hidden">
           <div className="h-full overflow-y-auto custom-scrollbar">
             <CourseSidebar

@@ -29,6 +29,7 @@ import moduleQuizReducer from '@/redux/slices/moduleQuiz.slice';
 import lessonQuizReducer from '@/redux/slices/lessonQuiz.slice';
 import courseSearchReducer from '@/redux/slices/courseSearch.slice';
 import chatBotReducer from '@/redux/slices/chatbot.slice';
+import lessonNoteReducer from '@/redux/slices/lessonNote.slice';
 
 export const store = configureStore({
   reducer: {
@@ -62,6 +63,7 @@ export const store = configureStore({
     lessonQuiz: lessonQuizReducer,
     teacherFollow: teacherFollowReducer,
     chatbot: chatBotReducer,
+    lessonNote: lessonNoteReducer,
   },
 });
 

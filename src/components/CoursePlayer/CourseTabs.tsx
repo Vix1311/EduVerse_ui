@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useMemo } from 'react';
+import { LessonNoteItem } from '@/redux/slices/lessonNote.slice';
 import {
   FaBookmark,
   FaChevronLeft,
@@ -30,16 +31,41 @@ import CourseSidebar from './CourseSidebar';
 import { fetchModuleQuizzesForStudy } from '@/redux/slices/moduleQuiz.slice';
 
 const tabsBase = ['Overview', 'Notes', 'Announcements', 'Reviews', 'Learning tools', 'Quiz'];
-
+function formatTime(seconds: number) {
+  const safe = Math.max(0, Math.floor(seconds));
+  const mm = Math.floor(safe / 60)
+    .toString()
+    .padStart(2, '0');
+  const ss = (safe % 60).toString().padStart(2, '0');
+  return `${mm}:${ss}`;
+}
 const CourseTabs = ({
   courseId,
   currentLessonId,
   onStartQuiz,
   savedIds,
   setSavedIds,
+  lessonNotes,
+  currentVideoTime,
+  noteDraft,
+  onChangeNoteDraft,
+  onCreateNote,
+  onDeleteNote,
+  onTogglePinNote,
+  onSeekToNote,
+  isCreatingNote,
 }: CourseTabsProps & {
   savedIds: Set<string>;
   setSavedIds: React.Dispatch<React.SetStateAction<Set<string>>>;
+  lessonNotes: LessonNoteItem[];
+  currentVideoTime: number;
+  noteDraft: string;
+  onChangeNoteDraft: (value: string) => void;
+  onCreateNote: () => void;
+  onDeleteNote: (noteId: number) => void;
+  onTogglePinNote: (noteId: number, isPinned: boolean) => void;
+  onSeekToNote: (seconds: number) => void;
+  isCreatingNote: boolean;
 }) => {
   const [activeTab, setActiveTab] = useState('Overview');
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 1024);
@@ -785,7 +811,107 @@ const CourseTabs = ({
             </div>
           </div>
         );
+              case 'Notes':
+        return (
+          <div className="max-w-3xl space-y-5">
+            <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+              <div className="flex items-center justify-between gap-3 mb-3">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">Lesson notes</h3>
+                  <p className="text-sm text-gray-500">
+                    Add a note at the current video time. Timestamp is locked to the player.
+                  </p>
+                </div>
 
+                <div className="rounded-full bg-purple-50 text-purple-700 px-3 py-1 text-sm font-medium">
+                  {formatTime(currentVideoTime)}
+                </div>
+              </div>
+
+              <textarea
+                value={noteDraft}
+                onChange={e => onChangeNoteDraft(e.target.value)}
+                placeholder="Write your note here..."
+                rows={4}
+                className="w-full rounded-xl border border-gray-300 px-4 py-3 outline-none focus:ring-2 focus:ring-purple-500"
+              />
+
+              <div className="mt-3 flex items-center justify-between">
+                <div className="text-xs text-gray-500">
+                  This note will be saved at <strong>{formatTime(currentVideoTime)}</strong>
+                </div>
+
+                <button
+                  onClick={onCreateNote}
+                  disabled={isCreatingNote || !noteDraft.trim()}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                    isCreatingNote || !noteDraft.trim()
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-purple-600 text-white hover:bg-purple-700'
+                  }`}
+                >
+                  {isCreatingNote ? 'Saving...' : 'Add note'}
+                </button>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-gray-200 bg-white shadow-sm">
+              <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                <h4 className="font-semibold text-gray-900">All notes</h4>
+                <span className="text-sm text-gray-500">{lessonNotes.length} note(s)</span>
+              </div>
+
+              <div className="divide-y divide-gray-100">
+                {lessonNotes.length === 0 ? (
+                  <div className="p-4 text-sm text-gray-500">No notes yet for this lesson.</div>
+                ) : (
+                  lessonNotes.map(note => {
+                    const isActive = Math.floor(note.timestampSec) === Math.floor(currentVideoTime);
+
+                    return (
+                      <div
+                        key={note.id}
+                        className={`p-4 transition ${isActive ? 'bg-purple-50' : 'bg-white'}`}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <button
+                            onClick={() => onSeekToNote(note.timestampSec)}
+                            className="text-left"
+                          >
+                            <div className="text-sm font-semibold text-purple-700">
+                              {formatTime(note.timestampSec)}
+                            </div>
+                            <div className="mt-1 text-sm text-gray-700">{note.content}</div>
+                          </button>
+
+                          <div className="flex items-center gap-2 shrink-0">
+                            <button
+                              onClick={() => onTogglePinNote(note.id, !note.isPinned)}
+                              className={`px-2 py-1 rounded text-xs ${
+                                note.isPinned
+                                  ? 'bg-amber-100 text-amber-700'
+                                  : 'bg-gray-100 text-gray-600'
+                              }`}
+                            >
+                              {note.isPinned ? 'Unpin' : 'Pin'}
+                            </button>
+
+                            <button
+                              onClick={() => onDeleteNote(note.id)}
+                              className="px-2 py-1 rounded text-xs bg-red-50 text-red-600 hover:bg-red-100"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          </div>
+        );
       default:
         return <p className="text-sm mt-4 text-gray-500">Coming soon for tab: {activeTab}</p>;
       case 'Quiz':
