@@ -99,7 +99,7 @@ export const fetchCoursesByCategory = createAsyncThunk(
   'categoryCourses/fetchByCategory',
   async (categoryId: string, { rejectWithValue }) => {
     try {
-      const res = await axios.get('http://localhost:8080/api/v1/course/public', {
+      const res = await axios.get('https://edu-verse-api-rho.vercel.app/api/v1/course/public', {
         params: { categoryId },
       });
 

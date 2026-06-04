@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/api/v1/hashtag';
+const BASE_URL = 'https://edu-verse-api-rho.vercel.app/api/v1/hashtag';
 
 const authHeaders = () => ({
   Authorization: `Bearer ${localStorage.getItem('access_token') || ''}`,

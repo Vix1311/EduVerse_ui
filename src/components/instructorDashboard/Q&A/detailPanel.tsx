@@ -3,7 +3,7 @@ import { FaArrowLeft } from 'react-icons/fa';
 import type { QARole, ThreadStatus, ThreadSummary } from './q&a';
 import { path as PATHS } from '@/core/constants/path';
 
-const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || 'http://localhost:8080/api/v1';
+const API_BASE = (import.meta as any).env?.VITE_API_BASE_URL || 'https://edu-verse-api-rho.vercel.app/api/v1';
 
 interface ThreadDetail extends ThreadSummary {
   locked?: boolean;

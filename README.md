@@ -86,7 +86,7 @@ Ensure you have:
 3. **Configure Environment** Create a `.env` file in the root directory:
 
    ```env
-   VITE_API_URL=http://localhost:8080/api/v1
+   VITE_API_URL=https://edu-verse-api-rho.vercel.app/api/v1
    VITE_NODE_ENV=development
    ```
 

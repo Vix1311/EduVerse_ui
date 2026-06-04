@@ -36,7 +36,7 @@ export const searchCourses = createAsyncThunk(
       const take = 20;
 
       const res = await axios.get(
-        `http://localhost:8080/api/v1/course/public?text=${encodeURIComponent(text)}&skip=${skip}&take=${take}`,
+        `https://edu-verse-api-rho.vercel.app/api/v1/course/public?text=${encodeURIComponent(text)}&skip=${skip}&take=${take}`,
         { headers: authHeaders() },
       );
       console.log('Course search response:', res);

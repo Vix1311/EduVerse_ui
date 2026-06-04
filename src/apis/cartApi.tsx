@@ -5,7 +5,7 @@ export const fetchCartItems = async () => {
   if (!token) return [];
 
   try {
-    const res = await axios.get(`http://localhost:8080/api/v1/cart`, {
+    const res = await axios.get(`https://edu-verse-api-rho.vercel.app/api/v1/cart`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

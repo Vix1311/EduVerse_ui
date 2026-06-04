@@ -32,7 +32,7 @@ const CheckoutButton = ({ couponId, className }: CheckoutButtonProps) => {
       setIsLoading(true);
 
       const res = await axios.post(
-        'http://localhost:8080/api/v1/orders/cart-checkout',
+        'https://edu-verse-api-rho.vercel.app/api/v1/orders/cart-checkout',
         {},
         {
           headers: {

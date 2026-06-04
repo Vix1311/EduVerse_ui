@@ -18,7 +18,7 @@ export const fetchCategories = createAsyncThunk<Category[]>(
   'categories/fetchCategories',
   async (_, { rejectWithValue }) => {
     try {
-      const res = await axios.get('http://localhost:8080/api/v1/category');
+      const res = await axios.get('https://edu-verse-api-rho.vercel.app/api/v1/category');
       const raw: any[] = Array.isArray(res.data?.data) ? res.data.data : [];
       const normalized: Category[] = raw.map((c: any) => ({
         _id: String(c.id ?? c._id ?? ''),

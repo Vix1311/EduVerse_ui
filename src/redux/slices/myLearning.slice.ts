@@ -22,7 +22,7 @@ export const fetchMyLearningCourses = createAsyncThunk('myLearning/fetch', async
       return thunkAPI.rejectWithValue('Unauthorized');
     }
 
-    const res = await axios.get('http://localhost:8080/api/v1/course/enrolled', {
+    const res = await axios.get('https://edu-verse-api-rho.vercel.app/api/v1/course/enrolled', {
       headers: { Authorization: `Bearer ${token}` },
       params: { skip: 0, take: 10 },
     });

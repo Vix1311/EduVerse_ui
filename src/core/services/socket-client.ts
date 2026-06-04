@@ -9,7 +9,7 @@ export const initSocket = (token: string) => {
   }
 
   // Kết nối tới namespace /chat
-  socket = io('http://localhost:8080/chat', {
+  socket = io('https://edu-verse-api-rho.vercel.app/chat', {
     transports: ['websocket'],
     // Gửi đủ cả token + Authorization cho chắc,
     // socketAuth có đọc cái nào thì cũng có dữ liệu

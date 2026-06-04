@@ -23,7 +23,7 @@ export const searchCategories = createAsyncThunk(
       const take = 20;
 
       const res = await axios.get(
-        `http://localhost:8080/api/v1/category?text=${encodeURIComponent(text)}&skip=${skip}&take=${take}`,
+        `https://edu-verse-api-rho.vercel.app/api/v1/category?text=${encodeURIComponent(text)}&skip=${skip}&take=${take}`,
       );
 
       const list = res.data?.data;

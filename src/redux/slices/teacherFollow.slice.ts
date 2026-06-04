@@ -41,7 +41,7 @@ const initialState: TeacherFollowState = {
 // ====== Axios instance & helpers ======
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
+  baseURL: import.meta.env.VITE_API_URL || 'https://edu-verse-api-rho.vercel.app',
 });
 
 const authHeaders = (_state: RootState) => {

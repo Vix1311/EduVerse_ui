@@ -64,7 +64,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
   const avatarUrl = userProfile?.avatar
     ? userProfile.avatar.startsWith('http')
       ? userProfile.avatar
-      : `http://localhost:8080/${userProfile.avatar}`
+      : `https://edu-verse-api-rho.vercel.app/${userProfile.avatar}`
     : defaultAvatar;
 
   const resolveAvatar = (avatar?: string | null) => {
@@ -76,7 +76,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
     if (a.startsWith('http://') || a.startsWith('https://')) return a;
 
     const cleaned = a.startsWith('/') ? a.slice(1) : a;
-    return `http://localhost:8080/${cleaned}`;
+    return `https://edu-verse-api-rho.vercel.app/${cleaned}`;
   };
 
   const scrollEndRef = useRef<HTMLDivElement | null>(null);
