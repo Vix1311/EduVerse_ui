@@ -141,10 +141,13 @@ function buildRoadmapGroups(categoryId: string, level: Level): RoadmapGroup[] {
         : (['done', 'done', 'current', 'available'] as NodeStatus[]);
 
   const courseSet = (prefix: string, labels: string[]) =>
-    labels.map((label, index) => ({
-      id: `${prefix}_${index + 1}`,
-      ...labelToNode(label, commonStatus[index]),
-    }));
+    labels.map((label, index) => {
+      const nodeData = labelToNode(label, commonStatus[index]);
+      return {
+        ...nodeData,
+        id: `${prefix}_${index + 1}`,
+      };
+    });
 
   const data: Record<string, RoadmapGroup[]> = {
     'frontend-programming': [
@@ -505,7 +508,6 @@ function SortableRoadmapGroup({
   onDragEndNode: (groupId: string, event: DragEndEvent) => void;
   onToggleDone: (groupId: string, nodeId: string) => void;
 }) {
-  // ✅ Đã sửa lỗi trùng lặp/ghi đè 'id' ở đây
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: group.id,
   });
@@ -605,7 +607,6 @@ function SortableRoadmapNode({
   color: RoadmapGroup['color'];
   onToggleDone: () => void;
 }) {
-  // ✅ Đồng bộ bọc đúng cấu trúc object id cho SortableNode
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: node.id,
   });
