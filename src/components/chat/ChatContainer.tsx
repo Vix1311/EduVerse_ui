@@ -501,7 +501,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
                     {msg.seen && isMine && (
                       <span className="inline-flex items-center gap-1 text-[10px] text-blue-600">
                         <FaCheckDouble className="text-[10px]" />
-                        Đã xem
+                        Seen
                       </span>
                     )}
                   </div>
@@ -536,7 +536,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
                           <FaThumbtack
                             className={`text-[11px] ${msg.pinned ? 'text-yellow-300' : ''}`}
                           />
-                          <span>{msg.pinned ? 'Bỏ ghim tin nhắn' : 'Ghim tin nhắn'}</span>
+                          <span>{msg.pinned ? 'Unpin message' : 'Pin message'}</span>
                         </button>
 
                         <button
@@ -545,7 +545,7 @@ const ChatContainer: React.FC<ChatContainerProps> = ({ onBackMobile, onToggleRig
                           className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[#3B3A5C]"
                         >
                           <FaCheckDouble className="text-[11px]" />
-                          <span>Đánh dấu đã xem</span>
+                          <span>Mark as seen</span>
                         </button>
                       </div>
                     )}

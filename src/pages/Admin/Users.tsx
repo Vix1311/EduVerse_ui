@@ -56,7 +56,8 @@ const Users = () => {
     return () => clearTimeout(t);
   }, [searchValue]);
 
-  useEffect(() => {
+  // ✅ Tách hàm reload dữ liệu ra để có thể tái sử dụng linh hoạt
+  const loadUsersData = () => {
     dispatch(
       fetchUsers({
         page,
@@ -68,7 +69,16 @@ const Users = () => {
         keyword: debouncedKeyword || undefined,
       } as any),
     );
+  };
+
+  useEffect(() => {
+    loadUsersData();
   }, [dispatch, page, limit, searchBy, sortBy, sortOrder, selectedRole, debouncedKeyword]);
+
+  // ✅ Hàm callback xử lý khi UserFormModal thông báo đã tạo user thành công
+  const handleUserCreated = () => {
+    loadUsersData(); // Gọi hàm re-fetch lại dữ liệu mới nhất từ server
+  };
 
   const tableData: User[] = [
     ...extraRows,
@@ -180,12 +190,17 @@ const Users = () => {
             selectedRole={selectedRole}
             onSelectRole={role => setSelectedRole(role)}
             value={selectedRole}
-            label="Vai trò"
+            label="Role"
           />
 
           <UserTable users={tableData} />
 
-          <UserFormModal open={openModal} onClose={() => setOpenModal(false)} />
+          {/* ✅ Kết nối prop onCreated với hàm handleUserCreated vừa định nghĩa */}
+          <UserFormModal
+            open={openModal}
+            onClose={() => setOpenModal(false)}
+            onCreated={handleUserCreated}
+          />
 
           <div className="mt-3 flex justify-center gap-2">
             <button

@@ -512,7 +512,7 @@ const CoursePreview: React.FC = () => {
                   onMouseEnter={() => setIsHoveredHeart(true)}
                   onMouseLeave={() => setIsHoveredHeart(false)}
                   className="p-3 border border-purple-300 rounded-lg hover:bg-purple-100 transition"
-                  title={isWishlisted ? 'Đã yêu thích' : 'Thêm vào yêu thích'}
+                  title={isWishlisted ? 'Liked' : 'Added to favorites'}
                 >
                   {isWishlisted ? (
                     isHoveredHeart ? (
@@ -676,8 +676,8 @@ const CoursePreview: React.FC = () => {
                     className="px-2 py-1 rounded border border-purple-300 bg-purple-50 text-xs hover:bg-purple-100"
                     title={
                       c.discountType?.toLowerCase().includes('percent')
-                        ? `${c.code} - Giảm ${c.discountAmount}%`
-                        : `${c.code} - Giảm ${c.discountAmount.toLocaleString()}₫`
+                        ? `${c.code} - Discount ${c.discountAmount}%`
+                        : `${c.code} - Discount ${c.discountAmount.toLocaleString()}₫`
                     }
                   >
                     <span className="font-semibold">{c.code}</span>

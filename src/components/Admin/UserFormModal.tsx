@@ -38,6 +38,7 @@ export default function UserFormModal({
   const [showPwd2, setShowPwd2] = useState(false);
   const [dobFocused, setDobFocused] = useState(false);
   const [roleFocused, setRoleFocused] = useState(false);
+  const [sendingCode, setSendingCode] = useState(false);
 
   // password strength
   type Strength = 'weak' | 'medium' | 'strong';
@@ -125,6 +126,25 @@ export default function UserFormModal({
     toast.success('User created');
   };
 
+  const handleSendCode = async () => {
+    const email = form.getValues().email;
+    if (!email) {
+      toast.error('Please enter email before sending verification code');
+      return;
+    }
+    setSendingCode(true);
+    try {
+      await authApi.sendOtp({ email: email, type: 'REGISTER' });
+      toast.success('A verification code has been sent to your email.');
+    } catch (err: any) {
+      const msg =
+        err?.response?.data?.message || err?.message || 'Sending verification code failed';
+      toast.error(msg);
+    } finally {
+      setSendingCode(false);
+    }
+  };
+
   useEffect(() => {
     if (open) form.reset(defaultValues);
   }, [open, form, defaultValues]);
@@ -149,6 +169,7 @@ export default function UserFormModal({
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Full Name */}
             <FormField
+              boxHeight-20
               control={form.control}
               name="fullname"
               render={({ field }) => {
@@ -171,11 +192,10 @@ export default function UserFormModal({
                           }
                         />
                         <label
-                          htmlFor="captcha_code"
+                          htmlFor="fullname"
                           className={[
                             'pointer-events-none absolute left-5 bg-white px-1 transition',
                             ' text-sm sm:text-base md:text-base lg:text-lg md-915-1000:text-4xl xl:text-base 6xl:text-5xl 4xl:text-5xl',
-
                             shouldFloat
                               ? '-top-2 xl:-top-3.5 md-915-1000:-top-5 6xl:-top-7 scale-90'
                               : 'top-3.5 sm:top-4 md:top-5 lg:top-6 xl:top-3.5 md-915-1000:top-7 6xl:top-12',
@@ -220,11 +240,10 @@ export default function UserFormModal({
                           aria-invalid={showErr ? 'true' : 'false'}
                         />
                         <label
-                          htmlFor="captcha_code"
+                          htmlFor="email"
                           className={[
                             'pointer-events-none absolute left-5 bg-white px-1 transition',
                             ' text-sm sm:text-base md:text-base lg:text-lg md-915-1000:text-4xl xl:text-base 6xl:text-5xl 4xl:text-5xl',
-
                             shouldFloat
                               ? '-top-2 xl:-top-3.5 md-915-1000:-top-5 6xl:-top-7 scale-90'
                               : 'top-3.5 sm:top-4 md:top-5 lg:top-6 xl:top-3.5 md-915-1000:top-7 6xl:top-12',
@@ -277,11 +296,10 @@ export default function UserFormModal({
                           aria-invalid={showErr ? 'true' : 'false'}
                         />
                         <label
-                          htmlFor="captcha_code"
+                          htmlFor="password"
                           className={[
                             'pointer-events-none absolute left-5 bg-white px-1 transition',
                             ' text-sm sm:text-base md:text-base lg:text-lg md-915-1000:text-4xl xl:text-base 6xl:text-5xl 4xl:text-5xl',
-
                             shouldFloat
                               ? '-top-2 xl:-top-3.5 md-915-1000:-top-5 6xl:-top-7 scale-90'
                               : 'top-3.5 sm:top-4 md:top-5 lg:top-6 xl:top-3.5 md-915-1000:top-7 6xl:top-12',
@@ -350,11 +368,10 @@ export default function UserFormModal({
                           aria-invalid={showErr ? 'true' : 'false'}
                         />
                         <label
-                          htmlFor="captcha_code"
+                          htmlFor="confirmPassword"
                           className={[
                             'pointer-events-none absolute left-5 bg-white px-1 transition',
                             ' text-sm sm:text-base md:text-base lg:text-lg md-915-1000:text-4xl xl:text-base 6xl:text-5xl 4xl:text-5xl',
-
                             shouldFloat
                               ? '-top-2 xl:-top-3.5 md-915-1000:-top-5 6xl:-top-7 scale-90'
                               : 'top-3.5 sm:top-4 md:top-5 lg:top-6 xl:top-3.5 md-915-1000:top-7 6xl:top-12',
@@ -399,11 +416,10 @@ export default function UserFormModal({
                           aria-invalid={showErr ? 'true' : 'false'}
                         />
                         <label
-                          htmlFor="captcha_code"
+                          htmlFor="phoneNumber"
                           className={[
                             'pointer-events-none absolute left-5 bg-white px-1 transition',
                             ' text-sm sm:text-base md:text-base lg:text-lg md-915-1000:text-4xl xl:text-base 6xl:text-5xl 4xl:text-5xl',
-
                             shouldFloat
                               ? '-top-2 xl:-top-3.5 md-915-1000:-top-5 6xl:-top-7 scale-90'
                               : 'top-3.5 sm:top-4 md:top-5 lg:top-6 xl:top-3.5 md-915-1000:top-7 6xl:top-12',
@@ -422,7 +438,7 @@ export default function UserFormModal({
               }}
             />
 
-            {/* Code (captcha/verification) */}
+            {/* Code + Send Code Button */}
             <FormField
               control={form.control}
               name="code"
@@ -432,36 +448,49 @@ export default function UserFormModal({
                 return (
                   <FormItem>
                     <FormControl>
-                      <div className="relative group">
-                        <Input
-                          {...field}
-                          id="code"
-                          type="text"
-                          placeholder=" "
-                          className="peer focus:border-blue-600"
-                          isError={showErr}
-                          errorMessage={
-                            showErr ? form.formState.errors.code?.message?.toString() : undefined
-                          }
-                          aria-invalid={showErr ? 'true' : 'false'}
-                        />
-                        <label
-                          htmlFor="captcha_code"
-                          className={[
-                            'pointer-events-none absolute left-5 bg-white px-1 transition',
-                            ' text-sm sm:text-base md:text-base lg:text-lg md-915-1000:text-4xl xl:text-base 6xl:text-5xl 4xl:text-5xl',
-
-                            shouldFloat
-                              ? '-top-2 xl:-top-3.5 md-915-1000:-top-5 6xl:-top-7 scale-90'
-                              : 'top-3.5 sm:top-4 md:top-5 lg:top-6 xl:top-3.5 md-915-1000:top-7 6xl:top-12',
-                            'group-focus-within:-top-2 xl:group-focus-within:-top-3.5 md-915-1000:group-focus-within:-top-5 6xl:group-focus-within:-top-7 group-focus-within:scale-90',
-                            showErr
-                              ? 'text-red-500'
-                              : 'text-slate-500 group-focus-within:text-blue-600',
-                          ].join(' ')}
+                      <div className="flex w-full items-stretch gap-3">
+                        {/* Nút Send Code bọc bên phải theo logic flex layout */}
+                        <button
+                          type="button"
+                          onClick={handleSendCode}
+                          disabled={sendingCode}
+                          className="shrink-0 whitespace-nowrap text-sm font-semibold text-white bg-blue-500 px-4 rounded hover:bg-blue-600 disabled:opacity-60 order-2 focus:outline-none transition"
+                          aria-label="Send verification code"
                         >
-                          Code
-                        </label>
+                          {sendingCode ? 'Sending...' : 'Send Code'}
+                        </button>
+
+                        <div className="relative group flex-1 basis-0 min-w-0 order-1">
+                          <Input
+                            {...field}
+                            id="code"
+                            className="peer focus:border-purple-600"
+                            type="text"
+                            placeholder=" "
+                            autoComplete="one-time-code"
+                            isError={showErr}
+                            errorMessage={
+                              showErr ? form.formState.errors.code?.message?.toString() : undefined
+                            }
+                            aria-invalid={showErr ? 'true' : 'false'}
+                          />
+                          <label
+                            htmlFor="code"
+                            className={[
+                              'pointer-events-none absolute left-5 bg-white px-1 transition',
+                              ' text-sm sm:text-base md:text-base lg:text-lg md-915-1000:text-4xl xl:text-base 6xl:text-5xl 4xl:text-5xl',
+                              shouldFloat
+                                ? '-top-2 xl:-top-3.5 md-915-1000:-top-5 6xl:-top-7 scale-90'
+                                : 'top-3.5 sm:top-4 md:top-5 lg:top-6 xl:top-3.5 md-915-1000:top-7 6xl:top-12',
+                              'group-focus-within:-top-2 xl:group-focus-within:-top-3.5 md-915-1000:group-focus-within:-top-5 6xl:group-focus-within:-top-7 group-focus-within:scale-90',
+                              showErr
+                                ? 'text-red-500'
+                                : 'text-slate-500 group-focus-within:text-purple-600',
+                            ].join(' ')}
+                          >
+                            Code
+                          </label>
+                        </div>
                       </div>
                     </FormControl>
                   </FormItem>
@@ -473,7 +502,7 @@ export default function UserFormModal({
             <div className="mt-4 flex justify-end gap-3">
               <button
                 type="button"
-                className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded"
+                className="bg-gray-300 hover:bg-gray-400 text-black px-4 py-2 rounded transition"
                 onClick={handleCancel}
                 disabled={form.formState.isSubmitting || registerMutation.isPending}
               >
@@ -482,7 +511,7 @@ export default function UserFormModal({
               <button
                 type="submit"
                 disabled={form.formState.isSubmitting || registerMutation.isPending}
-                className="bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white px-4 py-2 rounded"
+                className="bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white px-4 py-2 rounded transition"
               >
                 {registerMutation.isPending ? 'Adding...' : 'Add User'}
               </button>

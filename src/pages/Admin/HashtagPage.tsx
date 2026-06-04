@@ -151,14 +151,14 @@ const HashtagPage = () => {
                     <td className="p-2">
                       <div className="flex items-center justify-center gap-2">
                         <button
-                          title="Sửa hashtag"
+                          title="Edit hashtag"
                           onClick={() => openEditModal(row)}
                           className="p-2 rounded border hover:bg-gray-100 text-blue-600"
                         >
                           <FaEdit />
                         </button>
                         <button
-                          title="Xóa hashtag"
+                          title="Delete hashtag"
                           onClick={() => handleDelete(row)}
                           className="p-2 rounded border hover:bg-gray-100 text-red-600"
                         >

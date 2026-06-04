@@ -50,7 +50,7 @@ const topHelpers = [
   { name: 'Hoa', replies: 12 },
 ];
 
-const COLORS = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6']; 
+const COLORS = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#8b5cf6'];
 
 // ===== Small stat tiles =====
 const StatTile = ({ label, value, sub }: { label: string; value: string; sub?: string }) => (
@@ -108,11 +108,11 @@ export default function DashboardAnalytics() {
                 <Line
                   type="monotone"
                   dataKey="prev"
-                  name="Tuần trước"
+                  name="Last week"
                   stroke="#94a3b8"
                   dot={false}
                 />
-                <Line type="monotone" dataKey="count" name="Tuần này" stroke="#3b82f6" dot />
+                <Line type="monotone" dataKey="count" name="This week" stroke="#3b82f6" dot />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -158,7 +158,7 @@ export default function DashboardAnalytics() {
                 <XAxis dataKey="name" />
                 <YAxis unit="m" />
                 <Tooltip />
-                <Bar dataKey="mins" name="Phút" fill="#10b981" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="mins" name="Minutes" fill="#10b981" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

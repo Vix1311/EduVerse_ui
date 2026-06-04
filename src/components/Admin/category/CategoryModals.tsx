@@ -125,19 +125,19 @@ const CategoryModals: React.FC<Props> = ({
 
         {type === 'delete' && category && (
           <>
-            <h2 className="text-lg font-semibold mb-4 text-center">Xác nhận xóa</h2>
+            <h2 className="text-lg font-semibold mb-4 text-center">Confirm deletion</h2>
             <p className="text-center mb-4">
-              Bạn có chắc chắn muốn xóa <strong>{category.name}</strong>?
+              Are you sure you want to delete <strong>{category.name}</strong>?
             </p>
             <div className="flex justify-end gap-2">
               <button onClick={onClose} className="bg-gray-300 px-4 py-2 rounded">
-                Hủy
+                Cancel
               </button>
               <button
                 onClick={() => onConfirmDelete(category.id)}
                 className="bg-red-500 text-white px-4 py-2 rounded"
               >
-                Xóa
+                Delete
               </button>
             </div>
           </>

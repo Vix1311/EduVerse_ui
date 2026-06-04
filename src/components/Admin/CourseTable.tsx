@@ -195,7 +195,7 @@ const AdminCoursesPage: React.FC = () => {
   };
 
   const handleSoftDelete = async (course: AdminCourse) => {
-    if (!window.confirm(`Xoá mềm khoá học "${course.title}"?`)) return;
+    if (!window.confirm(`Soft delete course "${course.title}"?`)) return;
     await dispatch(softDeleteCourse({ id: Number(course.id) }) as any);
     dispatch(listCourses());
     setSelectedCourse(prev => (prev && prev.id === course.id ? null : prev));
@@ -206,7 +206,7 @@ const AdminCoursesPage: React.FC = () => {
   };
 
   const handleBlacklist = async (course: AdminCourse) => {
-    if (!window.confirm(`Đưa khoá học "${course.title}" vào blacklist?`)) return;
+    if (!window.confirm(`Add course "${course.title}" to blacklist?`)) return;
     await dispatch(updateCourseStatus({ id: Number(course.id), status: 'blacklisted' }) as any);
   };
 
@@ -275,7 +275,7 @@ const AdminCoursesPage: React.FC = () => {
                     setSearchTitle(e.target.value);
                     setPage(1);
                   }}
-                  placeholder="Nhập tên khoá học..."
+                  placeholder="Search course name..."
                   className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
                 />
               </div>
@@ -306,10 +306,7 @@ const AdminCoursesPage: React.FC = () => {
                 <tr>
                   <th className="px-4 py-3">Course</th>
 
-                  <th
-                    className="cursor-pointer px-4 py-3"
-                    onClick={() => handleSort('price')}
-                  >
+                  <th className="cursor-pointer px-4 py-3" onClick={() => handleSort('price')}>
                     <span className="inline-flex items-center gap-1">
                       Price
                       {sortField === 'price' && <span>{sortOrder === 'asc' ? '▲' : '▼'}</span>}

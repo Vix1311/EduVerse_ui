@@ -389,7 +389,7 @@ export const fetchLessonCommentsByCourse = createAsyncThunk(
           ratingStat[rating] += 1;
           return {
             _id: c._id,
-            name: c.user?.full_name || 'Ẩn danh',
+            name: c.user?.full_name || 'Anonymous',
             timeAgo: new Date(c.created_at).toLocaleDateString('vi-VN'),
             rating,
             comment: c.content,

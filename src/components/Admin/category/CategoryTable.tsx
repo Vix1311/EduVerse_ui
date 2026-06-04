@@ -23,11 +23,11 @@ const CategoryTable: React.FC<Props> = ({ categories, onEdit, onView, onDelete }
       <thead className="bg-gray-100">
         <tr>
           <th className="px-4 py-2 text-left">ID</th>
-          <th className="px-4 py-2 text-left">Tên</th>
+          <th className="px-4 py-2 text-left">Name</th>
           <th className="px-4 py-2 text-left">Slug</th>
-          <th className="px-4 py-2 text-left">Ngày tạo</th>
-          <th className="px-4 py-2 text-left">Trạng thái</th>
-          <th className="px-4 py-2 text-left">Hành động</th>
+          <th className="px-4 py-2 text-left">Created At</th>
+          <th className="px-4 py-2 text-left">Status</th>
+          <th className="px-4 py-2 text-left">Actions</th>
         </tr>
       </thead>
       <tbody>
