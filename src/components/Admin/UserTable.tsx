@@ -98,7 +98,7 @@ function DisableUserModal({ open, onClose, onSubmit, fullName }: DisableUserModa
             </select>
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            Ví dụ: 10d = 10 ngày, 5h = 5 giờ. Để trống sẽ lock vô thời hạn.
+            For example: 10d = 10 days, 5h = 5 hours. Leaving it blank will lock it indefinitely.
           </p>
         </div>
 
@@ -204,7 +204,7 @@ function ViolationModal({ open, onClose, onSubmit, fullName }: ViolationModalPro
               className="w-full border rounded px-3 py-2 text-sm"
               value={otherDetail}
               onChange={e => setOtherDetail(e.target.value)}
-              placeholder="Ví dụ: Fake document, Abuse..."
+              placeholder="For example: Fake document, Abuse..."
             />
           </div>
         )}
@@ -421,7 +421,7 @@ export default function UserTable({ users }: { users: User[] }) {
                             : 'bg-gray-300 cursor-pointer'
                         }`}
                         onClick={() => {
-                          if (!isTeacher) handleToggleApproveTeacher(user); 
+                          if (!isTeacher) handleToggleApproveTeacher(user);
                         }}
                         title={isTeacher ? 'Already instructor' : 'Click to approve -> instructor'}
                       >
