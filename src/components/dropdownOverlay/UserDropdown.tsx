@@ -204,6 +204,12 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout, onClose }) => {
           >
             My learning
           </Link>
+          <Link
+            to="/leaderboard"
+            className="block w-full px-4 py-3 hover:bg-purple-100 hover:text-purple-600"
+          >
+            Flash card
+          </Link>
           <Link to="/cart" className="block w-full px-4 py-3 hover:bg-purple-100">
             My cart
           </Link>
@@ -237,6 +243,14 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ onLogout, onClose }) => {
             className="block w-full px-4 py-3 hover:bg-purple-100 hover:text-purple-600 "
           >
             Messages
+          </Link>
+        </div>
+        <div className="flex flex-col -mx-4 border-b">
+          <Link
+            to="/placement"
+            className="block w-full px-4 py-3 hover:bg-purple-100 hover:text-purple-600 "
+          >
+            Roadmap builder
           </Link>
         </div>
         {/* (Mobile) Categories */}

@@ -94,11 +94,12 @@ const FeedbackWidget = () => {
       title: finalTitle,
       content: trimmed,
       feedbackType,
-      courseId: getCourseIdFromPath(),
+      // Sửa ở đây: TypeScript không chịu 'null', chuyển sang 'undefined' để phù hợp với thuộc tính optional
+      courseId: getCourseIdFromPath() ?? undefined,
     };
 
     try {
-      await dispatch(submitCourseFeedback(payload)).unwrap();
+      await dispatch(submitCourseFeedback(payload as any)).unwrap();
       toast.success('Thank you for your feedback!');
 
       setMessages(prev => [
