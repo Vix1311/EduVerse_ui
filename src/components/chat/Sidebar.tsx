@@ -626,7 +626,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onOpenChatMobile }) => {
 
                                     if (!isFollowing) {
                                       toast.error(
-                                        'Bạn chưa follow người này nên không thể tạo chat trực tiếp.',
+                                        'You have not followed this user, so you cannot create a direct chat.',
                                       );
                                       return;
                                     }
@@ -635,7 +635,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onOpenChatMobile }) => {
                                     setPickerMode(null);
                                   } catch (err: any) {
                                     toast.error(
-                                      err?.toString?.() || 'Không kiểm tra được following',
+                                      err?.toString?.() || 'Cannot check following status',
                                     );
                                   } finally {
                                     setCheckingUserId(null);

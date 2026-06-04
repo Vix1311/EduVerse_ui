@@ -85,7 +85,11 @@ const mapToCourse = (c: any): Course => {
 
     category: c.category,
 
-    features: ['Video chất lượng cao', 'Hỗ trợ mọi nền tảng', 'Tặng mã giảm giá khi học'],
+    Features: [
+      'High-quality videos',
+      'Supports all platforms',
+      'Discount codes available for courses',
+    ],
     isBesteller: Boolean(c.is_bestseller ?? c.isBesteller ?? Math.random() < 0.5),
   } as any;
 };

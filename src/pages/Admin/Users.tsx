@@ -190,7 +190,7 @@ const Users = () => {
             selectedRole={selectedRole}
             onSelectRole={role => setSelectedRole(role)}
             value={selectedRole}
-            label="Vai trò"
+            label="Role"
           />
 
           <UserTable users={tableData} />

@@ -220,10 +220,10 @@ export const checkMomoPayment = createAsyncThunk(
       const { status, orderNumber } = payload;
 
       if (status === 'Paid') {
-        toast.success('Thanh toán MoMo thành công!');
+        toast.success('MoMo payment successful!');
         await dispatch(clearCartOnServer()).unwrap();
       } else {
-        toast.error('Thanh toán MoMo không thành công.');
+        toast.error('MoMo payment failed.');
       }
 
       return { status, orderNumber };
@@ -233,10 +233,10 @@ export const checkMomoPayment = createAsyncThunk(
         error?.response?.data?.message ||
         error?.response?.data?.error ||
         error?.message ||
-        'Kiểm tra thanh toán MoMo thất bại';
+        'Check MoMo payment failed';
 
       if (status === 401) {
-        toast.error('Vui lòng đăng nhập lại.');
+        toast.error('Please login again.');
         return rejectWithValue('Unauthorized');
       }
 

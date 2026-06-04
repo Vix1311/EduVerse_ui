@@ -392,7 +392,7 @@ const CouponPage = () => {
                         <div className="flex items-center justify-center gap-2">
                           {!isDeleted && (
                             <button
-                              title="Sửa coupon"
+                              title="Edit coupon"
                               onClick={() => openEditModal(row)}
                               className="p-2 rounded border hover:bg-gray-100 text-blue-600"
                             >
@@ -401,7 +401,7 @@ const CouponPage = () => {
                           )}
 
                           <button
-                            title="Xóa mềm"
+                            title="Soft delete"
                             onClick={() => handleSoftDelete(row)}
                             className="p-2 rounded border hover:bg-gray-100 text-red-600"
                           >
@@ -430,7 +430,7 @@ const CouponPage = () => {
             <div className="bg-white rounded-lg shadow-lg w-full max-w-lg mx-4">
               <div className="border-b px-6 py-4 flex justify-between items-center">
                 <h2 className="text-lg font-semibold">
-                  {editingRow ? 'Sửa mã giảm giá' : 'Thêm mã giảm giá'}
+                  {editingRow ? 'Edit coupon' : 'Add coupon'}
                 </h2>
                 <button
                   type="button"
@@ -505,7 +505,7 @@ const CouponPage = () => {
                         className="w-full border rounded px-3 py-2"
                         value={courseInputText}
                         readOnly
-                        placeholder="Áp dụng cho tất cả khóa học"
+                        placeholder="Apply to all courses if not selected"
                       />
                       <button
                         type="button"
